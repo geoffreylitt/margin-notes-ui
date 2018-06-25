@@ -5331,6 +5331,10 @@ vue-loader@^13.3.0:
     vue-style-loader "^3.0.0"
     vue-template-es2015-compiler "^1.6.0"
 
+vue-object-view@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/vue-object-view/-/vue-object-view-0.4.2.tgz#2db4b53c29e57481a6cdd7ac3be3f239512cf84f"
+
 vue-style-loader@^3.0.0, vue-style-loader@^3.0.1:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/vue-style-loader/-/vue-style-loader-3.1.2.tgz#6b66ad34998fc9520c2f1e4d5fa4091641c1597a"

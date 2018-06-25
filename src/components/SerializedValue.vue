@@ -1,17 +1,30 @@
 <template>
-  <span>{{ serializedValue }}</span>
+  <span>
+  <template v-if="showRichObject">
+    <VueObjectView v-model="value.value" />
+  </template>
+  <template v-else>
+    {{ serializedValue }}
+  </template>
+  </span>
 </template>
 
 <script>
+  import VueObjectView from 'vue-object-view'
+
   export default {
     props: ['value'],
+    components: { VueObjectView },
     computed: {
-      serializedValue: function () {
-        if (this.value === null) {
+      serializedValue () {
+        if (this.value.value === null) {
           return "null";
         } else {
-          return this.value;
+          return this.value.value;
         }
+      },
+      showRichObject () {
+        return (this.value.class_name === "Hash")
       }
     }
   }

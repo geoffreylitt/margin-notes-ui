@@ -149,6 +149,6 @@ end
 
 puts recorder.serialized_examples
 `,
-      data: [{"klass":"Object","method":"#<Method: main.intermediate_hash>","parameters":[],"arguments":{},"return_value":{"class_name":"Hash","value":{"external_id":123}},"class_name":"Object","method_name":"intermediate_hash","method_location":["hash.rb",10]},{"klass":"Object","method":"#<Method: main.final_hash>","parameters":[["req","a"]],"arguments":{"a":{"class_name":"Integer","value":100}},"return_value":{"class_name":"Hash","value":{"external_id":123,"id":100}},"class_name":"Object","method_name":"final_hash","method_location":["hash.rb",4]}]
+      data: [{"klass":"Object","method":"#<Method: main.intermediate_hash>","parameters":[],"arguments":{},"return_value":{"class_name":"Hash","value":{"external_id":123}},"class_name":"Object","method_name":"intermediate_hash","method_location":["hash.rb",10]},{"klass":"Object","method":"#<Method: main.final_hash>","parameters":[["req","a"]],"arguments":{"a":{"class_name":"Integer","value":100}},"return_value":{"class_name":"Hash","value":{"external_id":123,"id":100,"bool": false,"stringKey": "String val"}},"class_name":"Object","method_name":"final_hash","method_location":["hash.rb",4]}]
     }
   }

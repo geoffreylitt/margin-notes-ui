@@ -20,7 +20,7 @@
                 <div class="data-example">
                   <div class="data-label">{{ name }}</div>
                   <div class="data-contents">
-                    <serialized-value v-bind:value="argument.value"></serialized-value>
+                    <serialized-value v-bind:value="argument"></serialized-value>
                   </div>
                 </div>
               </div>
@@ -29,7 +29,7 @@
               <div class="data-example">
                 <div class="data-label">output</div>
                 <div class="data-contents">
-                  <serialized-value v-bind:value="example.return_value.value"></serialized-value>
+                  <serialized-value v-bind:value="example.return_value"></serialized-value>
                 </div>
               </div>
             <!-- todo
@@ -40,9 +40,9 @@
         <div v-else class="example inactive-example">
           <a class="light-link" href="javascript:void(0);" v-on:click="activeExample = example">
             <template v-for="(argument, name) in example.arguments">
-              {{ name }} = <serialized-value v-bind:value="argument.value"></serialized-value>
+              {{ name }} = <serialized-value v-bind:value="argument"></serialized-value>
             </template>
-            output = <serialized-value v-bind:value="example.return_value.value"></serialized-value>
+            output = <serialized-value v-bind:value="example.return_value"></serialized-value>
           </a>
         </div>
       </template>
