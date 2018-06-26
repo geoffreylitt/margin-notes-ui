@@ -12,11 +12,13 @@
         </template>
         <!-- <p class="method-description">Todo: fill in description</p> -->
       </div>
-      <template v-for="example in examples">
+      <!-- todo: use a better unique key here-->
+      <div v-for="example in examples" :key="example.method">
         <div v-if="activeExample == example" class="example active-example">
           <div class="method-example-body">
             <div class="section inputs">
-              <div v-for="(argument, name) in example.arguments">
+              <!-- todo: use a better unique key here-->
+              <div v-for="(argument, name) in example.arguments" :key="argument.value">
                 <div class="data-example">
                   <div class="data-label">{{ name }}</div>
                   <div class="data-contents">
@@ -45,7 +47,7 @@
             output = <serialized-value v-bind:value="example.return_value"></serialized-value>
           </a>
         </div>
-      </template>
+      </div>
     </div>
   </div>
 </template>
