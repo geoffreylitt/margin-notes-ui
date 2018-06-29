@@ -12,7 +12,9 @@
   "dependencies": {
     "codemirror": "^5.39.0",
     "lodash": "^4.17.10",
+    "prismjs": "^1.15.0",
     "vue": "^2.5.2",
+    "vue-markdown": "^2.2.4",
     "vue-object-view": "^0.4.2"
   },
   "devDependencies": {
