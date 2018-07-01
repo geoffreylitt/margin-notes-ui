@@ -92,7 +92,7 @@
 </style>
 
 <style>
-  .CodeMirror {
+  .demo .CodeMirror {
     height: 100%;
   }
 

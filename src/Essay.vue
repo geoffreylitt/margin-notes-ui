@@ -6,8 +6,6 @@
 
 # Reading code with example data
 
-by Geoffrey Litt
-
 As developers, we spend a lot of time reading code: in text editors, on Github, etc.
 Often we spend a large portion of our effort imagining the data that could be
 present in the program at various points.
