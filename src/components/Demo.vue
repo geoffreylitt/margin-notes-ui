@@ -87,7 +87,9 @@
     vertical-align: top;
     width: 40%;
     height: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background-color: #f9f9f9;
   }
 </style>
 

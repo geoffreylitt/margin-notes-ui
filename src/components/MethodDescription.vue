@@ -74,16 +74,10 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .examples-container {
-    height: 100%;
-  }
-
   .examples-inner-container {
-    background-color: #f9f9f9;
     padding: 20px;
     border-top: none;
     font-family: "Helvetica Neue", sans serif;
-    height: 100%;
   }
 
   h1.method-name, p.method-description {
@@ -123,7 +117,7 @@
 
   .data-label {
     display: inline-block;
-    width: 100px;
+    width: 90px;
     font-size: 14px;
     font-weight: bold;
     color: #999;
