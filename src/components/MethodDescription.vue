@@ -20,16 +20,16 @@
               <!-- todo: use a better unique key here-->
               <div v-for="(argument, name) in example.arguments" :key="argument.value">
                 <div class="data-example">
-                  <div class="data-label">{{ name }}</div>
+                  <div class="data-label" v-bind:title="name">{{ name }}</div>
                   <div class="data-contents">
                     <serialized-value v-bind:value="argument"></serialized-value>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="section output"></div>
+            <div class="section return"></div>
               <div class="data-example">
-                <div class="data-label">output</div>
+                <div class="data-label">return</div>
                 <div class="data-contents">
                   <serialized-value v-bind:value="example.return_value"></serialized-value>
                 </div>
@@ -41,10 +41,11 @@
         </div>
         <div v-else class="example inactive-example">
           <a class="light-link" href="javascript:void(0);" v-on:click="activeExample = example">
+            <!-- todo: rather than printing raw strings, make a condensed view of serialized_value -->
             <template v-for="(argument, name) in example.arguments">
-              {{ name }} = <serialized-value v-bind:value="argument"></serialized-value>
+              {{ name }} = {{argument.value}}
             </template>
-            output = <serialized-value v-bind:value="example.return_value"></serialized-value>
+            return = {{ example.return_value.value }}
           </a>
         </div>
       </div>
@@ -122,16 +123,22 @@
 
   .data-label {
     display: inline-block;
-    width: 50px;
+    width: 100px;
     font-size: 14px;
     font-weight: bold;
     color: #999;
+    text-align: right;
+    margin-right: 15px;
+
+    /* truncate long names */
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    vertical-align: middle;
   }
 
   .data-contents {
     display: inline-block;
-    width: 250px;
-    font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+    width: 240px;
   }
 
   a.light-link,
