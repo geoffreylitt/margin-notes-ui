@@ -31,7 +31,8 @@
         }
       },
       showRichObject () {
-        return (this.value.class_name === "Hash")
+        let value = this.value.value
+        return (value === Object(value))
       }
     }
   }
