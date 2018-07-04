@@ -73,7 +73,7 @@ and outputs for that method.
       <p class="note">todo: improve UI for method selection</p>
     </div>
 
-    <demo id="demo-fib"
+    <demo
     v-bind:code="presets.fibonacci.code"
     v-bind:examples="presets.fibonacci.data"
     v-bind:filename="presets.fibonacci.filename"
@@ -98,7 +98,7 @@ question of what values `player` can take on.
       </vue-markdown>
     </div>
 
-    <demo id="demo-tictactoe"
+    <demo
     v-bind:code="presets.tictactoe.code"
     v-bind:examples="presets.tictactoe.data"
     v-bind:filename="presets.tictactoe.filename"
@@ -112,7 +112,7 @@ question of what values `player` can take on.
 
     <p>Examples from running tests against an open source library:</p>
 
-    <demo id="demo-tictactoe"
+    <demo
     v-bind:code="presets.money.code"
     v-bind:examples="presets.money.data"
     v-bind:filename="presets.money.filename"
@@ -122,11 +122,50 @@ question of what values `player` can take on.
 
     <p>Examples of rich objects like nested hashes</p>
 
-    <demo id="demo-tictactoe"
+    <demo
     v-bind:code="presets.hash.code"
     v-bind:examples="presets.hash.data"
     v-bind:filename="presets.hash.filename"
     ></demo>
+
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+    <h1>Margin Notes: Reading code with the data</h1>
+    <p>BostonRB Demo</p>
+    <p>by Geoffrey Litt</p>
+
+    <br /><br /><br /><br /><br />
+
+    <h2>Fibonacci</h2>
+
+    <demo
+    v-bind:code="presets.fibonacci.code"
+    v-bind:examples="presets.fibonacci.data"
+    v-bind:filename="presets.fibonacci.filename"
+    ></demo>
+
+    <br /><br /><br /><br /><br />
+
+    <h2>Tic-tac-toe</h2>
+
+    <demo
+    v-bind:code="presets.tictactoe.code"
+    v-bind:examples="presets.tictactoe.data"
+    v-bind:filename="presets.tictactoe.filename"
+    ></demo>
+
+    <br /><br /><br /><br /><br />
+
+    <h2>ruby-money</h2>
+
+    <demo
+    v-bind:code="presets.money.code"
+    v-bind:examples="presets.money.data"
+    v-bind:filename="presets.money.filename"
+    ></demo>
+
+    <br /><br /><br /><br /><br />
   </div>
 </template>
 
