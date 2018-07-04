@@ -1,8 +1,9 @@
 <template>
   <div id="essay">
-    <p class="note">Work-in-progress, please don't share.</p>
+    <h1>Margin Notes: Reading code with the data</h1>
+    <p>by Geoffrey Litt</p>
 
-    <h1>Margin Notes: Read the data with the code</h1>
+    <br /><br /><br /><br /><br />
 
     <h2>Fibonacci</h2>
 
@@ -12,6 +13,8 @@
     v-bind:filename="presets.fibonacci.filename"
     ></demo>
 
+    <br /><br /><br /><br /><br />
+
     <h2>Tic-tac-toe</h2>
 
     <demo id="demo-tictactoe"
@@ -20,6 +23,8 @@
     v-bind:filename="presets.tictactoe.filename"
     ></demo>
 
+    <br /><br /><br /><br /><br />
+
     <h2>ruby-money</h2>
 
     <demo id="demo-money"
@@ -27,6 +32,9 @@
     v-bind:examples="presets.money.data"
     v-bind:filename="presets.money.filename"
     ></demo>
+
+    <br /><br /><br /><br /><br />
+
   </div>
 </template>
 
