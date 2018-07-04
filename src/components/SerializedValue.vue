@@ -25,7 +25,7 @@
     computed: {
       serializedValue () {
         if (this.value.value === null) {
-          return "null";
+          return "nil";
         } else {
           return this.value.value;
         }
