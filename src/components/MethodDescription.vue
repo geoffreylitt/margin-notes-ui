@@ -43,9 +43,9 @@
           <a class="light-link" href="javascript:void(0);" v-on:click="activeExample = example">
             <!-- todo: rather than printing raw strings, make a condensed view of serialized_value -->
             <template v-for="(argument, name) in example.arguments">
-              {{ name }} = {{argument.value}}
+              {{ name }} = {{String(argument.value) | truncate(30)}}
             </template>
-            return = {{ example.return_value.value }}
+            return = {{ String(example.return_value.value) | truncate(30) }}
           </a>
         </div>
       </div>

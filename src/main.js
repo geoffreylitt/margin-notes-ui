@@ -7,6 +7,9 @@ require('prismjs')
 
 Vue.config.productionTip = false
 
+let VueTruncate = require('vue-truncate-filter')
+Vue.use(VueTruncate)
+
 /* eslint-disable no-new */
 new Vue({
   el: '#essay',

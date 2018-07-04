@@ -15,7 +15,8 @@
     "prismjs": "^1.15.0",
     "vue": "^2.5.2",
     "vue-markdown": "^2.2.4",
-    "vue-object-view": "^0.4.2"
+    "vue-object-view": "^0.4.2",
+    "vue-truncate-filter": "^1.1.7"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
