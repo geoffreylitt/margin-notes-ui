@@ -8,7 +8,7 @@
           </h1>
         </template>
         <template v-else>
-          <p>Click a highlighted row to see docs</p>
+          <p>Click a highlighted method to see examples</p>
         </template>
         <!-- <p class="method-description">Todo: fill in description</p> -->
       </div>
@@ -136,7 +136,6 @@
 
   .data-contents {
     display: inline-block;
-    width: 240px;
   }
 
   a.light-link,

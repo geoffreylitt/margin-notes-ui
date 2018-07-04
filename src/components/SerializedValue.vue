@@ -3,7 +3,7 @@
     <div class="serialized-value">
       <span>
       <template v-if="showRichObject">
-        <VueObjectView v-model="value.value" />
+        <VueObjectView v-model="value.value" class="rich-object" />
       </template>
       <template v-else>
         <span style="white-space: pre;">{{ serializedValue }}</span>
@@ -53,11 +53,11 @@
   }
 
   .serialized-value {
-    max-width: 200px;
+    max-width: 350px;
     font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
   }
 
-  .vue-object-view {
+  .vue-object-view.rich-object {
     font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
   }
 </style>
