@@ -6,7 +6,7 @@
         <VueObjectView v-model="value.value" />
       </template>
       <template v-else>
-        {{ serializedValue }}
+        <span style="white-space: pre;">{{ serializedValue }}</span>
       </template>
       </span>
     </div>
@@ -42,12 +42,14 @@
 <style scoped lang="scss">
   .class-name, .serialized-value {
     display: inline-block;
+    vertical-align: top;
   }
 
   .class-name {
     font-size: 12px;
     color: #cacaca;
-    margin-left: 5px;
+    margin: 2px 0 0 5px;
+    vertical-align: top;
   }
 
   .serialized-value {

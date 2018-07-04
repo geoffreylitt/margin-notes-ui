@@ -123,14 +123,14 @@
     color: #999;
     text-align: right;
     margin-right: 15px;
+    vertical-align: top;
 
     /* truncate long names */
     text-overflow: ellipsis;
     overflow-x: hidden;
-    vertical-align: middle;
 
     &.return-label {
-      text-decoration: underline;
+      font-style: italic;
     }
   }
 
