@@ -29,7 +29,7 @@
             </div>
             <div class="section return"></div>
               <div class="data-example">
-                <div class="data-label">return</div>
+                <div class="data-label return-label">return</div>
                 <div class="data-contents">
                   <serialized-value v-bind:value="example.return_value"></serialized-value>
                 </div>
@@ -73,7 +73,7 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
   .examples-inner-container {
     padding: 20px;
     border-top: none;
@@ -128,6 +128,10 @@
     text-overflow: ellipsis;
     overflow-x: hidden;
     vertical-align: middle;
+
+    &.return-label {
+      text-decoration: underline;
+    }
   }
 
   .data-contents {
@@ -151,5 +155,5 @@
   a.examples-list-link.active {
     font-weight: bold;
     color: #bbb;
-  } 
+  }
 </style>
