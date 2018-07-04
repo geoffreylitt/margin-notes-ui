@@ -53,7 +53,7 @@
   }
 
   .serialized-value {
-    max-width: 350px;
+    max-width: 340px;
     font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
   }
 

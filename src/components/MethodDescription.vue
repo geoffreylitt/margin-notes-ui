@@ -113,6 +113,14 @@
 
   .method-example-body .section {
     margin-bottom: 10px;
+
+    &.inputs {
+      margin-bottom: 15px;
+    }
+  }
+
+  .data-example {
+    margin: 5px 0;
   }
 
   .data-label {
@@ -121,8 +129,6 @@
     font-size: 14px;
     font-weight: bold;
     color: #999;
-    text-align: right;
-    margin-right: 15px;
     vertical-align: top;
 
     /* truncate long names */
@@ -136,6 +142,7 @@
 
   .data-contents {
     display: inline-block;
+    margin-left: 15px;
   }
 
   a.light-link,
