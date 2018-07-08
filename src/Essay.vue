@@ -7,93 +7,42 @@
 
 # Margin Notes: Code With a Side of Data
 
-As developers, we spend a lot of time reading code: in text editors, on Github, etc.
-Often we spend a large portion of our effort imagining the data that could be
-present in the program at various points.
+If you're in the habit of programming computers like I am, you probably spend lot of time reading code. Whether it's reviewing a pull request, skimming the source of a library in Github, or reading our own systems as we create them—reading source code and internalizing the described behavior is an essential part of what programmers do.
 
-Take this example from a tic-tac-toe program I wrote in Ruby:
+Unfortunately, much of the time and effort we spend reading code is **totally wasted**. We usually read code in static environments that only display the text content of the code, which then puts the burden on us readers to play computer in our heads. We pore over sequences of instructions, laboriously simulating what the computer will do, imagining inputs and outputs and data structures being transformed.
 
-```ruby
-  # returns true if the given player has won the game
-  def won?(player)
-    return true if won_row?(player)
-    return true if won_column?(player)
-    return true if won_diagonal?(player)
-    return false
-  end
-```
+When you really think about it, this makes absolutely no sense! We're millions of times slower and substantially less accurate than computers at running code—that's why we invented computers in the first place. And yet, we routinely make no use of the power of computers in the process of reading code for our own understanding. Maybe this simulation approach made sense in a bygone era where computing power was scarce and programs were precious punch cards to be submitted for overnight evaluation, but today it's no longer necessary for us to expend energy on this pursuit of mental simulation.
 
-What values get passed in as the `player` argument here?
-Perhaps an instance of some `Player` class? Or maybe a hash?
-In a dynamic language like Ruby our IDE can't statically
-answer this question for us.
-One thing we can do is write comments hinting at types:
+As Bret Victor points out in Learnable Programming, it's absolutely possible to design dynamic programming environments that show us what the computer is doing with our code, so we can spend our scarce focus on other things. This essay is about my attempt at one such environment, which I call Margin Notes.
 
-```ruby
-  # @param player [Integer] A number for a player
-  # @return [Boolean] whether the given player won
-  def won?(player)
-    return true if won_row?(player)
-    return true if won_column?(player)
-    return true if won_diagonal?(player)
-    return false
-  end
-```
+Margin Notes shows you real examples of data recorded during previous runs of a program, right next to the code itself. I'll claim that this small change can make it easier to understand code as you read, reduce the need for manual documentation, and integrate easily with the way we already do programming today.
 
-Now we know that player is supposed to be an integer!
-This is valuable information, but
-it still doesn't tell us everything we need to know to confidently
-write code that uses this data.
-What values could these player integers take? are they database IDs? 1 and 2?
-The type alone doesn't tell us more detailed information about the data.
-And not only that, these comments get out of date and are tedious
-to write in the first place.
+## Seeing the board
 
-      </vue-markdown>
-      <p class="note">todo: find a better introductory example</p>
-      <vue-markdown v-bind:breaks="false" v-bind:html="true">
+Here's some Ruby code I wrote as part of a Game class in a tic-tac-toe game. The to_s method returns a string representation of a Game object, for printing out to a terminal. See if you can figure out what its output looks like.
 
-### Examples to the rescue
+    class Game
+      # A string representation of the board state.
+      def to_s
+        @squares.map do |row|
+          row.map { |square| " " + (square || " ") + " " }.join("|")
+        end.join("\n------------\n")
+      end
+    end
 
-This essay is about a system that helps us read code by
-giving us more detailed information about the data in our programs,
-without making us do even more tedious documentation work.
+All things considered, this is a pretty short method, but even for reading something this simple, there are some mental gymnastics involved. The method returns a transformed version of the instance variable `@squares` , so we'll first need to go hunt down all the places where that variable gets set and understand the values it can take on. Once we figure that out, we need to keep track of two layers of mapping over lists and joining them back together, all while remembering the structure of `@squares`. If you're a skilled programmer you might be able to do all this, but that doesn't mean it's a good use of your time.
 
-The idea is simple: whenever we run our programs, there are
-tons of actual data values present in our variables.
-By recording examples of these actual values and making it
-easy to see some of these examples while reading the code,
-we can better understand the types of data that appear in practice.
+Here's how Margin Notes answers the question, "what does this method's output look like?":
 
-Here's a demo of how it works on a simple example, a program
-for computing a number in the fibonacci sequence.
-Try clicking on the `fib` method to see some examples of inputs
-and outputs for that method.
-      </vue-markdown>
-      <p class="note">todo: improve UI for method selection</p>
-    </div>
+![](margin-notes-1.gif)
 
-    <demo
-    v-bind:code="presets.fibonacci.code"
-    v-bind:examples="presets.fibonacci.data"
-    v-bind:filename="presets.fibonacci.filename"
-    ></demo>
+Much easier, right? These are examples of actual output that happened in the course of a tic-tac-toe game that I played using this program. Margin Notes takes care of automatically recording all these examples as a program runs, and then displaying them next to the code for easy access.
 
-    <div class="prose">
-      <vue-markdown v-bind:breaks="false" v-bind:html="true">
+This isn't rocket science—you could do this all yourself if you got the program running and inserted a debugger to inspect some state. But let's be honest, you rarely or never do that because it's so cumbersome. Margin Notes simply makes it much easier to access examples of real data that appeared when a program ran.
 
-Those `fib` examples came from recording a single function call `fib(10)`,
-which generated a bunch of recursive calls to the `fib` function
-with different inputs.
+## More examples of examples
 
-### Tic-tac-toe
-
-Here's an example for a more complicated program,
-the tic-tac-toe program from earlier.
-
-The examples shown are from recording a single game.
-See if you can find the `won?` method and answer the
-question of what values `player` can take on.
+Let's take a look at some other examples.
 
       </vue-markdown>
     </div>
