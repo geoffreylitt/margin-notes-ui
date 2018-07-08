@@ -2,59 +2,10 @@
   <div id="essay">
     <p class="note">Work-in-progress, please don't share publicly.</p>
 
-
-
-    <h1>Margin Notes: Reading code with the data</h1>
-    <p>BostonRB Demo</p>
-    <p>by Geoffrey Litt</p>
-
-    <br /><br /><br /><br /><br />
-
-    <h2>Fibonacci</h2>
-
-    <demo
-    v-bind:code="presets.fibonacci.code"
-    v-bind:examples="presets.fibonacci.data"
-    v-bind:filename="presets.fibonacci.filename"
-    ></demo>
-
-    <br /><br /><br /><br /><br />
-
-    <h2>Tic-tac-toe</h2>
-
-    <demo
-    v-bind:code="presets.tictactoe.code"
-    v-bind:examples="presets.tictactoe.data"
-    v-bind:filename="presets.tictactoe.filename"
-    ></demo>
-
-    <br /><br /><br /><br /><br />
-
-    <h2>ruby-money</h2>
-
-    <demo
-    v-bind:code="presets.money.code"
-    v-bind:examples="presets.money.data"
-    v-bind:filename="presets.money.filename"
-    ></demo>
-
-    <br /><br /><br /><br /><br />
-
-
-
-
-    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-    <hr>
-    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-
-
-
-
     <div class="prose">
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
 
-# Margin Notes
-## Read the data with the code
+# Margin Notes: Code With a Side of Data
 
 As developers, we spend a lot of time reading code: in text editors, on Github, etc.
 Often we spend a large portion of our effort imagining the data that could be
@@ -176,6 +127,46 @@ question of what values `player` can take on.
     v-bind:examples="presets.hash.data"
     v-bind:filename="presets.hash.filename"
     ></demo>
+
+
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <hr>
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+
+    <h1>Margin Notes: Reading code with the data</h1>
+    <p>BostonRB demo</p>
+
+    <h2>Fibonacci</h2>
+
+    <demo
+    v-bind:code="presets.fibonacci.code"
+    v-bind:examples="presets.fibonacci.data"
+    v-bind:filename="presets.fibonacci.filename"
+    ></demo>
+
+    <br /><br /><br /><br /><br />
+
+    <h2>Tic-tac-toe</h2>
+
+    <demo
+    v-bind:code="presets.tictactoe.code"
+    v-bind:examples="presets.tictactoe.data"
+    v-bind:filename="presets.tictactoe.filename"
+    ></demo>
+
+    <br /><br /><br /><br /><br />
+
+    <h2>ruby-money</h2>
+
+    <demo
+    v-bind:code="presets.money.code"
+    v-bind:examples="presets.money.data"
+    v-bind:filename="presets.money.filename"
+    ></demo>
+
+    <br /><br /><br /><br /><br />
   </div>
 </template>
 
