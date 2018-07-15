@@ -42,6 +42,7 @@ Even if you're an expert Ruby programmer, there are some mental gymnastics invol
 Margin Notes more efficiently answers the question "what does this method's output look like?" by simply showing you a real example of output from this method that happened during a game:
 
 
+
       </vue-markdown>
     </div>
 
@@ -65,13 +66,7 @@ Margin Notes has two parts, the *recorder* and the *viewer*.
 
 ## The recorder
 
-The recorder is a Ruby library which observes examples of method inputs/outputs as a program runs, and saves serialized examples to a file. It offers a simple interface for wrapping any code with recording logic:
-
-    recorder = ExampleRecorder.new
-    recorder.record do
-      # insert code here
-    end
-    puts recorder.serialized_examples
+The recorder is a Ruby library which observes examples of method inputs/outputs as a program runs, and saves serialized examples to a file. It offers a simple interface for wrapping any code with recording logic.
 
 The recorder is implemented using the `TracePoint` API in Ruby, which offers a callback hook into every method call made in a program. The recorder defines a TracePoint callback that saves data from every call, deduping examples based on exact matching of argument and return values to avoid redundantly showing the same example multiple times. The resulting recording is a JSON file containing data about every method call that happened while running, with serialized versions of arguments and return values.
 
