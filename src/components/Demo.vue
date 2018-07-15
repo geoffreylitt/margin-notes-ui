@@ -106,6 +106,7 @@
 
   .interactive-demo {
     height: 100%;
+    margin-bottom: 10px; // match mystery margin on the video
   }
 
   .code-container {
@@ -128,7 +129,7 @@
   .interact-link {
     display: block;
     font-size: 14px;
-    margin-top: 10px;
+    margin-top: 7px;
 
     &, &:hover, &:active, &:focus {
       color: black;
