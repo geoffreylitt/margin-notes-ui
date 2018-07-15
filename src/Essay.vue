@@ -2,22 +2,27 @@
   <div id="essay">
     <p class="note">Work-in-progress, please don't share publicly.</p>
 
+<h1>Margin Notes: Code with a side of data</h1>
+
     <div class="prose">
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
 
-# Margin Notes: Code With a Side of Data
 
-If you're in the habit of programming computers like I am, you probably spend lot of time reading code. Whether it's reviewing a pull request, skimming the source of a library in Github, or reading our own systems as we create them—reading source code and internalizing the described behavior is an essential part of what programmers do.
+by Geoffrey Litt
 
-Unfortunately, much of the time and effort we spend reading code is **totally wasted**. We usually read code in static environments that only display the text content of the code, which then puts the burden on us readers to play computer in our heads. We pore over sequences of instructions, laboriously simulating what the computer will do, imagining inputs and outputs and data structures being transformed.
+# Introduction
 
-When you really think about it, this makes absolutely no sense! We're millions of times slower and substantially less accurate than computers at running code—that's why we invented computers in the first place. And yet, we routinely make no use of the power of computers in the process of reading code for our own understanding. Maybe this simulation approach made sense in a bygone era where computing power was scarce and programs were precious punch cards to be submitted for overnight evaluation, but today it's no longer necessary for us to expend energy on this pursuit of mental simulation.
+Most programmers today use underpowered tools. In particular, we read and write code in static environments that don't include any visibility into runtime behavior. This imposes an unnecessary and taxing burden on us programmers to simulate the computer in our heads.
 
-As Bret Victor points out in Learnable Programming, it's absolutely possible to design dynamic programming environments that show us what the computer is doing with our code, so we can spend our scarce focus on other things. This essay is about my attempt at one such environment, which I call Margin Notes.
+There have been numerous compelling demonstrations of how incorporating runtime visualizations into code editing can make it easier to program, but most professional programmers still aren't using tools with these capabilities.
 
-Margin Notes shows you real examples of data recorded during previous runs of a program, right next to the code itself. I'll claim that this small change can make it easier to understand code as you read, reduce the need for manual documentation, and integrate easily with the way we already do programming today.
+My goal in this essay is to nudge the expert programming community towards considering these ideas, by demonstrating an approach for incorporating data from runtime into code editing in a way that would be immediately useful to expert professional programmers collaborating on a large codebase.
 
-## Seeing the board
+I hope to balance radicalism and incrementalism—on the one hand, this approach is inspired by the radical rethinking of the relationship between code and runtime, but on the other hand, it's inspired by proven practices that expert programmers have already found useful, and it incorporates considerations of how this tool would be deployed into existing tools for editing code.
+
+The approach is a tool called Margin Notes. It records examples of method arguments and return values while a program is running, and displays those examples next to the code. It's best illustrated with a quick example:
+
+## An example
 
 Here's some Ruby code I wrote as part of a Game class in a tic-tac-toe game. The to_s method returns a string representation of a Game object, for printing out to a terminal. See if you can figure out what its output looks like.
 
@@ -30,19 +35,10 @@ Here's some Ruby code I wrote as part of a Game class in a tic-tac-toe game. The
       end
     end
 
-All things considered, this is a pretty short method, but even for reading something this simple, there are some mental gymnastics involved. The method returns a transformed version of the instance variable `@squares` , so we'll first need to go hunt down all the places where that variable gets set and understand the values it can take on. Once we figure that out, we need to keep track of two layers of mapping over lists and joining them back together, all while remembering the structure of `@squares`. If you're a skilled programmer you might be able to do all this, but that doesn't mean it's a good use of your time.
+Even if you're an expert Ruby programmer, there are some mental gymnastics involved in understanding this code snippet. The method depends on the instance variable `@squares` , so we need to go hunt down the places where that variable gets mutated and understand what it typically contains. Then, we need to keep track of two layers of mapping over lists and joining them back together, all while remembering the structure of `@squares`.
 
-Here's how Margin Notes answers the question, "what does this method's output look like?":
+Margin Notes more efficiently answers the question "what does this method's output look like?" by simply showing you a real example of output from this method that happened during a game:
 
-![](margin-notes-1.gif)
-
-Much easier, right? These are examples of actual output that happened in the course of a tic-tac-toe game that I played using this program. Margin Notes takes care of automatically recording all these examples as a program runs, and then displaying them next to the code for easy access.
-
-This isn't rocket science—you could do this all yourself if you got the program running and inserted a debugger to inspect some state. But let's be honest, you rarely or never do that because it's so cumbersome. Margin Notes simply makes it much easier to access examples of real data that appeared when a program ran.
-
-## More examples of examples
-
-Let's take a look at some other examples.
 
       </vue-markdown>
     </div>
@@ -51,6 +47,8 @@ Let's take a look at some other examples.
     v-bind:code="presets.tictactoe.code"
     v-bind:examples="presets.tictactoe.data"
     v-bind:filename="presets.tictactoe.filename"
+    v-bind:video-path="require('./assets/tic-tac-toe-tos.mp4')"
+    default-line-number="42"
     ></demo>
 
     <h1>Under construction</h1>
@@ -141,13 +139,21 @@ export default {
 @import url('prismjs');
 
 #essay {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   max-width: 1024px;
   margin-left: 100px;
   margin-right: 50px;
 
   .prose {
     max-width: 600px;
+
+    h1 {
+      font-size: 24px;
+    }
+
+    h2 {
+      font-size: 20px;
+    }
   }
 
   .note {
