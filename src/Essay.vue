@@ -234,6 +234,7 @@ export default {
   max-width: 1024px;
   margin-left: 100px;
   margin-right: 50px;
+  line-height: 1.3em;
 
   .prose {
     max-width: 600px;
