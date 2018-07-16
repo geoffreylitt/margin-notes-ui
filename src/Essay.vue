@@ -10,19 +10,21 @@
 
 by Geoffrey Litt
 
-# Introduction
+Most programmers today use underpowered tools. In particular, we read and write code in static environments that don't provide visibility into runtime behavior, which imposes an enormous burden on us humans to simulate the computer in our heads. Although the research community has produced compelling [demonstrations](http://worrydream.com/LearnableProgramming/) of how we can make it easier to understand programs by incorporating runtime visualizations, professional programmers mostly still use traditional tools that treat code as a static artifact.
 
-Most programmers today use underpowered tools. In particular, we read and write code in static environments that don't include any visibility into runtime behavior. This imposes an unnecessary and taxing burden on us programmers to simulate the computer in our heads.
+As someone who programs for a living, and who believes that better tools could help millions of professional programmers, it saddens me that these ideas aren't gaining more traction in the software industry, and I wonder: why not?
 
-There have been numerous compelling demonstrations of how incorporating runtime visualizations into code editing can make it easier to program, but most professional programmers still aren't using tools with these capabilities.
+There are surely many complex reasons, but here are some theories:
 
-My goal in this essay is to nudge the expert programming community towards considering these ideas, by demonstrating an approach for incorporating data from runtime into code editing in a way that would be immediately useful to expert professional programmers collaborating on a large codebase.
+**They aren't designed for experts.** Many of the prominent examples of better tools for visualizing runtime data ([Scratch](https://scratch.mit.edu/), [Learnable Programming](http://worrydream.com/LearnableProgramming/), [Seymour](https://harc.github.io/seymour-live2017/), [Online Python Tutor](http://www.pythontutor.com/)) are designed for the needs of beginners, focusing on small programs and visualizing basic concepts. While some of these projects describe hopes of generalizing to other use cases, experts working on large programs in teams know that their needs are different than those of beginners, and are justifiably skeptical of these ambitions of "scaling up." (From a [Hacker News discussion](https://news.ycombinator.com/item?id=4577133) of Learnable Programming: "As far as learning is concerned, I think this is a wonderful idea... I'm interested, though, in what the ramifications are for advanced, complex programming. I have difficulty imagining this sort of model expanded beyond elementary visualization techniques...")
 
-I hope to balance radicalism and incrementalism—on the one hand, this approach is inspired by the radical rethinking of the relationship between code and runtime, but on the other hand, it's inspired by proven practices that expert programmers have already found useful, and it incorporates considerations of how this tool would be deployed into existing tools for editing code.
+**They aren't solving an already-known pain point.** Because professional programmers have (by necessity) already developed mental strategies for creating and maintaining valuable programs using their existing tools, the problem of "understanding the code's behavior better" is often not seen as an important problem, or perhaps not even a problem at all. So, even when tools like [Light Table](http://lighttable.com/) are targeted at expert programmers, they're mainly used by the minority of programmers who already understand and care about solving the problem statements mentioned on the Light Table homepage, like "showing data values flow through your code."
 
-The approach is a tool called Margin Notes. It records examples of method arguments and return values while a program is running, and displays those examples next to the code. It's best illustrated with a quick example:
+In this essay, I'll present an idea for a system called Margin Notes, which incorporates data from runtime to make it easier to understand large codebases. But not only that—it does so in a way that targets adoption by professional programmers, incorporating my personal experience as a software developer and focusing on solving problems that developers already know they have. In addition to presenting the idea itself, I'll argue that considering the existing pain points of experts in this way could contribute to inventing better tools, which can still be radical improvements over the status quo.
 
-## An example
+## Seeing the tic-tac-toe board
+
+Margin Notes records examples of method arguments and return values while a program is running, and displays those examples next to the code. It's best illustrated with a quick example.
 
 Here's some Ruby code I wrote as part of a Game class in a tic-tac-toe game. The to_s method returns a string representation of a Game object, for printing out to a terminal. See if you can figure out what its output looks like.
 
@@ -37,11 +39,7 @@ class Game
 end
 ```
 
-Even if you're an expert Ruby programmer, there are some mental gymnastics involved in understanding this code snippet. The method depends on the instance variable `@squares` , so we need to go hunt down the places where that variable gets mutated and understand what it typically contains. Then, we need to keep track of two layers of mapping over lists and joining them back together, all while remembering the structure of `@squares`.
-
-Margin Notes more efficiently answers the question "what does this method's output look like?" by simply showing you a real example of output from this method that happened during a game:
-
-
+Even if you're an expert Ruby programmer, it probably took you a few seconds to execute this code in your head. Margin Notes answers the question very simply: by showing you some real examples.
 
       </vue-markdown>
     </div>
@@ -56,53 +54,31 @@ Margin Notes more efficiently answers the question "what does this method's outp
 
     <div class="prose">
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
-Margin Notes takes care of automatically recording all these examples as a program runs, and then displaying them next to the code for easy access in the future.
-
-This is similar to what a programmer could already do by inserting a debugger or a print statement at the right point and running the program. But Margin Notes makes it so much less cumbersome to access these examples that it becomes a natural part of reading the code, rather than a tool of last resort for particularly complex cases.
-
-# The system
-
-Margin Notes has two parts, the *recorder* and the *viewer*.
-
-## The recorder
-
-The recorder is a Ruby library which observes examples of method inputs/outputs as a program runs, and saves serialized examples to a file. It offers a simple interface for wrapping any code with recording logic.
-
-The recorder is implemented using the `TracePoint` API in Ruby, which offers a callback hook into every method call made in a program. The recorder defines a TracePoint callback that saves data from every call, deduping examples based on exact matching of argument and return values to avoid redundantly showing the same example multiple times. The resulting recording is a JSON file containing data about every method call that happened while running, with serialized versions of arguments and return values.
-
-## The viewer
-
-The viewer is a UI that displays a recording alongside the code for the program, so that the programmer can efficiently use the recording to aid her understanding while reading the code. She can click on any method she's reading, browse examples for that method, and view the details of any specific method call.
-
-The prototype viewer shown in this essay is implemented as a web UI using the Codemirror library for the code viewing component, but this is only for convenience of developing and iterating on user interface ideas. Ideally, viewers could be built into all the places that programmers read code, ranging from text editors and IDEs to websites like Github.
-
-## To serialize or not to serialize
-
-Serializing objects rather than saving in-memory interactive versions creates some limitations. It means that a programmer can't interact with objects shown in the viewer UI.
-
-However, serializing also simplifies deploying this as a real system that programmers could use. Recorders could be implemented in many languages, all targeting a standard language-agnostic serialization format. Viewers that read the standard recording format could be built into many different code reading interfaces, ranging from text editors to Github.
+The Margin Notes system automatically records examples as a program runs, saves them, and later displays them alongside the code. Examples can be recorded in any context where the program is running—an automated test suite, a manual demo execution, or actual runs of the program on a production server.
 
 # Reading code with Margin Notes
 
-Margin Notes helps programmers understand what a method does in many specific ways. Some of them reinforce existing best practices or make them more efficient, while others add new functionality that programmers can't access today.
+Margin Notes can help programmers understand what a method does in a variety of ways. Some of them remove the need for manual comments that are often put in programs today. Others add new functionality that programmers have no way of accessing with existing tools.
 
 ## Type annotations
 
-One benefit of statically typed languages is that they provide programmers and their tools with information about the types of every variable while the code is being written and read. This makes it simple for the programmer to answer useful questions like "what operations can I perform on this variable?"
+One benefit of statically typed languages is that they provide programmers and their tools with information about the types of every variable while the code is being written and read. This makes it simple for the programmer to answer questions like "what operations can I perform on this variable?"
 
-In a dynamically typed language like Ruby, it's theoretically impossible to answer such questions statically, but in practice there are many cases where a variable usually takes on a specific type. As a result, large Ruby codebases often contain manual type hints for each method suggesting the expected types of arguments and return values, e.g. using the popular [yardoc](https://yardoc.org/index.html) commenting system. These annotations aren't as complete or rigorous as the formal type definitions in a statically typed language, but they are still valuable—knowing what type is *usually* expected makes it easier to program than not knowing at all.
+In a dynamically typed language like Ruby, it's theoretically impossible to answer such questions statically, but in practice there are many cases where a variable usually takes on a specific type. As a result, large Ruby codebases often contain manual type hints for each method suggesting the expected types of arguments and return values, e.g. using the popular [yardoc](https://yardoc.org/index.html) commenting system. These annotations aren't as complete or rigorous as the formal type definitions in a statically typed language, but based on their prevalence in Ruby codebases, programmers still seem to find them valuable—knowing what type is *typically* expected makes it easier to program than not knowing at all.
 
-Some systems have been developed that cleverly create automatic type annotations by observing the code at runtime, such as [MonkeyType](https://instagram-engineering.com/let-your-code-type-hint-itself-introducing-open-source-monkeytype-a855c7284881), a Python project by Instagram, and [a similar tool](https://medium.com/@arpith/type-checking-ruby-with-minimal-effort-ed1859e552c0) for Ruby by Arpith Siromoney. Margin Notes takes inspiration from those projects, and provides similar information as one of its features.
+Some systems have been developed that cleverly create automatic type annotations by observing the code at runtime, such as [MonkeyType](https://instagram-engineering.com/let-your-code-type-hint-itself-introducing-open-source-monkeytype-a855c7284881), a Python project by Instagram, and [a similar tool](https://medium.com/@arpith/type-checking-ruby-with-minimal-effort-ed1859e552c0) for Ruby by Arpith Siromoney. Margin Notes takes inspiration from those projects and provides similar functionality as one way to use it.
 
 For example, given this method from the tic-tac-toe game, there's no information about what type the `player` argument takes on.
 
-      # returns true if the given player has won the game
-      def won?(player)
-        return true if won_row?(player)
-        return true if won_column?(player)
-        return true if won_diagonal?(player)
-        return false
-      end
+```ruby
+# returns true if the given player has won the game
+def won?(player)
+  return true if won_row?(player)
+  return true if won_column?(player)
+  return true if won_diagonal?(player)
+  return false
+end
+```
 
 In Margin Notes, the programmer can inspect a few example calls, and quickly observe that `player` is an `Integer` and the return value is either `FalseClass` or `TrueClass` (i.e., a boolean value) at least in this recording.
       </vue-markdown>
@@ -170,6 +146,14 @@ Because manually documenting methods takes time and care, there is a limit to ho
 
 The examples that Margin Notes produces can serve as a sort of automated documentation, helping a programmer understand a method with zero manual effort required on the part of those writing the code. As a result, it could scale to situations like open-source projects or private methods in the corners of a codebase.
 
+# The system
+
+The system has two parts, the *recorder* and the *viewer*.
+
+The recorder is a Ruby library which observes examples of method inputs/outputs as a program runs, and saves serialized examples to a file. It offers a simple interface for wrapping any code with recording logic, and is implemented using the `TracePoint` API in Ruby, which offers a callback hook into every method call made in a program. The resulting recording is a JSON file containing data about every method call that happened with serialized versions of arguments and return values.
+
+The viewer is a UI that displays a recording alongside the code for the program, so that the programmer can efficiently use the recording to aid her understanding while reading the code. She can click on any method she's reading, browse examples for that method, and view the details of any specific method call. The prototype viewer shown in this essay is implemented as a web UI using the Codemirror library for the code viewing component, but this is only for convenience of developing and iterating on user interface ideas. Ideally, viewers could be built into all the places that programmers read code, ranging from text editors and IDEs to websites like Github.
+
 # Related work
 
 - Jonathan Edwards Example Centric Programming
@@ -217,8 +201,6 @@ Margin Notes can result in many examples being recorded, and it currently doesn'
 The system could categorize examples by types of inputs and outputs to help a programmer browse the cases that they care about. Programmers could also manually highlight certain examples as useful starting points for understanding a function.
 
 ## Interactivity
-
-# Acknowlegements
       </vue-markdown>
     </div>
   </div>
