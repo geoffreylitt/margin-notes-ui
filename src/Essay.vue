@@ -7,26 +7,11 @@
     <div class="prose">
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
 
-
 by Geoffrey Litt
 
-Most programmers today use underpowered tools. In particular, we read and write code in static environments that don't provide visibility into runtime behavior, which imposes an enormous burden on us humans to simulate the computer in our heads. Although the research community has produced compelling [demonstrations](http://worrydream.com/LearnableProgramming/) of how we can make it easier to understand programs by incorporating runtime visualizations, professional programmers mostly still use traditional tools that treat code as a static artifact.
+As software engineers, we read a lot of code. Whether it's to review a pull request, to debug the internals of a library, or to familiarize ourselves with a codebase, the act of reading and understanding code is just as pervasive as the act of writing it. Unfortunately, reading even well-written code requires substantial time and mental energy, a burden which could be reduced with better tools.
 
-As someone who programs for a living, and who believes that better tools could help millions of professional programmers, it saddens me that these ideas aren't gaining more traction in the software industry, and I wonder: why not?
-
-There are surely many complex reasons, but here are some theories:
-
-**They aren't designed for experts.** Many of the prominent examples of better tools for visualizing runtime data ([Scratch](https://scratch.mit.edu/), [Learnable Programming](http://worrydream.com/LearnableProgramming/), [Seymour](https://harc.github.io/seymour-live2017/), [Online Python Tutor](http://www.pythontutor.com/)) are designed for the needs of beginners, focusing on small programs and visualizing basic concepts. While some of these projects describe hopes of generalizing to other use cases, experts working on large programs in teams know that their needs are different than those of beginners, and are justifiably skeptical of these ambitions of "scaling up." (From a [Hacker News discussion](https://news.ycombinator.com/item?id=4577133) of Learnable Programming: "As far as learning is concerned, I think this is a wonderful idea... I'm interested, though, in what the ramifications are for advanced, complex programming. I have difficulty imagining this sort of model expanded beyond elementary visualization techniques...")
-
-**They aren't solving an already-known pain point.** Because professional programmers have (by necessity) already developed mental strategies for creating and maintaining valuable programs using their existing tools, the problem of "understanding the code's behavior better" is often not seen as an important problem, or perhaps not even a problem at all. So, even when tools like [Light Table](http://lighttable.com/) are targeted at expert programmers, they're mainly used by the minority of programmers who already understand and care about solving the problem statements mentioned on the Light Table homepage, like "showing data values flow through your code."
-
-In this essay, I'll present an idea for a system called Margin Notes, which incorporates data from runtime to make it easier to understand large codebases. But not only that—it does so in a way that targets adoption by professional programmers, incorporating my personal experience as a software developer and focusing on solving problems that developers already know they have. In addition to presenting the idea itself, I'll argue that considering the existing pain points of experts in this way could contribute to inventing better tools, which can still be radical improvements over the status quo.
-
-## Seeing the tic-tac-toe board
-
-Margin Notes records examples of method arguments and return values while a program is running, and displays those examples next to the code. It's best illustrated with a quick example.
-
-Here's some Ruby code I wrote as part of a Game class in a tic-tac-toe game. The to_s method returns a string representation of a Game object, for printing out to a terminal. See if you can figure out what its output looks like.
+Here's a small snippet of straightforward Ruby code. It's part of a tic-tac-toe game, and it's responsible for printing out the board. See if you can figure out what its output looks like by reading the code.
 
 ```ruby
 class Game
@@ -39,7 +24,9 @@ class Game
 end
 ```
 
-Even if you're an expert Ruby programmer, it probably took you a few seconds to execute this code in your head. Margin Notes answers the question very simply: by showing you some real examples.
+How did you do? Even as an experienced Ruby developer, I often have to stare at bits of unfamiliar code like this for a while to understand them. If I just want to quickly grasp what some code does and I'm not probing every detail, this feels like an inefficient approach.
+
+In this essay, I'll introduce Margin Notes, a tool that helps people more *fluently* read code, by showing *example data* next to the program. Here's how you could use Margin Notes to quickly see what that that method does:
 
       </vue-markdown>
     </div>
@@ -54,7 +41,31 @@ Even if you're an expert Ruby programmer, it probably took you a few seconds to 
 
     <div class="prose">
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
-The Margin Notes system automatically records examples as a program runs, saves them, and later displays them alongside the code. Examples can be recorded in any context where the program is running—an automated test suite, a manual demo execution, or actual runs of the program on a production server.
+Margin Notes automatically records examples as a program runs, saves them, and later displays them alongside the code. Examples can be recorded in any context where the program is running—an automated test suite, a manual demo execution, or actual runs of the program on a production server.
+
+Seeing example data can make reading code more fluent by helping the reader:
+
+- see what types variables take on in a dynamically typed language
+- gain intuition for the typical data values in a program
+- inspect the contents of rich and deeply nested data structures in an interactive way
+- see example data from production servers
+- get a form of "documentation" even for undocumented methods
+
+More broadly, I'll discuss how this system serves as an example of how better tools for understanding programs don't need to be designed for teaching beginners, and could also benefit experienced programmers working on professional software teams.
+
+# Background
+
+Most programmers today use underpowered tools. In particular, we read and write code in static environments that don't provide visibility into runtime behavior, which imposes an enormous burden on us humans to simulate the computer in our heads. Although the research community has produced compelling [demonstrations](http://worrydream.com/LearnableProgramming/) of how we can make it easier to understand programs by incorporating runtime visualizations, professional programmers mostly still use traditional tools that treat code as a static artifact.
+
+As someone who programs for a living, and who believes that better tools could help millions of professional programmers, it saddens me that these ideas aren't gaining more traction in the software industry, and I wonder: why not?
+
+There are surely many complex reasons, but here are some theories:
+
+**They aren't designed for experts.** Many of the prominent examples of better tools for visualizing runtime data ([Scratch](https://scratch.mit.edu/), [Learnable Programming](http://worrydream.com/LearnableProgramming/), [Seymour](https://harc.github.io/seymour-live2017/), [Online Python Tutor](http://www.pythontutor.com/)) are designed for the needs of beginners, focusing on small programs and visualizing basic concepts. While some of these projects describe hopes of generalizing to other use cases, experts working on large programs in teams know that their needs are different than those of beginners, and are justifiably skeptical of these ambitions of "scaling up." (From a [Hacker News discussion](https://news.ycombinator.com/item?id=4577133) of Learnable Programming: "As far as learning is concerned, I think this is a wonderful idea... I'm interested, though, in what the ramifications are for advanced, complex programming. I have difficulty imagining this sort of model expanded beyond elementary visualization techniques...")
+
+**They aren't solving an already-known pain point.** Because professional programmers have (by necessity) already developed mental strategies for creating and maintaining valuable programs using their existing tools, the problem of "understanding the code's behavior better" is often not seen as an important problem, or perhaps not even a problem at all. So, even when tools like [Light Table](http://lighttable.com/) are targeted at expert programmers, they're mainly used by the minority of programmers who already understand and care about solving the problem statements mentioned on the Light Table homepage, like "showing data values flow through your code."
+
+Margin Notes incorporates data from runtime to make it easier to understand large codebases in a way that targets adoption by professional programmers, incorporating my personal experience as a software developer and focusing on solving problems that developers already know they have. In addition to presenting the idea itself, I'll argue that considering the existing pain points of experts in this way could contribute to inventing better tools, which can still be radical improvements over the status quo.
 
 # Reading code with Margin Notes
 
@@ -70,15 +81,13 @@ Some systems have been developed that cleverly create automatic type annotations
 
 For example, given this method from the tic-tac-toe game, there's no information about what type the `player` argument takes on.
 
-```ruby
-# returns true if the given player has won the game
-def won?(player)
-  return true if won_row?(player)
-  return true if won_column?(player)
-  return true if won_diagonal?(player)
-  return false
-end
-```
+      # returns true if the given player has won the game
+      def won?(player)
+        return true if won_row?(player)
+        return true if won_column?(player)
+        return true if won_diagonal?(player)
+        return false
+      end
 
 In Margin Notes, the programmer can inspect a few example calls, and quickly observe that `player` is an `Integer` and the return value is either `FalseClass` or `TrueClass` (i.e., a boolean value) at least in this recording.
       </vue-markdown>
