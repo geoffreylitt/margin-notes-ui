@@ -116,7 +116,7 @@ By showing annotations in a sidebar separate from the code, Margin Notes provide
 
 The example code below is from an open-source Ruby library called ruby-money which helps programmers with tasks like currency exchange rates. Many of the arguments to the `initialize` method for the `Money` class can take a few different types, as documented in the comments in the code. There are even examples in the comments, but they exclusively demonstrate usage when the inputs are primitives.
 
-Using examples that Margin Notes recorded while running the test suite for the gem, the programmer finds an example where the `currency` parameter is an instance of the `Money::Currency` class, and can view a representation of that object to get a sense of what it represents—in this case, the US Dollar currency. This particular object is represented here by its internal instance variables, but objects can also specify a serialization format that more faithfully represents the object.
+Using examples that Margin Notes recorded while running the test suite for the gem, the programmer finds an example where the `currency` parameter is an instance of the `Money::Currency` class, and can view a representation of that object to get a sense of what it represents—in this case, the US Dollar currency.
       </vue-markdown>
     </div>
 
@@ -130,7 +130,9 @@ Using examples that Margin Notes recorded while running the test suite for the g
 
     <div class="prose">
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
-Because that these examples were recorded while running the test suite, they tend to contain small and easily understandable data. In a sense, Margin Notes is just making it much easier to access the demo data that programmers already went through the trouble of creating for the purpose of tests—you could even think of Margin Notes as a better UI for tests.
+This particular object is represented here by its internal instance variables, but objects can also specify a serialization format that more faithfully represents the object.
+
+Because these examples were recorded while running the test suite, they tend to contain small and easily understandable data. In a sense, Margin Notes is just making it much easier to access the demo data that programmers already went through the trouble of creating for the purpose of tests—you could even think of Margin Notes as a better UI for tests.
 
 ## Seeing data from production
 
