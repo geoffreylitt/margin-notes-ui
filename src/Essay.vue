@@ -1,9 +1,16 @@
 <template>
   <div id="essay">
-    <p class="note">
-      Work-in-progress, please don't share with others.
-      Thanks for helping me make this better!
-    </p>
+    <div class="prose">
+      <p class="note">Work-in-progress, please don't share with others.</p>
+
+      <p class="note">
+        I'm most interested in your high level feedback on the ideas.
+        What wasn't clear? What wasn't convincing? What's missing?
+      </p>
+      <p class="note">
+        Thank you so much for helping me make this better! <br />
+      </p>
+    </div>
 
 <h1>🔍 Margin Notes:<br />automatic code documentation with recorded examples</h1>
 
@@ -156,6 +163,13 @@ The viewer is a UI that displays recorded examples alongside the code for the pr
 
 # Designing for experts
 
+      </vue-markdown>
+      <figure>
+        <img src="/static/scratch.jpg" />
+        <figcaption>Warning: not intended for industrial use</figcaption>
+      </figure>
+      <vue-markdown v-bind:breaks="false" v-bind:html="true">
+
 Bret Victor's essay [Learnable Programming](http://worrydream.com/LearnableProgramming/) introduced, among others, the principle of "seeing the state"—the idea that seeing the runtime behavior of a program is critical to developing a person's understanding of that program. That essay specifically mentions that this principle isn't intended to only apply to beginners:
 
 > These design principles were presented in the context of systems for learning, but they apply universally. An experienced programmer may not need to know what an "if" statement means, but she does need to understand the runtime behavior of her program, and she needs to understand it while she's programming.
@@ -179,13 +193,17 @@ Of course, seeing examples of data in method calls is just one of many needs tha
 # Future work
 
 This is just the seed of an idea, and there are some directions I think would be interesting to explore further:
-      </vue-markdown>
-      <p class="note">todo note: add screenshots/mockups to better explain these concepts</p>
-      <vue-markdown v-bind:breaks="false" v-bind:html="true">
 
 ## Seeing more data
 
 One of my favorite things about Ruby is the robust support for metaprogramming. But using this power comes with costs; one problem is that if you're dynamically generating method calls, it becomes impossible to use a text search to find all the places where a given method gets called. This is a problem that could be solved by recording additional runtime behavior: if Margin Notes examples contained a callstack showing the context of that specific method call, you could use that to determine where a given method is usually called from.
+
+      </vue-markdown>
+      <figure>
+        <img src="/static/callstack.png" />
+        <figcaption>A callstack added to an example recording</figcaption>
+      </figure>
+      <vue-markdown v-bind:breaks="false" v-bind:html="true">
 
 I think Margin Notes could also become more useful by showing data at different levels of granularity. Method calls are a convenient level because they represent units of functionality that the programmer has decided are conceptually meaningful, but the same techniques could be applied to smaller pieces of a program. For example, a programmer could click on individual variables and see example values from real runs of the program.
 
@@ -250,6 +268,20 @@ export default {
     h2 {
       font-size: 20px;
       margin-top: 30px;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    figure {
+      margin-left: 0;
+      margin-right: 0;
+
+      figcaption {
+        color: #ddd;
+        font-size: 14px;
+      }
     }
   }
 
