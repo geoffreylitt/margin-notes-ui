@@ -77,13 +77,15 @@ There are some systems that cleverly create automatic type annotations by observ
 
 For example, given this method from the tic-tac-toe game, there's no information about what type the `player` argument takes on.
 
-      # returns true if the given player has won the game
-      def won?(player)
-        return true if won_row?(player)
-        return true if won_column?(player)
-        return true if won_diagonal?(player)
-        return false
-      end
+```ruby
+# returns true if the given player has won the game
+def won?(player)
+  return true if won_row?(player)
+  return true if won_column?(player)
+  return true if won_diagonal?(player)
+  return false
+end
+```
 
 In Margin Notes, the programmer can inspect a few example calls, and quickly observe that `player` is an `Integer` and the return value is either `FalseClass` or `TrueClass` (i.e., a boolean value) at least in this recording.
       </vue-markdown>
@@ -113,9 +115,11 @@ While there are formal ways of providing a stronger guarantee to the programmer 
 
 Most existing strategies for annotating code come in the form of adding commented text to source files. This approach is simple and makes it easy to evolve annotations alongside code, but it also limits the space available for annotations, and only allows for annotations that can be expressed with text. Comments are sufficient for expressing simple example cases, like this one from the YARDOC website:
 
-    # @example Reverse a String
-    #   "mystring".reverse #=> "gnirtsym"
-    def reverse; end
+```ruby
+# @example Reverse a String
+#   "mystring".reverse #=> "gnirtsym"
+def reverse; end
+```
 
 But large numbers of examples, or examples containing large data structures, are too cumbersome to write or read as comments.
 
@@ -165,7 +169,7 @@ The viewer is a UI that displays recorded examples alongside the code for the pr
 
       </vue-markdown>
       <figure>
-        <img src="/static/scratch.jpg" />
+        <img src="/example-docs/static/scratch.jpg" />
         <figcaption>Warning: not intended for industrial use</figcaption>
       </figure>
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
@@ -200,7 +204,7 @@ One of my favorite things about Ruby is the robust support for metaprogramming. 
 
       </vue-markdown>
       <figure>
-        <img src="/static/callstack.png" />
+        <img src="/example-docs/static/callstack.png" />
         <figcaption>A callstack added to an example recording</figcaption>
       </figure>
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
