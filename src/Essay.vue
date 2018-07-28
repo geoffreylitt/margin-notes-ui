@@ -5,7 +5,7 @@
       Thanks for helping me make this better!
     </p>
 
-<h1>Margin Notes: reading code with recorded examples</h1>
+<h1>🔍 Margin Notes:<br />automatic code documentation with recorded examples</h1>
 
     <div class="prose">
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
@@ -177,8 +177,9 @@ Of course, seeing examples of data in method calls is just one of many needs tha
 # Future work
 
 This is just the seed of an idea, and there are some directions I think would be interesting to explore further:
-
-<p class="note">todo note: add screenshots/mockups to better explain these concepts</p>
+      </vue-markdown>
+      <p class="note">todo note: add screenshots/mockups to better explain these concepts</p>
+      <vue-markdown v-bind:breaks="false" v-bind:html="true">
 
 ## Seeing more data
 
@@ -241,10 +242,12 @@ export default {
 
     h1 {
       font-size: 24px;
+      margin-top: 40px;
     }
 
     h2 {
       font-size: 20px;
+      margin-top: 30px;
     }
   }
 
