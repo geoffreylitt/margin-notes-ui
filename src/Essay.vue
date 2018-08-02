@@ -12,18 +12,22 @@
       </p>
     </div>
 
-<h1>🔍 Margin Notes:<br />automatic code documentation with recorded examples</h1>
+<h1>📝 Margin Notes:<br />automatic code documentation with recorded examples</h1>
 
     <div class="prose">
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
 
 by Geoffrey Litt
 
-As software engineers, we read a lot of code. We review pull requests; we familiarize ourselves with code before modifying it; we read our own code as we write it.
+Programmers spend a lot of time trying to understand code. Whether it's learning to use a library function or preparing to modify an existing part of a codebase, understanding what existing code does is just as important as writing new code.
 
-Reading code is *hard work.* No matter how "clean" it is, I still find that reading code requires a substantial investment of time and mental energy.
+Everyone hopes for well-written documentation or comments, or perhaps the opportunity to talk to the author, but sometimes the only option is to just read the code. The trouble is, reading code is *hard work;* even reading clean code requires a substantial investment of time and energy.
 
-Take the below snippet of Ruby code. It's a method on a `Game` class in a tic-tac-toe game. See if you can figure out what its output looks like just by reading the code.
+But what if it didn't need to be so hard? Could we build better tools to help us understand code more easily?
+
+## Seeing the board
+
+Take a look at this snippet of Ruby code. It's a method on a `Game` class in a tic-tac-toe game, which prints out the board. See if you can figure out what its output looks like by reading the code:
 
 ```ruby
 class Game
@@ -36,11 +40,33 @@ class Game
 end
 ```
 
-This code isn't doing anything particularly complicated, but I often find myself staring at bits of code like this for a long time to understand them—holding on to imaginary bits of state, simulating manipulations, remembering the structure of variables. If you've programmed a lot, you've probably done this enough that it feels natural, but to me, this activity feels inefficient at best, and maddening at worst. The computer already knows how to execute this code, so why am I spending time simulating the computer in my brain? Why not let the computer do the work?
+This method isn't doing anything too complicated, but even these few simple lines can take some time to puzzle through. One reason code is hard to understand is that it describes *abstract* behavior, applicable to countless situations.  It's usually easier to understand an abstract concept if we can see some *concrete* examples; in this case, adding an example as a comment helps explain the behavior:
 
-## A demo
+```ruby
+class Game
+  # A string representation of the board state.
+  #
+  # Example:
+  #  X | O |
+  # -----------
+  #  X |   | O
+  # -----------
+  #    | X |
+  #
+  def to_s
+    @squares.map do |row|
+      row.map { |square| " " + (square || " ") + " " }.join("|")
+    end.join("\n------------\n")
+  end
+end
+```
 
-In this essay, I'll introduce **Margin Notes**, an early prototype of a tool that helps people read code more *fluently,* by showing example data next to the program. Here's how you could use Margin Notes to quickly see what that tic-tac-toe method does:
+It would be great to have examples like this always available when reading code, but it's a lot of work to manually write them, and even more work to keep them up to date as the code changes. Wouldn't it be nice if we could automatically get examples somehow?
+
+Fortunately, there's already a well of examples just waiting to be tapped. Each time the program runs, it contains some specific data—so why not use that data as an example? In this essay, I'll introduce **Margin Notes**, a prototype tool that records examples in any context where a program actually runs, anywhere from a test suite to a production server. It then displays those examples next to the code in a rich interactive viewer, which overcomes the limitations of including text examples in the code itself.
+
+Here's how you could use Margin Notes to browse examples of that tic-tac-toe method, recorded from an actual game:
+
       </vue-markdown>
     </div>
 
@@ -54,28 +80,14 @@ In this essay, I'll introduce **Margin Notes**, an early prototype of a tool tha
 
     <div class="prose">
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
-Margin Notes saves examples of method calls as a program is actually running, and then later displays the examples alongside the program's code. Examples can be recorded in any context where the program is running—in an automated test suite, a manual execution, or running on a production server. I think seeing examples in this way could help people read code more fluently, by:
 
-- understanding the **typical data values** in a program
-- interactively inspecting the contents of **rich objects** and nested data structures
-- seeing real example data from **production servers**
-- getting a form of **documentation** for every single method in a codebase
+Software engineers get by every day with the tools that we have, but that doesn't mean our tools are adequate. I believe we could create radically better tools to understand our code—moving beyond static, textual descriptions of behavior to incorporate rich information from what the program actually does at runtime. Using code to understand what a program does is like reading a textbook to understand how a bicycle works; it's a lot easier to just watch the gears as it moves. How might we better see the gears in our code?
 
-More broadly, this essay isn't just about Margin Notes. I'm interested in how we can make more tools for professional programmers that radically improve our ability to understand our code. Many innovative programming tools focus on the needs of beginners learning to write small programs, but Margin Notes aims to help software engineers collaborating on large codebases. Later on, I'll discuss my hopes for how this approach could yield better tools for experts.
+Margin Notes is just a small, simple example of a better tool for understanding code. But I hope it prompts you to rethink the relationship between runtime behavior and static code, and to reflect on the inadequacies of the tools we use today to build software.
 
 # Reading code with Margin Notes
 
-Margin Notes provides many tools to help a programmer understand what code does. Some of them replace the value of manual comments often added to programs today, while others add new functionality that programmers have no way of accessing with their existing tools.
-
-## Type annotations
-
-One benefit of statically typed languages is that they provide programmers and their tools with information about the types of every variable while the code is being written and read. This makes it simple for the programmer to answer questions like "what operations can I perform on this variable?"
-
-In a dynamically typed language like Ruby, it's theoretically impossible to answer such questions statically, but in practice there are many cases where a variable usually takes on a specific type. As a result, large Ruby codebases often contain manual type hints for each method suggesting the expected types of arguments and return values, e.g. using the popular [yardoc](https://yardoc.org/index.html) commenting system. These annotations aren't nearly as complete or rigorous as the formal type definitions in a statically typed language, but based on their prevalence in Ruby codebases, programmers clearly still find them valuable—knowing what type is *typically* expected makes it easier to program than not knowing at all.
-
-There are some systems that cleverly create automatic type annotations by observing the code at runtime, like [MonkeyType](https://instagram-engineering.com/let-your-code-type-hint-itself-introducing-open-source-monkeytype-a855c7284881), a Python project by Instagram, and [a similar tool](https://medium.com/@arpith/type-checking-ruby-with-minimal-effort-ed1859e552c0) for Ruby by Arpith Siromoney. Margin Notes takes inspiration from those projects, and similarly to them, can provide information about types.
-
-For example, given this method from the tic-tac-toe game, there's no information about what type the `player` argument takes on.
+Here's another method from the tic-tac-toe program, which determines whether a player  has won the game.
 
 ```ruby
 # returns true if the given player has won the game
@@ -87,7 +99,8 @@ def won?(player)
 end
 ```
 
-In Margin Notes, the programmer can inspect a few example calls, and quickly observe that `player` is an `Integer` and the return value is either `FalseClass` or `TrueClass` (i.e., a boolean value) at least in this recording.
+This is very simple code, but it's missing a crucial piece of information: what is the `player` argument? Perhaps it's some `Player` object, or maybe a player ID or something? We can answer this using Margin Notes, again using examples recorded from a real game:
+
       </vue-markdown>
     </div>
 
@@ -101,33 +114,54 @@ In Margin Notes, the programmer can inspect a few example calls, and quickly obs
 
     <div class="prose">
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
-## Seeing specific values
+This gives us some valuable information! First, we learn that `player` is an integer. Ruby is a dynamically typed language so we can't get this type information from the code, but Margin Notes gives us a way to find the types of arguments.
 
-Margin Notes goes further than just showing types. Often, seeing a few example values can help a programmer make an educated guess about the typical values of a data field, more specifically than they could given a generic type.
+*Margin Notes was inspired by systems that create automatic type annotations by observing code at runtime, including [MonkeyType](https://instagram-engineering.com/let-your-code-type-hint-itself-introducing-open-source-monkeytype-a855c7284881), a Python project by Instagram, and [a similar tool](https://medium.com/@arpith/type-checking-ruby-with-minimal-effort-ed1859e552c0) for Ruby by Arpith Siromoney.
 
-In the above example, type hints could specify that `player` is an integer, but that doesn't constrain the possible values. Seeing that 0 and 1 are the only values called during a game suggests that those are the only integers used in this program, and seeing that only 0 and 1 are used across hundreds of runs of the program on a production server would make a programmer fairly confident that those are the only values ever used in practice.
+Not only do we learn that `player` is an integer; we also learn that it takes on the values 0 and 1, which helps us understand what we can do with the object. There are many cases like this where there's valuable information about an object that isn't captured by its type alone—another example is that knowing an object is a Hash doesn't tell you what the keys are.
 
-As another example, upon seeing a variable `location` with type `String`, a programmer doesn't gain much information about the contents of the variable. But after seeing example values `["Massachusetts", "Alaska"]` , they can make some inferences that these are (at least, sometimes) names of US states.
+It's worth noting that, based on these examples, we can't conclude `player` is always an integer with values 0 or 1. These examples are from a single game, and they don't represent a formal guarantee about all the values that could ever appear in the program. But that's ok, because Margin Notes is about conveying a starting point for understanding, not providing an exhaustive understanding of all possible states. If we had examples from multiple games that all used the values 0 and 1, we could probably assume those are the typical values, and then verify that assumption later if needed.
 
-While there are formal ways of providing a stronger guarantee to the programmer that the data will always take a certain constrained shape, in real complex programs there tend to be implicit constraints on the data that are not formally enforced. Seeing examples is a good way to understand these softer constraints.
+In this simple case, this contextual information could have been included a code comment. But code comments will never be present everywhere we want them to be, and Margin Notes provides a way to quickly view helpful examples in the absence of comments. Next, let's examine an example where Margin Notes goes beyond what we can do today with comments.
 
-## Inspecting complex data structures
+## Understanding a library
 
-Most existing strategies for annotating code come in the form of adding commented text to source files. This approach is simple and makes it easy to evolve annotations alongside code, but it also limits the space available for annotations, and only allows for annotations that can be expressed with text. Comments are sufficient for expressing simple example cases, like this one from the YARDOC website:
+In the tic-tac-toe examples, I just recorded examples while playing a game, but in other cases, it's not as obvious how to run all the parts of a program to gather examples. In these situations, **test suites** can be a useful context for recording, because they generally aim to exercise a lot of the code and contain small, easily understandable bits of example data.
+
+I decided to use Margin Notes to try recording examples while running the test suite for `ruby-money`, a popular Ruby library for dealing with currencies. Here's the constructor method for the `Money` class; as the extensive comment indicates, you can pass lots of different types of objects to the various parameters. The comment even provides some helpful examples, which is so great!
 
 ```ruby
-# @example Reverse a String
-#   "mystring".reverse #=> "gnirtsym"
-def reverse; end
+# Creates a new Money object of value given in the
+  # +fractional unit+ of the given +currency+.
+  #
+  # Alternatively you can use the convenience
+  # methods like {Money.ca_dollar} and {Money.us_dollar}.
+  #
+  # @param [Object] obj Either the fractional value of the money,
+  #   a Money object, or a currency. (If passed a currency as the first
+  #   argument, a Money will be created in that currency with fractional value
+  #   = 0.
+  # @param [Currency, String, Symbol] currency The currency format.
+  # @param [Money::Bank::*] bank The exchange bank to use.
+  #
+  # @return [Money]
+  #
+  # @example
+  #   Money.new(100)        #=> #&lt;Money @fractional=100 @currency="USD"&gt;
+  #   Money.new(100, "USD") #=> #&lt;Money @fractional=100 @currency="USD"&gt;
+  #   Money.new(100, "EUR") #=> #&lt;Money @fractional=100 @currency="EUR"&gt;
+  #
+  def initialize(obj, currency = Money.default_currency, bank = Money.default_bank)
+    @fractional = obj.respond_to?(:fractional) ? obj.fractional : as_d(obj)
+    @currency   = obj.respond_to?(:currency) ? obj.currency : Currency.wrap(currency)
+    @currency ||= Money.default_currency
+    @bank       = obj.respond_to?(:bank) ? obj.bank : bank
+  end
 ```
 
-But large numbers of examples, or examples containing large data structures, are too cumbersome to write or read as comments.
+As helpful as this comment is, it also illustrates the limitations of text for conveying documentation. The comment takes up a ton of space and is difficult to navigate without much visual structure. The examples also don't cover how to pass in rich objects to the method because it's difficult to represent these objects in text.
 
-By showing annotations in a sidebar separate from the code, Margin Notes provides more space for viewing many examples. Each example can contain rich data structures that the programmer can interactively inspect wherever she finds it useful.
-
-The example code below is from an open-source Ruby library called ruby-money which helps programmers with tasks like currency exchange rates. Many of the arguments to the `initialize` method for the `Money` class can take a few different types, as documented in the comments in the code. There are even examples in the comments, but they exclusively demonstrate usage when the inputs are primitives.
-
-Using examples that Margin Notes recorded while running the test suite for the gem, the programmer finds an example where the `currency` parameter is an instance of the `Money::Currency` class, and can view a representation of that object to get a sense of what it represents—in this case, the US Dollar currency.
+Here's how Margin Notes provides examples for this method:
       </vue-markdown>
     </div>
 
@@ -141,29 +175,27 @@ Using examples that Margin Notes recorded while running the test suite for the g
 
     <div class="prose">
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
-This particular object is represented here by its internal instance variables, but objects can also specify a serialization format that more faithfully represents the object.
+In this demo, I found an example where the `currency` parameter is an instance of the `Money::Currency` class, and interactively viewed a representation of that object to get a sense of what it represents—in this case, the US Dollar currency. Here, rich objects are shown by simply displaying the values of their instance variables, but in theory the system could easily allow objects to define how they should be serialized for display in the Margin Notes sidebar.
 
-Because these examples were recorded while running the test suite, they tend to contain small and easily understandable data. In a sense, Margin Notes is just making it much easier to access the demo data that programmers already went through the trouble of creating for the purpose of tests—you could even think of Margin Notes as a better UI for tests.
+As you can see, breaking out of the constraints of text provides more space for information, and allows for freedom in how to display it, including interactivity. The current prototype is a simple sidebar, but these examples could be displayed in many different ways. Viewers for these examples could be built into all the different places where read code, ranging from text editors to code repositories like Github, and the design could be adapted for those different contexts.
 
-## Seeing data from production
+When showing examples from the test suite, Margin Notes isn't doing anything you couldn't do yourself by running the tests and inspecting code in a debugger. But by making it so much easier to see example code anywhere, Margin Notes makes it easier to incorporate that sort of exploration naturally into the act of reading code.
 
-The example recorder can run in any context where the program runs. So, in addition to recording examples during local runs of the program or while running the test suite, it's possible to record examples while a program is running on a production server, with real input being provided by users.
+      </vue-markdown>
+      <p class="note">todo: add a couple more examples</p>
+      <vue-markdown v-bind:breaks="false" v-bind:html="true">
 
-This can provide a programmer with an intuitive sense of the real data that flows through a program. For example, if a programmer is wondering whether a particular algorithm will be too slow to operate on a certain collection, she can observe that users typically have around a few hundred friends in their friends array, so the algorithm will probably perform okay even though it wouldn't perform well on tens of thousands of friends.
+# Future work
 
-## Greater documentation coverage
+This is just an early prototype, and I imagine some directions for developing this further:
 
-Because manually documenting methods takes time and care, there is a limit to how much of a codebase can be documented in detail. Open-source codebases where volunteers are donating their time often don't have the time to enforce strict standards around documenting methods. Even in a codebase where public APIs are well-documented, smaller private methods often have little or no documentation.
+**Organizing examples:** Margin Notes can record many examples, and it currently doesn't do anything to organize large numbers of examples to help a programmer find the most useful ones. As a start, the system could categorize examples by the types of inputs and outputs, to help a programmer browse the cases that they care about. Programmers could also manually highlight certain examples as useful starting points for understanding a function.
 
-The examples that Margin Notes produces can serve as a sort of automated documentation, helping a programmer understand a method with zero manual effort required on the part of those writing the code. As a result, it could scale to situations like open-source projects or private methods in the corners of a codebase.
+**Showing a whole execution:** Another way the system could be more useful would be to tie individual examples together, answering questions like "what call came next after this one?" This work could draw inspiration from other projects that have focused on understanding a single execution over time, like [record-and-replay debuggers](https://rr-project.org/), as well as projects like [Learnable Programming](http://worrydream.com/LearnableProgramming/) and [Seymour](https://harc.github.io/seymour-live2017/).
 
-# How it works
+**More detail:** I think Margin Notes could also become more useful by showing data at different levels of granularity. Method calls are a convenient level because they represent units of functionality that the programmer has decided are conceptually meaningful, but the same techniques could be applied to smaller pieces of a program. For example, a programmer could click on individual variables and see example values from real runs of the program.
 
-The main point of this essay is the concept, but I'll briefly describe the prototype implementation. Margin Notes has two main parts, the *recorder* and the *viewer*.
-
-The recorder is a [Ruby library](https://github.com/geoffreylitt/example-recorder) which observes examples of method inputs/outputs as a program runs using the `TracePoint` API in Ruby, and saves those examples to a file. The resulting recording is a JSON file containing data about every method call, with serialized versions of arguments and return values. Recorders could be built in other languages, although it might require substantially more effort in certain languages.
-
-The viewer is a UI that displays recorded examples alongside the code for the program, so that the programmer can efficiently use them to aid her understanding while reading the code. The prototype viewer is a [simple web UI](https://github.com/geoffreylitt/example-docs) implemented using the Codemirror library, but I envision viewers being built into all the places that programmers read code, ranging from text editors and IDEs to code repositories like Github.
+**Interactivity:** Perhaps the biggest gap I see in this prototype is the lack of true interactivity. After viewing recorded examples, a natural next step towards deeper understanding is to try modifying those examples and re-running them to see the new result. In many programs today, getting to a point where you can probe the behavior of a method like requires a lot of setup work. What if it were as easy as clicking "edit" on an example in Margin Notes? Glen Chiacchieri's [Human-Readable Interactive Representation of a Code Library](http://glench.github.io/fuzzyset.js/ui/) and the [documentation for the Paper.js](http://paperjs.org/reference/path/#path-line-from-to) offer two superb examples of how an interactive environment can help people understand programs better.
 
 # Designing for experts
 
@@ -174,60 +206,27 @@ The viewer is a UI that displays recorded examples alongside the code for the pr
       </figure>
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
 
-Bret Victor's essay [Learnable Programming](http://worrydream.com/LearnableProgramming/) introduced, among others, the principle of "seeing the state"—the idea that seeing the runtime behavior of a program is critical to developing a person's understanding of that program. That essay specifically mentions that this principle isn't intended to only apply to beginners:
+Bret Victor's essay [Learnable Programming](http://worrydream.com/LearnableProgramming/) introduced the principle of "seeing the state"—the idea that seeing the runtime behavior of a program is critical to developing a person's understanding of that program. That essay specifically mentions that this principle isn't intended to only apply to beginners:
 
 > These design principles were presented in the context of systems for learning, but they apply universally. An experienced programmer may not need to know what an "if" statement means, but she does need to understand the runtime behavior of her program, and she needs to understand it while she's programming.
 
-Despite this disclaimer, many of the most prominent examples of visualizing runtime data maintain a focus on the needs of beginners. [Scratch](https://scratch.mit.edu/)—one of the most prominent non-text-based programming environments today—is explicitly designed for younger children. [Online Python Tutor](http://www.pythontutor.com/) visualizes execution line-by-line, helping beginners understand the basics of how code works. [Seymour](https://harc.github.io/seymour-live2017/) further develops some of the ideas of Learnable Programming, with an emphasis on teaching the basics.
+Despite this disclaimer, many of the most prominent examples of visualizing runtime data maintain a focus on the needs of beginners. [Scratch](https://scratch.mit.edu/)—one of the most prominent non-text-based programming environments today—is designed for younger children, to the point that even [older children don't think it's for them](https://medium.freecodecamp.org/scratch-has-a-marketing-problem-f84626bd18ef), much less professionals. [Online Python Tutor](http://www.pythontutor.com/) visualizes execution line-by-line, helping beginners understand the basics of how code works. [Seymour](https://harc.github.io/seymour-live2017/) further develops some of the ideas of Learnable Programming, with a specific emphasis on teaching in the classroom.
 
-Perhaps partially as a result of this leaning, I've observed a perception among expert programmers that richer visualizations of program behavior are meant for beginners, not for them. (From a [Hacker News discussion](https://news.ycombinator.com/item?id=4577133) of Learnable Programming: "As far as learning is concerned, I think this is a wonderful idea... I'm interested, though, in what the ramifications are for advanced, complex programming. I have difficulty imagining this sort of model expanded beyond elementary visualization techniques...") It doesn't help that interactive debuggers, the state-of-the-art tools for visualizing runtime data, apparently provide little enough utility that [many expert programmers forego them entirely](https://lemire.me/blog/2016/06/21/i-do-not-use-a-debugger/).
+Perhaps partially as a result of this general leaning, many expert programmers think that richer visualizations of program behavior are meant for beginners, not for them. And it doesn't help that interactive debuggers, the state-of-the-art tools professionals have for visualizing runtime data, provide little enough utility that [many expert programmers forego them entirely](https://lemire.me/blog/2016/06/21/i-do-not-use-a-debugger/).
 
 ## What do experts need?
 
 So, in the interest of progress, and of changing perceptions, I think we would benefit from seeing more ideas for how runtime visualization can help expert programmers. This necessitates asking: if an experienced programmer doesn't know need to know what an "if" statement means, what *does* she need to know about what her program is doing, and for what purpose?
 
-Reflecting on my personal experience, I discovered some of my own answers to that question. As I'm reading code, I often want to quickly understand what the arguments to a method look like, so I can manipulate them inside the method. I also often want to understand what the return value of a method looks like, so I can use its results after calling it. I find that these needs are especially present when collaborating on a large codebase, since I'm usually working with unfamiliar code that I didn't originally write.
+I know that as I'm reading code, I often want to quickly understand the arguments and return value for a method. These needs are especially present when collaborating on a large codebase, since I'm often working with unfamiliar code that I didn't originally write.
 
-One thing that excites me about these particular needs is that programmers have deemed them important enough to address with our existing tools; code comments with types and examples are one way to solve these needs within the constraints of text. Not only does this suggest to me that these use cases are real and important, it also gives me hope that there's an easy way to communicate the value of a better solution to expert programmers: "You know how you manually write documentation comments with examples, and find them useful when reading code? What if the computer saved you some of that time, and generated better results?"
+One thing that excites me about these needs is that programmers have deemed them important enough to address with our existing tools; code comments with types and examples are an attempt to solve these needs within the constraints of text. Not only does this suggest to me that these use cases are real and important, it also gives me hope that there's an easy way to communicate the value of a better solution to expert programmers. "You know how you manually write documentation comments with examples, and find them useful when reading code? What if the computer did some of that work for you, and generated better results?"
 
-This goal of communication might seem secondary, but I think it's paramount for generating excitement among a wide range of programmers. The [Light Table](http://lighttable.com/) IDE, which I see as the most successful attempt so far at shipping runtime visualization in a real product, currently lists as the first full sentence on the homepage: "Connects you to your creation with instant feedback and showing data values flow through your code." This pitch was able to attract people who found that idea compelling, but many programmers I've talked to don't see "showing data values flow through your code" as a familiar need. Margin Notes isn't solely a replacement for documentation comments, but maybe framing it in those terms could help convey the value.
+I think communicating value like this is important for getting programmers excited. The [Light Table](http://lighttable.com/) IDE, which I see as the most successful attempt so far at shipping runtime visualization in a real product, currently lists as the first full sentence on the homepage: "Connects you to your creation with instant feedback and showing data values flow through your code." This pitch was able to attract people who found that idea compelling, but many programmers I've talked to don't see "showing data values flow through your code" as a familiar need. Margin Notes isn't solely a replacement for documentation comments, but maybe framing it in those terms could help explain why it's a useful tool.
 
-Of course, seeing examples of data in method calls is just one of many needs that professional programmers face. I would love to see more projects that solve for other things experts truly need to understand about how their programs are running.
-
-# Future work
-
-This is just the seed of an idea, and there are some directions I think would be interesting to explore further:
-
-## Seeing more data
-
-One of my favorite things about Ruby is the robust support for metaprogramming. But using this power comes with costs; one problem is that if you're dynamically generating method calls, it becomes impossible to use a text search to find all the places where a given method gets called. This is a problem that could be solved by recording additional runtime behavior: if Margin Notes examples contained a callstack showing the context of that specific method call, you could use that to determine where a given method is usually called from.
-
-      </vue-markdown>
-      <figure>
-        <img src="/example-docs/static/callstack.png" />
-        <figcaption>A callstack added to an example recording</figcaption>
-      </figure>
-      <vue-markdown v-bind:breaks="false" v-bind:html="true">
-
-I think Margin Notes could also become more useful by showing data at different levels of granularity. Method calls are a convenient level because they represent units of functionality that the programmer has decided are conceptually meaningful, but the same techniques could be applied to smaller pieces of a program. For example, a programmer could click on individual variables and see example values from real runs of the program.
-
-## Organizing examples
-
-Margin Notes can record many examples, and it currently doesn't do anything to organize large numbers of examples to help a programmer find the most useful ones. As a start, the system could categorize examples by the types of inputs and outputs to help a programmer browse the cases that they care about. Programmers could also manually highlight certain examples as useful starting points for understanding a function.
-
-Another way the system could be more useful would be to tie individual examples together, answering questions like "what call came next after this one?" This work could draw inspiration from other projects that have focused on understanding a single execution over time, like [record-and-replay debuggers](https://rr-project.org/), as well as projects like [Learnable Programming](http://worrydream.com/LearnableProgramming/) and [Seymour](https://harc.github.io/seymour-live2017/).
-
-## Interactivity
-
-After viewing recorded examples, a natural next step towards deeper understanding is to try modifying, combining, or generating new examples. In many programs today, getting to a point where you can probe the behavior of a method requires a lot of setup work. What if it were as easy as clicking "edit" on an example in Margin Notes? Glen Chiacchieri's [Human-Readable Interactive Representation of a Code Library](http://glench.github.io/fuzzyset.js/ui/) suggests one idea of how this sort of easily accessible interactive environment could help people understand programs better.
-
-## Testing
-
-I've used this prototype and have found it useful when reading through the code for some libraries, but it hasn't had much testing beyond that. I'd like to make the tool more full-featured and robust so I can get some programmers to try it out—you would be justified in being skeptical of all of the claims I've made in this essay until more people have used this thing!
-
-If you're interested in using the tool or giving feedback, please [get in touch](mailto:gklitt@gmail.com), or [follow me on Twitter](https://twitter.com/geoffreylitt) for updates on the project.
-      </vue-markdown>
+Of course, seeing examples of data in method calls is just one of so many needs that professional programmers have. We still need better ways to see how big pieces of our systems fit together, views of how data flows between chunks of code, tools to help us develop an intuitive grasp of what our systems are doing. I look forward to a day where our tools are powerful enough that understanding a program feels as simple as watching the gears turn on a bicycle.      </vue-markdown>
     </div>
+    <footer />
   </div>
 </template>
 
@@ -289,9 +288,17 @@ export default {
     }
   }
 
+  pre {
+    width: 1000px;
+  }
+
   .note {
     color: red;
     font-style: italic;
+  }
+
+  footer {
+    height: 100px;
   }
 }
 
