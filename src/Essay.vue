@@ -257,7 +257,7 @@ export default {
 #essay {
   font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   max-width: 1024px;
-  margin-left: 100px;
+  margin-left: 120px;
   margin-right: 50px;
 
   .prose {
@@ -292,6 +292,13 @@ export default {
   .note {
     color: red;
     font-style: italic;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  #essay{
+    margin-left: 10px;
+    margin-right: 10px;
   }
 }
 </style>
