@@ -201,7 +201,7 @@ This is just an early prototype, and I imagine some directions for developing th
 
       </vue-markdown>
       <figure>
-        <img src="/example-docs/static/scratch.jpg" />
+        <img src="/margin-notes/static/scratch.jpg" />
         <figcaption>Warning: not intended for industrial use</figcaption>
       </figure>
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
