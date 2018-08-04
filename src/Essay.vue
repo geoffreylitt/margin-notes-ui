@@ -260,8 +260,10 @@ export default {
   margin-right: 50px;
 
   .prose {
+    font-family: 'Merriweather', serif;
+    font-weight: 300;
     max-width: 600px;
-    line-height: 1.3em;
+    line-height: 1.5em;
 
     h1 {
       font-size: 24px;
