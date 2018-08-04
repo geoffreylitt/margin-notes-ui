@@ -79,7 +79,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-  .examples-inner-container {
+  .examples-container {
     padding: 20px;
     border-top: none;
     font-family: "Helvetica Neue", sans serif;
@@ -107,7 +107,7 @@
   /* individual examples */
 
   .example {
-    border-bottom: solid thin #ddd;
+    border-bottom: solid thin rgb(247, 247, 247);
   }
 
   /* individual inactive examples */

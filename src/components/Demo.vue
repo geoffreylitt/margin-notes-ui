@@ -51,7 +51,8 @@
       renderCodeEditor: function () {
         this.codeEditor = CodeMirror(this.$el.querySelector(".code-container"), {
             value: this.code,
-            mode:  "ruby"
+            mode:  "ruby",
+            readOnly: true
           })
 
           let lineNumbers = _.uniq(
@@ -67,7 +68,7 @@
           this.codeEditor.scrollIntoView({line: this.defaultLineNumber, ch: 0})
 
           this.codeEditor.on("cursorActivity", cm => {
-            var cursor = cm.getCursor()
+            let cursor = cm.getCursor()
             this.lineNumber = cursor.line
           }
         )
@@ -129,7 +130,6 @@
     height: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
-    background-color: #f9f9f9;
   }
 
   .interact-link {
