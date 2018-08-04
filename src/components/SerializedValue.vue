@@ -9,7 +9,7 @@
         </vue-json-pretty>
       </template>
       <template v-else>
-        <span style="white-space: pre;">{{ serializedValue }}</span>
+        <span style="white-space: pre;" v-bind:class="primitiveClass">{{ serializedValue }}</span>
       </template>
       </span>
     </div>
@@ -26,11 +26,21 @@
     props: ['value'],
     components: { VueJsonPretty },
     computed: {
-      serializedValue () {
-        if (this.value.value === null) {
-          return "nil";
+      primitiveClass () {
+        let value = this.value.value
+
+        return {
+          "primitive-string": typeof value == "string",
+          "primitive-boolean": typeof value == "boolean",
+          "primitive-number": typeof value == "number",
+          "primitive-null": value == null
+        }
+      },
+      serializedValue() {
+        if (this.value.value == null) {
+          return "null"
         } else {
-          return this.value.value;
+          return this.value.value
         }
       },
       showRichObject () {
@@ -49,18 +59,28 @@
   }
 
   .class-name {
-    font-size: 12px;
-    color: #cacaca;
-    margin: 2px 0 0 5px;
+    font-size: 13px;
+    color: #aaaaaa;
+    margin: 1px 0 0 5px;
     vertical-align: top;
   }
 
   .serialized-value {
     max-width: 340px;
-    font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
-  }
+    font-family: Monaco,Menlo,Consolas,Bitstream Vera Sans Mono, monospace;
+    font-size: 14px;
 
-  .vue-object-view.rich-object {
-    font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+    .primitive-string { color: #13ce66;}
+    .primitive-number { color: #1d8ce0; }
+    .primitive-boolean { color: #9e00ce; }
+    .primitive-null { color: #ff4949; }
+  }
+</style>
+
+<style lang="scss">
+  // Styles not scoped to this component
+
+  .vjs__tree .vjs__value__boolean {
+    color: #9e00ce !important;
   }
 </style>

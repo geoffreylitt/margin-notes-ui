@@ -135,17 +135,14 @@
     display: inline-block;
     width: 90px;
     font-size: 14px;
-    font-weight: bold;
     color: #999;
     vertical-align: top;
+    text-align: right;
+    font-style: italic;
 
     /* truncate long names */
     text-overflow: ellipsis;
     overflow-x: hidden;
-
-    &.return-label {
-      font-style: italic;
-    }
   }
 
   .data-contents {
