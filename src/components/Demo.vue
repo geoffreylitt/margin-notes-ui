@@ -40,17 +40,43 @@
           method_name: this.examples[0].method_name
         },
         lineNumber: 1,
-        interactive: false
+        interactive: true
       }
     },
     methods: {
       toggleInteractive: function (e) {
         e.preventDefault()
         this.interactive = !this.interactive
+      },
+      renderCodeEditor: function () {
+        this.codeEditor = CodeMirror(this.$el.querySelector(".code-container"), {
+            value: this.code,
+            mode:  "ruby"
+          })
+
+          let lineNumbers = _.uniq(
+            this.examples.
+              filter(e => e.method_location[0] == this.filename).
+              map(e => e.method_location[1])
+            )
+
+          lineNumbers.forEach(lineNumber => {
+            this.codeEditor.addLineClass(lineNumber, 'wrap', 'highlighted-line')
+          })
+
+          this.codeEditor.scrollIntoView({line: this.defaultLineNumber, ch: 0})
+
+          this.codeEditor.on("cursorActivity", cm => {
+            var cursor = cm.getCursor()
+            this.lineNumber = cursor.line
+          }
+        )
       }
     },
     mounted () {
-
+      if(this.interactive) {
+        this.renderCodeEditor();
+      }
     },
     watch: {
       code: function(newCode, oldCode) {
@@ -59,27 +85,7 @@
       interactive: function(newInteractive, oldInteractive) {
         if(newInteractive) {
           Vue.nextTick(() => {
-            this.codeEditor = CodeMirror(this.$el.querySelector(".code-container"), {
-              value: this.code,
-              mode:  "ruby"
-            })
-
-            let lineNumbers = _.uniq(
-              this.examples.
-                filter(e => e.method_location[0] == this.filename).
-                map(e => e.method_location[1])
-              )
-
-            lineNumbers.forEach(lineNumber => {
-              this.codeEditor.addLineClass(lineNumber, 'wrap', 'highlighted-line')
-            })
-
-            this.codeEditor.scrollIntoView({line: this.defaultLineNumber, ch: 0})
-
-            this.codeEditor.on("cursorActivity", cm => {
-              var cursor = cm.getCursor()
-              this.lineNumber = cursor.line
-            })
+            this.renderCodeEditor();
           })
         }
       }
