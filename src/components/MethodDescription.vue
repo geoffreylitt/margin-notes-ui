@@ -13,9 +13,12 @@
         <!-- <p class="method-description">Todo: fill in description</p> -->
       </div>
       <!-- todo: use a better unique key here-->
-      <div v-for="example in examples" :key="example.method">
+      <div v-for="(example, index) in examples" :key="example.method">
         <div v-if="activeExample == example" class="example active-example">
           <div class="method-example-body">
+            <div class="section">
+              example {{index + 1}}
+            </div>
             <div class="section inputs">
               <!-- todo: use a better unique key here-->
               <div v-for="(argument, name) in example.arguments" :key="argument.value">
@@ -41,11 +44,7 @@
         </div>
         <div v-else class="example inactive-example">
           <a class="light-link" href="javascript:void(0);" v-on:click="activeExample = example">
-            <!-- todo: rather than printing raw strings, make a condensed view of serialized_value -->
-            <template v-for="(argument, name) in example.arguments">
-              {{ name }} = {{String(argument.value) | truncate(30)}}
-            </template>
-            return = {{ String(example.return_value.value) | truncate(30) }}
+            example {{index + 1}}
           </a>
         </div>
       </div>
