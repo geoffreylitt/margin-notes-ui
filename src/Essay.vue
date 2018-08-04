@@ -265,6 +265,10 @@ export default {
     max-width: 600px;
     line-height: 1.5em;
 
+    h1, h2, h3, h4, h5, h6 {
+      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
     h1 {
       font-size: 24px;
       margin-top: 40px;

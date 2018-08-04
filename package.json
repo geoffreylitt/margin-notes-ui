@@ -15,6 +15,7 @@
     "prismjs": "^1.15.0",
     "vue": "^2.5.2",
     "vue-json-pretty": "^1.4.1-beta.1",
+    "vue-live-edit": "^1.0.3",
     "vue-markdown": "^2.2.4",
     "vue-truncate-filter": "^1.1.7"
   },

@@ -6003,6 +6003,10 @@ vue-json-pretty@^1.4.1-beta.1:
   version "1.4.1-beta.1"
   resolved "https://registry.yarnpkg.com/vue-json-pretty/-/vue-json-pretty-1.4.1-beta.1.tgz#600cc4d3c42d700083266860f16b25dbcaa2547f"
 
+vue-live-edit@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/vue-live-edit/-/vue-live-edit-1.0.3.tgz#b184a118ca275b95ac9c81f4310d374dce377e2b"
+
 vue-loader@^13.3.0:
   version "13.7.2"
   resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-13.7.2.tgz#f633f6393e905ffd730400f03c99353618c08fe8"

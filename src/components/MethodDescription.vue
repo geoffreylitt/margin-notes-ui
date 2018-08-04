@@ -17,13 +17,14 @@
         <div v-if="activeExample == example" class="example active-example">
           <div class="method-example-body">
             <div class="section example-name">
-              <h3 class="example-name">example {{index + 1}}</h3>
+              <EditableText :content="example.name" @update="example.name = $event"></EditableText>
+              <!-- <h3 class="example-name">example {{index + 1}}</h3> -->
             </div>
             <div class="section inputs">
               <!-- todo: use a better unique key here-->
               <div v-for="(argument, name) in example.arguments" :key="argument.value">
                 <div class="data-example">
-                  <div class="data-label" v-bind:title="name">{{ name }}</div>
+                  <div class="data-label" v-bind:title="name">{{ name }}:</div>
                   <div class="data-contents">
                     <serialized-value v-bind:value="argument"></serialized-value>
                   </div>
@@ -32,7 +33,7 @@
             </div>
             <div class="section return">
               <div class="data-example">
-                <div class="data-label return-label">return</div>
+                <div class="data-label return-label">return:</div>
                 <div class="data-contents">
                   <serialized-value v-bind:value="example.return_value"></serialized-value>
                 </div>
@@ -42,7 +43,7 @@
         </div>
         <div v-else class="example inactive-example">
           <a class="light-link" href="javascript:void(0);" v-on:click="activeExample = example">
-            example {{index + 1}}
+            {{ example.name || "example" + (index + 1) }}
           </a>
         </div>
       </div>
@@ -52,10 +53,11 @@
 
 <script>
   import SerializedValue from './SerializedValue'
+  import EditableText from './EditableText'
 
   export default {
     props: ['examples'],
-    components: { SerializedValue },
+    components: { SerializedValue, EditableText },
     data: function () {
       return {
         activeExample: this.examples[0]
@@ -64,6 +66,12 @@
     watch: {
       examples: function(newExamples, oldExamples) {
         this.activeExample = newExamples[0]
+
+        this.examples.forEach((example, index) => {
+          if (example.name == null) {
+            example.name = "example " + (index + 1)
+          }
+        })
       }
     }
   }
@@ -99,7 +107,6 @@
   /* individual examples */
 
   .example {
-    padding: 3px 0;
     border-bottom: solid thin #ddd;
   }
 
@@ -139,6 +146,7 @@
     vertical-align: top;
     text-align: right;
     font-style: italic;
+    margin-top: 1px;
 
     /* truncate long names */
     text-overflow: ellipsis;
@@ -155,16 +163,21 @@
   a.light-link:active,
   a.light-link:visited,
   a.light-link:focus {
+    display: block;
     text-decoration: none;
     color: #ccc;
+    width: 100%;
+    margin: 0;
+    padding: 7px 0;
   }
 
   a.light-link:hover {
-    color: #bbb;
+    color: #aaa;
+    background-color: rgb(241, 241, 241);
   }
 
   a.examples-list-link.active {
     font-weight: bold;
-    color: #bbb;
+    color: #aaa;
   }
 </style>

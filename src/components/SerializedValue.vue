@@ -60,8 +60,8 @@
 
   .class-name {
     font-size: 13px;
-    color: #aaaaaa;
-    margin: 1px 0 0 5px;
+    color: #b9b9b9;
+    margin: 2px 0 0 5px;
     vertical-align: top;
   }
 
