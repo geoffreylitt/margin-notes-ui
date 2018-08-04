@@ -3,7 +3,10 @@
     <div class="serialized-value">
       <span>
       <template v-if="showRichObject">
-        <VueObjectView v-model="value.value" class="rich-object" />
+        <vue-json-pretty
+          v-bind:data="value.value"
+          deep=0>
+        </vue-json-pretty>
       </template>
       <template v-else>
         <span style="white-space: pre;">{{ serializedValue }}</span>
@@ -17,11 +20,11 @@
 </template>
 
 <script>
-  import VueObjectView from 'vue-object-view'
+  import VueJsonPretty from 'vue-json-pretty'
 
   export default {
     props: ['value'],
-    components: { VueObjectView },
+    components: { VueJsonPretty },
     computed: {
       serializedValue () {
         if (this.value.value === null) {

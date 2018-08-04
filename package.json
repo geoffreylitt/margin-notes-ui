@@ -14,8 +14,8 @@
     "lodash": "^4.17.10",
     "prismjs": "^1.15.0",
     "vue": "^2.5.2",
+    "vue-json-pretty": "^1.4.1-beta.1",
     "vue-markdown": "^2.2.4",
-    "vue-object-view": "^0.4.2",
     "vue-truncate-filter": "^1.1.7"
   },
   "devDependencies": {

@@ -5999,6 +5999,10 @@ vue-hot-reload-api@^2.2.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.0.tgz#97976142405d13d8efae154749e88c4e358cf926"
 
+vue-json-pretty@^1.4.1-beta.1:
+  version "1.4.1-beta.1"
+  resolved "https://registry.yarnpkg.com/vue-json-pretty/-/vue-json-pretty-1.4.1-beta.1.tgz#600cc4d3c42d700083266860f16b25dbcaa2547f"
+
 vue-loader@^13.3.0:
   version "13.7.2"
   resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-13.7.2.tgz#f633f6393e905ffd730400f03c99353618c08fe8"
@@ -6034,10 +6038,6 @@ vue-markdown@^2.2.4:
     markdown-it-sup "^1.0.0"
     markdown-it-task-lists "^2.0.1"
     markdown-it-toc-and-anchor "^4.1.2"
-
-vue-object-view@^0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/vue-object-view/-/vue-object-view-0.4.2.tgz#2db4b53c29e57481a6cdd7ac3be3f239512cf84f"
 
 vue-style-loader@^3.0.0, vue-style-loader@^3.0.1:
   version "3.1.2"

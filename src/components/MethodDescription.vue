@@ -16,8 +16,8 @@
       <div v-for="(example, index) in examples" :key="example.method">
         <div v-if="activeExample == example" class="example active-example">
           <div class="method-example-body">
-            <div class="section">
-              example {{index + 1}}
+            <div class="section example-name">
+              <h3 class="example-name">example {{index + 1}}</h3>
             </div>
             <div class="section inputs">
               <!-- todo: use a better unique key here-->
@@ -30,16 +30,14 @@
                 </div>
               </div>
             </div>
-            <div class="section return"></div>
+            <div class="section return">
               <div class="data-example">
                 <div class="data-label return-label">return</div>
                 <div class="data-contents">
                   <serialized-value v-bind:value="example.return_value"></serialized-value>
                 </div>
               </div>
-            <!-- todo
-              <div class="section callstack"></div>
-            -->
+            </div>
           </div>
         </div>
         <div v-else class="example inactive-example">
@@ -87,6 +85,13 @@
     font-size: 24px;
   }
 
+  h3.example-name {
+    color: #999;
+    font-size: 16px;
+    margin: 0;
+    font-weight: normal;
+  }
+
   .method-header {
     margin-bottom: 20px;
   }
@@ -115,6 +120,10 @@
 
     &.inputs {
       margin-bottom: 15px;
+    }
+
+    &.example-name {
+      margin-bottom: 20px;
     }
   }
 
