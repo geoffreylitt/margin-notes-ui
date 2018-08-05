@@ -172,7 +172,7 @@
   }
 
   a.light-link:hover {
-    color: #aaa;
+    color: rgb(83, 83, 83);
     background-color: rgb(241, 241, 241);
   }
 
