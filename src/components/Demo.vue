@@ -40,7 +40,7 @@
           method_name: this.examples[0].method_name
         },
         lineNumber: 1,
-        interactive: true
+        interactive: false
       }
     },
     methods: {
