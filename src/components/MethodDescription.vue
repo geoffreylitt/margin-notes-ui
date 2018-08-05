@@ -13,7 +13,7 @@
         <!-- <p class="method-description">Todo: fill in description</p> -->
       </div>
       <!-- todo: use a better unique key here-->
-      <div v-for="(example, index) in examples" :key="example.name">
+      <div v-for="(example, index) in sortedExamples" :key="example.name">
         <div v-if="activeExample == example" class="example active-example">
           <div class="method-example-body">
             <div class="section example-name">
@@ -67,11 +67,14 @@
       examples: function(newExamples, oldExamples) {
         this.activeExample = newExamples[0]
 
-        this.examples.forEach((example, index) => {
-          if (example.name == null) {
-            example.name = "example " + (index + 1)
-          }
+        this.examples.filter(ex => ex.name == null).forEach((example, index) => {
+          example.name = "untitled example " + (index + 1)
         })
+      }
+    },
+    computed: {
+      sortedExamples: function () {
+        return this.examples.filter(ex => ex.favorite).concat(this.examples.filter(ex => !ex.favorite))
       }
     }
   }
