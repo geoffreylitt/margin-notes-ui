@@ -71,14 +71,6 @@ Here's how you could use Margin Notes to browse examples of that tic-tac-toe met
     </div>
 
     <demo
-    v-bind:code="presets.currency.code"
-    v-bind:examples="presets.currency.data"
-    v-bind:filename="presets.currency.filename"
-    v-bind:video-path="require('./assets/tic-tac-toe-tos.mp4')"
-    default-line-number="42"
-    ></demo>
-
-    <demo
     v-bind:code="presets.tictactoe.code"
     v-bind:examples="presets.tictactoe.data"
     v-bind:filename="presets.tictactoe.filename"
@@ -136,58 +128,45 @@ In this simple case, this contextual information could have been included a code
 
 In the tic-tac-toe examples, I just recorded examples while playing a game, but in other cases, it's not as obvious how to run all the parts of a program to gather examples. In these situations, **test suites** can be a useful context for recording, because they generally aim to exercise a lot of the code and contain small, easily understandable bits of example data.
 
-I decided to use Margin Notes to try recording examples while running the test suite for `ruby-money`, a popular Ruby library for dealing with currencies. Here's the constructor method for the `Money` class; as the extensive comment indicates, you can pass lots of different types of objects to the various parameters. The comment even provides some helpful examples, which is so great!
+I decided to use Margin Notes to try recording examples while running the test suite for `ruby-money`, a popular Ruby library for dealing with currencies. Here's one method on the Currency class that deals with comparing currencies for equality:
 
 ```ruby
-# Creates a new Money object of value given in the
-  # +fractional unit+ of the given +currency+.
-  #
-  # Alternatively you can use the convenience
-  # methods like {Money.ca_dollar} and {Money.us_dollar}.
-  #
-  # @param [Object] obj Either the fractional value of the money,
-  #   a Money object, or a currency. (If passed a currency as the first
-  #   argument, a Money will be created in that currency with fractional value
-  #   = 0.
-  # @param [Currency, String, Symbol] currency The currency format.
-  # @param [Money::Bank::*] bank The exchange bank to use.
-  #
-  # @return [Money]
-  #
-  # @example
-  #   Money.new(100)        #=> #&lt;Money @fractional=100 @currency="USD"&gt;
-  #   Money.new(100, "USD") #=> #&lt;Money @fractional=100 @currency="USD"&gt;
-  #   Money.new(100, "EUR") #=> #&lt;Money @fractional=100 @currency="EUR"&gt;
-  #
-  def initialize(obj, currency = Money.default_currency, bank = Money.default_bank)
-    @fractional = obj.respond_to?(:fractional) ? obj.fractional : as_d(obj)
-    @currency   = obj.respond_to?(:currency) ? obj.currency : Currency.wrap(currency)
-    @currency ||= Money.default_currency
-    @bank       = obj.respond_to?(:bank) ? obj.bank : bank
-  end
+    # Compares +self+ with +other_currency+ and returns +true+ if the are the
+    # same or if their +id+ attributes match.
+    #
+    # @param [Money::Currency] other_currency The currency to compare to.
+    #
+    # @return [Boolean]
+    #
+    # @example
+    #   c1 = Money::Currency.new(:usd)
+    #   c2 = Money::Currency.new(:jpy)
+    #   c1 == c1 #=> true
+    #   c1 == c2 #=> false
+    def ==(other_currency)
+      self.equal?(other_currency) || compare_ids(other_currency)
+    end
 ```
 
-As helpful as this comment is, it also illustrates the limitations of text for conveying documentation. The comment takes up a ton of space and is difficult to navigate without much visual structure. The examples also don't cover how to pass in rich objects to the method because it's difficult to represent these objects in text.
+As helpful as this comment is, it also illustrates the limitations of text for conveying documentation.
 
 Here's how Margin Notes provides examples for this method:
       </vue-markdown>
     </div>
 
+    <p class="note">todo: record video, flesh out this explanation</p>
+
     <demo
-    v-bind:code="presets.money.code"
-    v-bind:examples="presets.money.data"
-    v-bind:filename="presets.money.filename"
-    v-bind:video-path="require('./assets/money-initialize.mp4')"
-    default-line-number="265"
+    v-bind:code="presets.currency.code"
+    v-bind:examples="presets.currency.data"
+    v-bind:filename="presets.currency.filename"
+    v-bind:video-path="require('./assets/tic-tac-toe-tos.mp4')"
+    default-line-number="322"
     ></demo>
 
     <div class="prose">
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
-In this demo, I found an example where the `currency` parameter is an instance of the `Money::Currency` class, and interactively viewed a representation of that object to get a sense of what it represents—in this case, the US Dollar currency. Here, rich objects are shown by simply displaying the values of their instance variables, but in theory the system could easily allow objects to define how they should be serialized for display in the Margin Notes sidebar.
-
 As you can see, breaking out of the constraints of text provides more space for information, and allows for freedom in how to display it, including interactivity. The current prototype is a simple sidebar, but these examples could be displayed in many different ways. Viewers for these examples could be built into all the different places where read code, ranging from text editors to code repositories like Github, and the design could be adapted for those different contexts.
-
-When showing examples from the test suite, Margin Notes isn't doing anything you couldn't do yourself by running the tests and inspecting code in a debugger. But by making it so much easier to see example code anywhere, Margin Notes makes it easier to incorporate that sort of exploration naturally into the act of reading code.
 
       </vue-markdown>
       <p class="note">todo: add a couple more examples</p>
