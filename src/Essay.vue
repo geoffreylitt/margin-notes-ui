@@ -8,22 +8,35 @@
       </p>
     </div>
 
-<h1>📝 Margin Notes:<br />automatic code documentation with recorded examples</h1>
-
+<img class="hero" src="/margin-notes/static/manuscript.jpg"/>
+<h1 class="title">Margin Notes</h1>
+<h2 class="subtitle">Automatic code documentation with recorded examples from runtime</h2>
+<p class="byline">by Geoffrey Litt</p>
     <div class="prose">
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
 
-by Geoffrey Litt
+Modern programmers spend a lot of time understanding existing code. Whether it's learning to use a library or preparing to modify part of a large codebase, understanding what some code does is just as important as writing new code.
 
-Programmers spend a lot of time trying to understand code. Whether it's learning to use a library function or preparing to modify an existing part of a codebase, understanding what existing code does is just as important as writing new code.
+Despite the importance of this activity, understanding what code does is extremely challenging, because **we don't have powerful tools to help us understand what our programs are doing when they run**. We have all sorts of tools for manipulating and viewing the static structure of our source code, but once the program is actually running, we're left in the dark.
 
-Everyone hopes for well-written documentation or comments, or perhaps the opportunity to talk to the author, but sometimes the only option is to just read the code. The trouble is, reading code is *hard work;* even reading clean code requires a substantial investment of time and energy.
+Programming tools for beginners tend to focus more on representing runtime behavior. The [Scratch](https://scratch.mit.edu/) programming environment shows a live view of the numerical position and direction of a character, to help children understand how those numbers correspond to the visual representation of the character. Microsoft Excel, perhaps the most popular programming tool for "non-programmers", shows the data flowing through the program, so it's always clear what the formulas are doing. Research projects like [Learnable Programming](http://worrydream.com/LearnableProgramming/) and [Seymour](https://harc.github.io/seymour-live2017/) have explored even more powerful tools to help beginners understand their programs.
 
-But what if it didn't need to be so hard? Could we build better tools to help us understand code more easily?
+      </vue-markdown>
+      <figure>
+        <video controls src="/margin-notes/static/scratch-runtime.mp4" />
+        <figcaption>The numbers update as the character moves</figcaption>
+      </figure>
+      <vue-markdown v-bind:breaks="false" v-bind:html="true">
 
-## Seeing the board
+But there aren't many tools like this for advanced programmers. The best tools we have for seeing inside our programs are debuggers, which tend to only be used for "fixing bugs," or reconciling the programmer's mental model of the program with its actual behavior when the two don't match. While debuggers can be useful in these narrow contexts, I think programmers would benefit from a much broader set of program visualization tools that proactively give us a continuous, intuitive understanding of what our programs are doing.
 
-Take a look at this snippet of Ruby code. It's a method on a `Game` class in a tic-tac-toe game, which prints out the board. See if you can figure out what its output looks like by reading the code:
+# Reading code with Margin Notes
+
+One particular place that better tools could help us is in quickly understanding the behavior of some function without needing to read all of its code. As a software engineer collaborating on a large codebase, I constantly find myself figuring out how to use a function that I didn't write. What are the argument types? What does it return? Manual documentation can answer these questions, but I think an automated tool can do better.
+
+**Margin Notes** is a prototype tool that automatically creates documentation for methods in a Ruby codebase, by **recording example data when the program actually runs**, and then displaying those examples next to the code in a rich interactive viewer. It's best explained with a brief example.
+
+Take a look at this snippet of Ruby code. It's a method on a `Game` class in a tic-tac-toe program that I wrote, which prints out the board. See if you can figure out what its output looks like by reading the code:
 
 ```ruby
 class Game
@@ -36,32 +49,11 @@ class Game
 end
 ```
 
-This method isn't doing anything too complicated, but even these few simple lines can take some time to puzzle through. One reason code is hard to understand is that it describes *abstract* behavior, applicable to countless situations.  It's usually easier to understand an abstract concept if we can see some *concrete* examples; in this case, adding an example as a comment helps explain the behavior:
+This method isn't particularly complicated, but even a few simple lines like this can take a while to puzzle through, because code represents abstract behavior without providing us any concrete examples. This method would be much easier to understand if we could just see some examples of what the board looks like when it's printed.
 
-```ruby
-class Game
-  # A string representation of the board state.
-  #
-  # Example:
-  #  X | O |
-  # -----------
-  #  X |   | O
-  # -----------
-  #    | X |
-  #
-  def to_s
-    @squares.map do |row|
-      row.map { |square| " " + (square || " ") + " " }.join("|")
-    end.join("\n------------\n")
-  end
-end
-```
+If we can use data from runtime, finding examples is easy: we can simply record example data from real executions. In this case, I played a single game using the tic-tac-toe program and recorded it with Margin Notes. The system saved data about every method call, including the object receiving the call ( self in Ruby), the arguments, and the return value.
 
-It would be great to have examples like this always available when reading code, but it's a lot of work to manually write them, and even more work to keep them up to date as the code changes. Wouldn't it be nice if we could automatically get examples somehow?
-
-Fortunately, there's already a well of examples just waiting to be tapped. Each time the program runs, it contains some specific data—so why not use that data as an example? In this essay, I'll introduce **Margin Notes**, a prototype tool that records examples in any context where a program actually runs, anywhere from a test suite to a production server. It then displays those examples next to the code in a rich interactive viewer, which overcomes the limitations of including text examples in the code itself.
-
-Here's how you could use Margin Notes to browse examples of that tic-tac-toe method, recorded from an actual game:
+Margin Notes then shows these examples alongside the code when the relevant method is clicked, so we can see some examples of how the board is printed out. (After watching the video demo, you can click "interactive demo" underneath the video if you'd like to try it out yourself!)
 
       </vue-markdown>
     </div>
@@ -77,13 +69,11 @@ Here's how you could use Margin Notes to browse examples of that tic-tac-toe met
     <div class="prose">
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
 
-Software engineers get by every day with the tools that we have, but that doesn't mean our tools are adequate. I believe we could create radically better tools to understand our code—moving beyond static, textual descriptions of behavior to incorporate rich information from what the program actually does at runtime. Using code to understand what a program does is like reading a textbook to understand how a bicycle works; it's a lot easier to just watch the gears as it moves. How might we better see the gears in our code?
+Other than running the program, it took no work to generate these examples. I assigned names to some of the examples after recording to make them easier to find, but that step is fully optional.
 
-Margin Notes is just a small, simple example of a better tool for understanding code. But I hope it prompts you to rethink the relationship between runtime behavior and static code, and to reflect on the inadequacies of the tools we use today to build software.
+## Seeing arguments
 
-# Reading code with Margin Notes
-
-Here's another method from the tic-tac-toe program, which determines whether a player  has won the game.
+Here's another method from the tic-tac-toe program, which determines whether a player has won the game.
 
 ```ruby
 # returns true if the given player has won the game
@@ -117,39 +107,35 @@ This gives us some valuable information! First, we learn that `player` is an int
     </p>
     <vue-markdown v-bind:breaks="false" v-bind:html="true">
 
-Not only do we learn that `player` is an integer; we also learn that it takes on the values 0 and 1, which helps us understand what we can do with the object. There are many cases like this where there's valuable information about an object that isn't captured by its type alone—another example is that knowing an object is a Hash doesn't tell you what the keys are.
+But not only do we learn that `player` is an integer; we also learn that it takes on the values 0 and 1, which helps us understand what we can do with the object. There are many cases like this where there's valuable information about an object that isn't captured by its type alone—another example is that knowing an object is a Hash doesn't tell you what the keys are.
 
-It's worth noting that, based on these examples, we can't conclude `player` is always an integer with values 0 or 1. These examples are from a single game, and they don't represent a formal guarantee about all the values that could ever appear in the program. But that's ok, because Margin Notes is about conveying a starting point for understanding, not providing an exhaustive understanding of all possible states. If we had examples from multiple games that all used the values 0 and 1, we could probably assume those are the typical values, and then verify that assumption later if needed.
+It's worth noting that, based on these examples, we can't conclude `player` is always an integer with values 0 or 1. These examples are from a single game, and they don't represent a formal guarantee about all the values that could ever appear in the program. But that's ok, because Margin Notes is about conveying a starting point for understanding, not providing an exhaustive understanding of all possible states.
 
-In this simple case, this contextual information could have been included a code comment. But code comments will never be present everywhere we want them to be, and Margin Notes provides a way to quickly view helpful examples in the absence of comments. Next, let's examine an example where Margin Notes goes beyond what we can do today with comments.
-
-## Understanding a library
+## Understanding a library using a test suite
 
 In the tic-tac-toe examples, I just recorded examples while playing a game, but in other cases, it's not as obvious how to run all the parts of a program to gather examples. In these situations, **test suites** can be a useful context for recording, because they generally aim to exercise a lot of the code and contain small, easily understandable bits of example data.
 
-I decided to use Margin Notes to try recording examples while running the test suite for `ruby-money`, a popular Ruby library for dealing with currencies. Here's one method on the Currency class that deals with comparing currencies for equality:
+I tried using Margin Notes to record examples while running the test suite for `ruby-money`, a popular Ruby library for dealing with currencies. Here's one method from the `Currency` class which handles comparing two currencies for equality.
 
 ```ruby
-    # Compares +self+ with +other_currency+ and returns +true+ if the are the
-    # same or if their +id+ attributes match.
-    #
-    # @param [Money::Currency] other_currency The currency to compare to.
-    #
-    # @return [Boolean]
-    #
-    # @example
-    #   c1 = Money::Currency.new(:usd)
-    #   c2 = Money::Currency.new(:jpy)
-    #   c1 == c1 #=> true
-    #   c1 == c2 #=> false
-    def ==(other_currency)
-      self.equal?(other_currency) || compare_ids(other_currency)
-    end
+# Compares +self+ with +other_currency+ and returns +true+ if the are the
+# same or if their +id+ attributes match.
+#
+# @param [Money::Currency] other_currency The currency to compare to.
+#
+# @return [Boolean]
+#
+# @example
+#   c1 = Money::Currency.new(:usd)
+#   c2 = Money::Currency.new(:jpy)
+#   c1 == c1 #=> true
+#   c1 == c2 #=> false
+def ==(other_currency)
+  self.equal?(other_currency) || compare_ids(other_currency)
+end
 ```
 
-As helpful as this comment is, it also illustrates the limitations of text for conveying documentation.
-
-Here's how Margin Notes provides examples for this method:
+The documentation comment is helpful, but it's also limited by being expressed as text. Margin Notes lets us explore many examples and interactively explore the contents of rich objects:
       </vue-markdown>
     </div>
 
@@ -163,11 +149,9 @@ Here's how Margin Notes provides examples for this method:
 
     <div class="prose">
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
-As you can see, breaking out of the constraints of text provides more space for information, and allows for freedom in how to display it, including interactivity. The current prototype is a simple sidebar, but these examples could be displayed in many different ways. Viewers for these examples could be built into all the different places where read code, ranging from text editors to code repositories like Github, and the design could be adapted for those different contexts.
+This particular example happened to demonstrate the pitfalls of manual documentation. The comment above the method says that the `other_currency` param has the class `Money::Currency`, but the examples from the test suite show that it can actually be a symbol or a string as well.
 
-      </vue-markdown>
-      <p class="note">todo: add a couple more examples</p>
-      <vue-markdown v-bind:breaks="false" v-bind:html="true">
+Breaking out of the constraints of text provides more space for information, and allows for freedom in how to display it, including interactivity. This prototype shows one suggestion for how to visualize this data, but in theory there could be different viewers built into all the different places where read code, ranging from text editors to code repositories like Github, with the design adapted for those different contexts.
 
 # Future work
 
@@ -179,36 +163,8 @@ This is just an early prototype, and I imagine some directions for developing th
 
 **More detail:** I think Margin Notes could also become more useful by showing data at different levels of granularity. Method calls are a convenient level because they represent units of functionality that the programmer has decided are conceptually meaningful, but the same techniques could be applied to smaller pieces of a program. For example, a programmer could click on individual variables and see example values from real runs of the program.
 
-**Interactivity:** Perhaps the biggest gap I see in this prototype is the lack of true interactivity. After viewing recorded examples, a natural next step towards deeper understanding is to try modifying those examples and re-running them to see the new result. In many programs today, getting to a point where you can probe the behavior of a method like requires a lot of setup work. What if it were as easy as clicking "edit" on an example in Margin Notes? Glen Chiacchieri's [Human-Readable Interactive Representation of a Code Library](http://glench.github.io/fuzzyset.js/ui/) and the [documentation for the Paper.js](http://paperjs.org/reference/path/#path-line-from-to) offer two superb examples of how an interactive environment can help people understand programs better.
-
-# Designing for experts
-
+**Interactivity:** Perhaps the biggest gap I see in this prototype is the lack of true interactivity. After viewing recorded examples, a natural next step towards deeper understanding is to try modifying those examples and re-running them to see the new result. In many programs today, getting to a point where you can probe the behavior of a method like requires a lot of setup work. What if it were as easy as clicking "edit" on an example in Margin Notes? Glen Chiacchieri's [Human-Readable Interactive Representation of a Code Library](http://glench.github.io/fuzzyset.js/ui/) and the [documentation for the Paper.js library](http://paperjs.org/reference/path/#path-line-from-to) offer two superb examples of how an interactive environment can help people understand programs better.
       </vue-markdown>
-      <figure>
-        <img src="/margin-notes/static/scratch.jpg" />
-        <figcaption>Warning: not intended for industrial use</figcaption>
-      </figure>
-      <vue-markdown v-bind:breaks="false" v-bind:html="true">
-
-Bret Victor's essay [Learnable Programming](http://worrydream.com/LearnableProgramming/) introduced the principle of "seeing the state"—the idea that seeing the runtime behavior of a program is critical to developing a person's understanding of that program. That essay specifically mentions that this principle isn't intended to only apply to beginners:
-
-> These design principles were presented in the context of systems for learning, but they apply universally. An experienced programmer may not need to know what an "if" statement means, but she does need to understand the runtime behavior of her program, and she needs to understand it while she's programming.
-
-Despite this disclaimer, many of the most prominent examples of visualizing runtime data maintain a focus on the needs of beginners. [Scratch](https://scratch.mit.edu/)—one of the most prominent non-text-based programming environments today—is designed for younger children, to the point that even [older children don't think it's for them](https://medium.freecodecamp.org/scratch-has-a-marketing-problem-f84626bd18ef), much less professionals. [Online Python Tutor](http://www.pythontutor.com/) visualizes execution line-by-line, helping beginners understand the basics of how code works. [Seymour](https://harc.github.io/seymour-live2017/) further develops some of the ideas of Learnable Programming, with a specific emphasis on teaching in the classroom.
-
-Perhaps partially as a result of this general leaning, many expert programmers think that richer visualizations of program behavior are meant for beginners, not for them. And it doesn't help that interactive debuggers, the state-of-the-art tools professionals have for visualizing runtime data, provide little enough utility that [many expert programmers forego them entirely](https://lemire.me/blog/2016/06/21/i-do-not-use-a-debugger/).
-
-## What do experts need?
-
-So, in the interest of progress, and of changing perceptions, I think we would benefit from seeing more ideas for how runtime visualization can help expert programmers. This necessitates asking: if an experienced programmer doesn't know need to know what an "if" statement means, what *does* she need to know about what her program is doing, and for what purpose?
-
-I know that as I'm reading code, I often want to quickly understand the arguments and return value for a method. These needs are especially present when collaborating on a large codebase, since I'm often working with unfamiliar code that I didn't originally write.
-
-One thing that excites me about these needs is that programmers have deemed them important enough to address with our existing tools; code comments with types and examples are an attempt to solve these needs within the constraints of text. Not only does this suggest to me that these use cases are real and important, it also gives me hope that there's an easy way to communicate the value of a better solution to expert programmers. "You know how you manually write documentation comments with examples, and find them useful when reading code? What if the computer did some of that work for you, and generated better results?"
-
-I think communicating value like this is important for getting programmers excited. The [Light Table](http://lighttable.com/) IDE, which I see as the most successful attempt so far at shipping runtime visualization in a real product, currently lists as the first full sentence on the homepage: "Connects you to your creation with instant feedback and showing data values flow through your code." This pitch was able to attract people who found that idea compelling, but many programmers I've talked to don't see "showing data values flow through your code" as a familiar need. Margin Notes isn't solely a replacement for documentation comments, but maybe framing it in those terms could help explain why it's a useful tool.
-
-Of course, seeing examples of data in method calls is just one of so many needs that professional programmers have. We still need better ways to see how big pieces of our systems fit together, views of how data flows between chunks of code, tools to help us develop an intuitive grasp of what our systems are doing. I look forward to a day where our tools are powerful enough that understanding a program feels as simple as watching the gears turn on a bicycle.      </vue-markdown>
     </div>
     <footer />
   </div>
@@ -237,28 +193,51 @@ export default {
 <style lang="scss">
 @import url('prismjs');
 
-  a, a:hover, a:active, a:focus, a:visited {
-    color: #77a9d8
-  }
+$prose-width: 600px;
+$light-gray: #a9a9a9;
+$sans-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$serif-family: 'Merriweather', serif;
 
-  a:hover, a:active {
-    color: #638eb6
-  }
+a, a:hover, a:active, a:focus, a:visited {
+  color: #77a9d8
+}
+
+a:hover, a:active {
+  color: #638eb6
+}
+
+code {
+  font-size: 16px;
+}
 
 #essay {
-  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: $sans-family;
   max-width: 1024px;
   margin-left: 120px;
   margin-right: 50px;
 
+  img.hero {
+    max-width: $prose-width;
+  }
+
+  h1.title { margin-bottom: 0; }
+  h2.subtitle {
+    margin-top: 0;
+    font-weight: normal;
+    font-size: 18px;
+  }
+  p.byline {
+    margin-bottom: 30px;
+  }
+
   .prose {
-    font-family: 'Merriweather', serif;
+    font-family: $serif-family;
     font-weight: 300;
-    max-width: 600px;
+    max-width: $prose-width;
     line-height: 1.5em;
 
     h1, h2, h3, h4, h5, h6 {
-      font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-family: $sans-family;
     }
 
     h1 {
@@ -280,19 +259,20 @@ export default {
       margin-right: 0;
 
       figcaption {
-        color: #ddd;
+        color: $light-gray;
         font-size: 14px;
+        font-family: $sans-family;
       }
     }
 
     .sidenote {
       position: absolute;
-      margin-left: 650px;
+      margin-left: $prose-width + 50px;
       margin-top: -40px;
       width: 200px;
       font-size: 12px;
       line-height: 1.4em;
-      color: #a9a9a9;
+      color: $light-gray;
     }
   }
 
