@@ -38,7 +38,7 @@
       },
       serializedValue() {
         if (this.value.value == null) {
-          return "null"
+          return "nil"
         } else if (this.value.class_name == "Symbol") {
           return ":" + this.value.value
         } else {
