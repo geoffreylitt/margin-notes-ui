@@ -71,6 +71,14 @@ Here's how you could use Margin Notes to browse examples of that tic-tac-toe met
     </div>
 
     <demo
+    v-bind:code="presets.meta.code"
+    v-bind:examples="presets.meta.data"
+    v-bind:filename="presets.meta.filename"
+    v-bind:video-path="require('./assets/tic-tac-toe-tos.mp4')"
+    default-line-number="42"
+    ></demo>
+
+    <demo
     v-bind:code="presets.tictactoe.code"
     v-bind:examples="presets.tictactoe.data"
     v-bind:filename="presets.tictactoe.filename"
