@@ -24,7 +24,7 @@ Programming tools for beginners tend to focus more on representing runtime behav
       </vue-markdown>
       <figure>
         <video controls src="/margin-notes/static/scratch-runtime.mp4" />
-        <figcaption>The numbers update as the character moves</figcaption>
+        <figcaption>In Scratch, the numbers update as the character moves</figcaption>
       </figure>
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
 
