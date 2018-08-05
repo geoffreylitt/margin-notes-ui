@@ -1,7 +1,7 @@
 <template>
   <div class="demo">
     <div class="video-demo" v-if="!interactive">
-      <video width="1024" controls preload="auto" muted="" data-video="0" v-bind:src="videoPath">
+      <video width="1024" height="400" controls preload="auto" muted="" data-video="0" v-bind:src="videoPath">
       </video>
     </div>
     <div class="interactive-demo" v-if="interactive">
@@ -11,10 +11,10 @@
         <method-description v-bind:examples="examplesForCurrentMethod" ></method-description>
       </div>
     </div>
-    <a href="#" class="interact-link" v-on:click="toggleInteractive">
-      <span v-if="!interactive">try it out!</span>
-      <span v-if="interactive">back to video</span>
-    </a>
+    <div>
+      <a href="#" class="interact-link" v-bind:class="{ selected: !interactive }" v-on:click="switchToVideo">video demo</a>
+      <a href="#" class="interact-link" v-bind:class="{ selected: interactive }" v-on:click="switchToInteractive">interactive demo</a>
+    </div>
   </div>
 </template>
 
@@ -44,9 +44,13 @@
       }
     },
     methods: {
-      toggleInteractive: function (e) {
+      switchToVideo: function (e) {
         e.preventDefault()
-        this.interactive = !this.interactive
+        this.interactive = false
+      },
+      switchToInteractive: function (e) {
+        e.preventDefault()
+        this.interactive = true
       },
       renderCodeEditor: function () {
         this.codeEditor = CodeMirror(this.$el.querySelector(".code-container"), {
@@ -113,7 +117,10 @@
 
   .interactive-demo {
     height: 100%;
-    margin-bottom: 10px; // match mystery margin on the video
+  }
+
+  .interactive-demo, .video-demo {
+    margin-bottom: 10px;
   }
 
   .code-container {
@@ -132,14 +139,17 @@
     overflow-y: scroll;
   }
 
-  .interact-link {
-    display: block;
+  a.interact-link {
     font-size: 14px;
-    margin-top: 7px;
+    margin-right: 5px;
 
     &, &:hover, &:active, &:focus {
-      color: black;
       text-decoration: underline;
+
+      &.selected {
+        text-decoration: none;
+        color: black;
+      }
     }
   }
 </style>

@@ -70,7 +70,7 @@ Here's how you could use Margin Notes to browse examples of that tic-tac-toe met
     v-bind:code="presets.tictactoe.code"
     v-bind:examples="presets.tictactoe.data"
     v-bind:filename="presets.tictactoe.filename"
-    v-bind:video-path="require('./assets/tic-tac-toe-tos.mp4')"
+    v-bind:video-path="require('./assets/tic-tac-toe-tos-11.mp4')"
     default-line-number="42"
     ></demo>
 
@@ -104,7 +104,7 @@ This is very simple code, but it's missing a crucial piece of information: what 
     v-bind:code="presets.tictactoe.code"
     v-bind:examples="presets.tictactoe.data"
     v-bind:filename="presets.tictactoe.filename"
-    v-bind:video-path="require('./assets/tic-tac-toe-player-2.mp4')"
+    v-bind:video-path="require('./assets/tic-tac-toe-won-11.mp4')"
     default-line-number="85"
     ></demo>
 
@@ -153,13 +153,11 @@ Here's how Margin Notes provides examples for this method:
       </vue-markdown>
     </div>
 
-    <p class="note">todo: record video, flesh out this explanation</p>
-
     <demo
     v-bind:code="presets.currency.code"
     v-bind:examples="presets.currency.data"
     v-bind:filename="presets.currency.filename"
-    v-bind:video-path="require('./assets/tic-tac-toe-tos.mp4')"
+    v-bind:video-path="require('./assets/money-currency-11.mp4')"
     default-line-number="322"
     ></demo>
 
@@ -238,6 +236,14 @@ export default {
 
 <style lang="scss">
 @import url('prismjs');
+
+  a, a:hover, a:active, a:focus, a:visited {
+    color: #77a9d8
+  }
+
+  a:hover, a:active {
+    color: #638eb6
+  }
 
 #essay {
   font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
