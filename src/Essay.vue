@@ -282,7 +282,7 @@ export default {
     .sidenote {
       position: absolute;
       margin-left: 650px;
-      margin-top: -50px;
+      margin-top: -40px;
       width: 200px;
       font-size: 12px;
       line-height: 1.4em;
