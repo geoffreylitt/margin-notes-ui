@@ -4,10 +4,6 @@
       <p class="note">Work-in-progress, please don't share with others.</p>
 
       <p class="note">
-        I'm most interested in your high level feedback on the ideas.
-        What wasn't clear? What wasn't convincing? What's missing?
-      </p>
-      <p class="note">
         Thank you so much for helping me make this better! <br />
       </p>
     </div>
@@ -71,14 +67,6 @@ Here's how you could use Margin Notes to browse examples of that tic-tac-toe met
     </div>
 
     <demo
-    v-bind:code="presets.meta.code"
-    v-bind:examples="presets.meta.data"
-    v-bind:filename="presets.meta.filename"
-    v-bind:video-path="require('./assets/tic-tac-toe-tos.mp4')"
-    default-line-number="42"
-    ></demo>
-
-    <demo
     v-bind:code="presets.tictactoe.code"
     v-bind:examples="presets.tictactoe.data"
     v-bind:filename="presets.tictactoe.filename"
@@ -122,9 +110,12 @@ This is very simple code, but it's missing a crucial piece of information: what 
 
     <div class="prose">
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
-This gives us some valuable information! First, we learn that `player` is an integer. Ruby is a dynamically typed language so we can't get this type information from the code, but Margin Notes gives us a way to find the types of arguments.
-
-*Margin Notes was inspired by systems that create automatic type annotations by observing code at runtime, including [MonkeyType](https://instagram-engineering.com/let-your-code-type-hint-itself-introducing-open-source-monkeytype-a855c7284881), a Python project by Instagram, and [a similar tool](https://medium.com/@arpith/type-checking-ruby-with-minimal-effort-ed1859e552c0) for Ruby by Arpith Siromoney.
+This gives us some valuable information! First, we learn that `player` is an integer. Ruby is a dynamically typed language so we can't get this type information from the code, but Margin Notes gives us a way to find the types of arguments.*
+    </vue-markdown>
+    <p class="sidenote">
+      *Margin Notes was inspired by systems that create automatic type annotations by observing code at runtime, including <a href="https://instagram-engineering.com/let-your-code-type-hint-itself-introducing-open-source-monkeytype-a855c7284881">MonkeyType</a>, a Python project by Instagram, and <a href="https://medium.com/@arpith/type-checking-ruby-with-minimal-effort-ed1859e552c0">a similar tool</a> for Ruby by Arpith Siromoney.
+    </p>
+    <vue-markdown v-bind:breaks="false" v-bind:html="true">
 
 Not only do we learn that `player` is an integer; we also learn that it takes on the values 0 and 1, which helps us understand what we can do with the object. There are many cases like this where there's valuable information about an object that isn't captured by its type alone—another example is that knowing an object is a Hash doesn't tell you what the keys are.
 
@@ -287,6 +278,16 @@ export default {
         font-size: 14px;
       }
     }
+
+    .sidenote {
+      position: absolute;
+      margin-left: 650px;
+      margin-top: -50px;
+      width: 200px;
+      font-size: 12px;
+      line-height: 1.4em;
+      color: #a9a9a9;
+    }
   }
 
   pre {
@@ -303,10 +304,31 @@ export default {
   }
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 960px) {
   #essay{
-    margin-left: 10px;
+    margin-left: 20px;
     margin-right: 10px;
+
+    .prose {
+      .sidenote {
+        margin-left: 650px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  #essay .prose {
+    font-size: 14px;
+  }
+
+  #essay .prose .sidenote {
+    position: relative;
+    font-size: 12px;
+    line-height: 1.4em;
+    color: #a9a9a9;
+    margin: 0;
+    width: 100%;
   }
 }
 </style>
