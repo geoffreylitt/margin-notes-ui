@@ -74,7 +74,8 @@
     },
     computed: {
       sortedExamples: function () {
-        return this.examples.filter(ex => ex.favorite).concat(this.examples.filter(ex => !ex.favorite))
+        // put named examples first
+        return this.examples.filter(ex => ex.name.indexOf("untitled") == -1).concat(this.examples.filter(ex => ex.name.indexOf("untitled") != -1))
       }
     }
   }
