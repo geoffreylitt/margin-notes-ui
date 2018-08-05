@@ -5,7 +5,7 @@
       <template v-if="showRichObject">
         <vue-json-pretty
           v-bind:data="value.value"
-          deep=0>
+          :deep=0>
         </vue-json-pretty>
       </template>
       <template v-else>

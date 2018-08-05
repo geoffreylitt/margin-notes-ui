@@ -13,7 +13,7 @@
         <!-- <p class="method-description">Todo: fill in description</p> -->
       </div>
       <!-- todo: use a better unique key here-->
-      <div v-for="(example, index) in examples" :key="example.method">
+      <div v-for="(example, index) in examples" :key="example.name">
         <div v-if="activeExample == example" class="example active-example">
           <div class="method-example-body">
             <div class="section example-name">
@@ -24,7 +24,7 @@
               <!-- todo: use a better unique key here-->
               <div v-for="(argument, name) in example.arguments" :key="argument.value">
                 <div class="data-example">
-                  <div class="data-label" v-bind:title="name">{{ name }}:</div>
+                  <div class="data-label" v-bind:title="name" v-bind:class="{ 'real-argument': name != 'return' && name != 'self' }">{{ name }}:</div>
                   <div class="data-contents">
                     <serialized-value v-bind:value="argument"></serialized-value>
                   </div>
@@ -151,6 +151,10 @@
     /* truncate long names */
     text-overflow: ellipsis;
     overflow-x: hidden;
+
+    &.real-argument {
+      font-style: normal;
+    }
   }
 
   .data-contents {

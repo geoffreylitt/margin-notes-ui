@@ -106,7 +106,7 @@
 <style scoped lang="scss">
   .demo {
     max-width: 1024px;
-    height: 350px;
+    height: 400px;
     border: solid thin #ddd;
     margin: 20px 0 50px 0;
   }
