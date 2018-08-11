@@ -15,31 +15,31 @@
     <div class="prose">
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
 
-Modern programmers spend a lot of time understanding existing code. Whether it's learning to use a library or preparing to modify part of a large codebase, understanding what some code does is just as important as writing new code.
+Modern programmers spend a lot of time understanding existing code. Whether it's learning to use a library or preparing to modify part of a large codebase, understanding what code does is just as important as writing new code.
 
-Despite the importance of this activity, understanding what code does is extremely challenging, because **we don't have powerful tools to help us understand what our programs are doing when they run**. We have all sorts of tools for manipulating and viewing the static structure of our source code, but once the program is actually running, we're left in the dark.
+Despite the importance of this activity, it's challenging to understand what code does, because **we don't have powerful tools to help us understand what our programs are doing when they run**. We have all sorts of tools for manipulating and viewing the static structure of our source code, but once the program is actually running, we're left in the dark.
 
-Programming tools for beginners tend to focus more on representing runtime behavior. The [Scratch](https://scratch.mit.edu/) programming environment shows a live view of the numerical position and direction of a character, to help children understand how those numbers correspond to the visual representation of the character:
-
+Programming tools for beginners tend to focus more on representing runtime behavior, to help beginners understanding the basic connections between their code and the behavior it creates. For example, the [Scratch](https://scratch.mit.edu/) programming environment makes it easy to see the numerical direction of a character, live-updated as it moves:
       </vue-markdown>
       <figure>
-        <video controls src="/margin-notes/static/scratch-runtime.mp4#t=0.1" height="300px"/>
+        <video controls src="/margin-notes/static/scratch-runtime-2.mp4#t=0.1" height="300px"/>
         <figcaption>In Scratch, the numbers update as the character moves</figcaption>
       </figure>
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
 
-Microsoft Excel, perhaps the most popular programming tool for "non-programmers", shows the data flowing through the program, so it's always clear what the formulas are doing. Research projects like [Learnable Programming](http://worrydream.com/LearnableProgramming/) and [Seymour](https://harc.github.io/seymour-live2017/) have explored even more powerful tools to help beginners understand their programs.
+While advanced programmers working on large codebases have very different needs than beginners working on tiny programs, we do still need to understand what our programs are doing. Unfortunately, there aren't many tools to help us. Print statements and interactive debuggers are commonly used to peek inside the code as it runs, and these techniques can help with fixing bugs once in a while, but they're too cumbersome to use in many other scenarios, like reading through a codebase. In order to understand our programs better, I think we need a broader set of tools that incorporate data from runtime to help programmers in a variety of contexts, beyond just fixing bugs.
 
-But there aren't many tools like this for advanced programmers. The best tools we have for seeing inside our programs are debuggers, which tend to only be used for "fixing bugs," or reconciling the programmer's mental model of the program with its actual behavior when the two don't match. While debuggers can be useful in these narrow contexts, I think programmers would benefit from a much broader set of program visualization tools that proactively give us a continuous, intuitive understanding of what our programs are doing.
+## The need for documentation
+
+As one example of such a context—advanced programmers need better tools for quickly understanding the behavior of functions. As a software engineer collaborating on a large codebase, I frequently find myself needing to figure out how to use a function from an open-source library or an unfamiliar corner of our codebase. What arguments does it expect? What does it return? How does it handle a particular case? Documentation can help answer these questions, but in practice, docs are often incomplete, or even worse, incorrect.
+
+It's difficult to automatically generate code documentation based on the source code alone, but if our tools have access to the runtime behavior of the code, there are far more possibilities—in particular, we can access examples of how the code is actually used when it runs. This is convenient, because examples happen to be a very useful way to document code for humans! This essay is about a tool that uses this idea to automatically document a codebase, by observing example usage when the program runs.
 
 # Reading code with Margin Notes
 
-One particular place that better tools could help us is in quickly understanding the behavior of some function without needing to read all of its code. As a software engineer collaborating on a large codebase, I constantly find myself figuring out how to use a function that I didn't write. What are the argument types? What does it return? Manual documentation can answer these questions, but I think an automated tool can do better.
+Margin Notes automatically creates documentation for methods in a Ruby codebase, by **saving example data when the program runs**, and then **displaying those saved examples next to the code** in a rich interactive viewer. It's best explained with a quick example.
 
-**Margin Notes** is a prototype tool that automatically creates documentation for methods in a Ruby codebase, by **recording example data when the program actually runs**, and then displaying those examples next to the code in a rich interactive viewer. It's best explained with a brief example.
-
-Take a look at this snippet of Ruby code. It's a method on a `Game` class in a tic-tac-toe program that I wrote, which prints out the board. See if you can figure out what its output looks like by reading the code:
-
+Here's a snippet of Ruby code from a tic-tac-toe program. It's a `to_s` method on the `Game` class, which returns a string representation of the board state that can be printed out and shown to the user.
 ```ruby
 class Game
   # A string representation of the board state.
@@ -51,15 +51,14 @@ class Game
 end
 ```
 
-This method isn't particularly complicated, but even a few simple lines like this can take a while to puzzle through, because code represents abstract behavior without providing us any concrete examples. This method would be much easier to understand if we could just see some examples of what the board looks like when it's printed.
+This method isn't particularly complicated, but even a few simple lines like this can take a while to puzzle through, because code describes abstract behavior without providing any concrete examples. This method would be easier to understand if we could just see some examples of what the board looks like when it's printed.
 
-If we can use data from runtime, finding examples is easy: we can simply record example data from real executions. In this case, I played a single game using the tic-tac-toe program and recorded it with Margin Notes. The system saved data about every method call, including the object receiving the call ( self in Ruby), the arguments, and the return value.
+To gather some examples, I played a tic-tac-toe game and recorded it with Margin Notes. The system saved some information about every method call, including the state of the object receiving the call ( `self` in Ruby), the arguments passed into the method, and the return value.
 
-Margin Notes then shows these examples alongside the code when the relevant method is clicked, so we can see some examples of how the board is printed out. (After watching the video demo, you can click "interactive demo" above the video if you'd like to try it out yourself!)
+Margin Notes then shows these examples alongside the code when we click on the `to_s` method, so we instantly can see some examples of how the board looks when it's printed out:
 
       </vue-markdown>
     </div>
-
     <demo
     v-bind:code="presets.tictactoe.code"
     v-bind:examples="presets.tictactoe.data"
