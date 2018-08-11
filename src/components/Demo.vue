@@ -1,7 +1,7 @@
 <template>
   <div class="demo">
     <div class="video-demo" v-if="!interactive">
-      <video width="1024" height="400" controls preload="auto" muted="" data-video="0" v-bind:src="videoPath">
+      <video controls preload="auto" muted="" data-video="0" v-bind:src="videoPath">
       </video>
     </div>
     <div class="interactive-demo" v-if="interactive">
@@ -110,13 +110,12 @@
 <style scoped lang="scss">
   .demo {
     max-width: 1024px;
-    height: 400px;
     border: solid thin #ddd;
     margin: 20px 0 50px 0;
   }
 
   .interactive-demo {
-    height: 100%;
+    height: 400px;
   }
 
   .interactive-demo, .video-demo {

@@ -206,8 +206,11 @@ a:hover, a:active {
   color: #638eb6
 }
 
-code {
-  font-size: 16px;
+code { font-size: 16px; } // for inline code, not listings
+
+video {
+  width: 100% !important;
+  max-height: 400px;
 }
 
 #essay {
@@ -217,6 +220,7 @@ code {
   margin-right: 50px;
 
   img.hero {
+    width: 100%;
     max-width: $prose-width;
   }
 
@@ -277,7 +281,9 @@ code {
   }
 
   pre {
-    width: 1000px;
+    code {
+      font-size: 14px;
+    }
   }
 
   .note {
@@ -303,9 +309,17 @@ code {
   }
 }
 
-@media only screen and (max-width: 800px) {
-  #essay .prose {
-    font-size: 14px;
+@media only screen and (max-width: 700px) {
+  #essay {
+    margin-left: 10px;
+
+    .prose {
+      font-size: 14px;
+    }
+
+    pre {
+      font-size: 14px;
+    }
   }
 
   #essay .prose .sidenote {
