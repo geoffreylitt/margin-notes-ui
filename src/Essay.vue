@@ -19,14 +19,16 @@ Modern programmers spend a lot of time understanding existing code. Whether it's
 
 Despite the importance of this activity, understanding what code does is extremely challenging, because **we don't have powerful tools to help us understand what our programs are doing when they run**. We have all sorts of tools for manipulating and viewing the static structure of our source code, but once the program is actually running, we're left in the dark.
 
-Programming tools for beginners tend to focus more on representing runtime behavior. The [Scratch](https://scratch.mit.edu/) programming environment shows a live view of the numerical position and direction of a character, to help children understand how those numbers correspond to the visual representation of the character. Microsoft Excel, perhaps the most popular programming tool for "non-programmers", shows the data flowing through the program, so it's always clear what the formulas are doing. Research projects like [Learnable Programming](http://worrydream.com/LearnableProgramming/) and [Seymour](https://harc.github.io/seymour-live2017/) have explored even more powerful tools to help beginners understand their programs.
+Programming tools for beginners tend to focus more on representing runtime behavior. The [Scratch](https://scratch.mit.edu/) programming environment shows a live view of the numerical position and direction of a character, to help children understand how those numbers correspond to the visual representation of the character:
 
       </vue-markdown>
       <figure>
-        <video controls src="/margin-notes/static/scratch-runtime.mp4" />
+        <video controls src="/margin-notes/static/scratch-runtime.mp4#t=0.1" height="300px"/>
         <figcaption>In Scratch, the numbers update as the character moves</figcaption>
       </figure>
       <vue-markdown v-bind:breaks="false" v-bind:html="true">
+
+Microsoft Excel, perhaps the most popular programming tool for "non-programmers", shows the data flowing through the program, so it's always clear what the formulas are doing. Research projects like [Learnable Programming](http://worrydream.com/LearnableProgramming/) and [Seymour](https://harc.github.io/seymour-live2017/) have explored even more powerful tools to help beginners understand their programs.
 
 But there aren't many tools like this for advanced programmers. The best tools we have for seeing inside our programs are debuggers, which tend to only be used for "fixing bugs," or reconciling the programmer's mental model of the program with its actual behavior when the two don't match. While debuggers can be useful in these narrow contexts, I think programmers would benefit from a much broader set of program visualization tools that proactively give us a continuous, intuitive understanding of what our programs are doing.
 
@@ -53,7 +55,7 @@ This method isn't particularly complicated, but even a few simple lines like thi
 
 If we can use data from runtime, finding examples is easy: we can simply record example data from real executions. In this case, I played a single game using the tic-tac-toe program and recorded it with Margin Notes. The system saved data about every method call, including the object receiving the call ( self in Ruby), the arguments, and the return value.
 
-Margin Notes then shows these examples alongside the code when the relevant method is clicked, so we can see some examples of how the board is printed out. (After watching the video demo, you can click "interactive demo" underneath the video if you'd like to try it out yourself!)
+Margin Notes then shows these examples alongside the code when the relevant method is clicked, so we can see some examples of how the board is printed out. (After watching the video demo, you can click "interactive demo" above the video if you'd like to try it out yourself!)
 
       </vue-markdown>
     </div>
@@ -309,7 +311,7 @@ video {
   }
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 800px) {
   #essay {
     margin-left: 10px;
 

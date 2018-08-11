@@ -1,7 +1,11 @@
 <template>
   <div class="demo">
+    <div class="interactive-toggle-container">
+      <a href="#" class="interact-link" v-bind:class="{ selected: !interactive }" v-on:click="switchToVideo">video demo</a>
+      <a href="#" class="interact-link" v-bind:class="{ selected: interactive }" v-on:click="switchToInteractive">interactive demo</a>
+    </div>
     <div class="video-demo" v-if="!interactive">
-      <video controls preload="auto" muted="" data-video="0" v-bind:src="videoPath">
+      <video controls preload="auto" muted="" data-video="0" v-bind:src="videoPath + '#t=0.1'">
       </video>
     </div>
     <div class="interactive-demo" v-if="interactive">
@@ -10,10 +14,6 @@
         <!-- Pass in active examples to the method description component -->
         <method-description v-bind:examples="examplesForCurrentMethod" ></method-description>
       </div>
-    </div>
-    <div>
-      <a href="#" class="interact-link" v-bind:class="{ selected: !interactive }" v-on:click="switchToVideo">video demo</a>
-      <a href="#" class="interact-link" v-bind:class="{ selected: interactive }" v-on:click="switchToInteractive">interactive demo</a>
     </div>
   </div>
 </template>
@@ -110,16 +110,16 @@
 <style scoped lang="scss">
   .demo {
     max-width: 1024px;
-    border: solid thin #ddd;
-    margin: 20px 0 50px 0;
+    margin: 30px 0;
   }
 
   .interactive-demo {
     height: 400px;
+    border: solid thin #ddd;
   }
 
   .interactive-demo, .video-demo {
-    margin-bottom: 10px;
+    margin-top: 5px;
   }
 
   .code-container {
@@ -136,6 +136,10 @@
     height: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
+  }
+
+  .interactive-toggle-container {
+    text-align: right;
   }
 
   a.interact-link {
