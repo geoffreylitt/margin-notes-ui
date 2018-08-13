@@ -8,7 +8,9 @@
       <vue-markdown v-bind:anchor-attributes="{'target': '_blank'}">
 # Abstract
 
-Programmers working on production codebases need to understand how existing code works in order to modify code and use library functions. Manual documentation can help build this understanding, but takes time to maintain and sometimes doesn't exist at all. Margin Notes provides automatic code documentation, by recording example data from function calls as a program executes, and then displaying those examples in an interactive UI next to the code. This allows people to quickly access examples from different past executions as they read the code, hopefully leading to improved understanding.
+Programmers working on production codebases need to understand how existing code works in order to modify code and use library functions. Manual documentation can help build this understanding, but takes time to maintain and sometimes doesn't exist at all.
+
+Margin Notes provides automatic code documentation, by recording example data from function calls as a program executes, and then displaying those examples in an interactive UI next to the code. This allows people to quickly access examples from different past executions as they read the code, hopefully leading to improved understanding.
 
 # Introduction
 
