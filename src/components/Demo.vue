@@ -115,11 +115,11 @@
 
   .interactive-demo {
     height: 400px;
-    border: solid thin #ddd;
   }
 
   .interactive-demo, .video-demo {
     margin-top: 5px;
+    border: solid thin #ddd;
   }
 
   .code-container {

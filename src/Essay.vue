@@ -1,7 +1,7 @@
 <template>
   <div id="essay">
-    <img class="hero" src="/margin-notes/static/manuscript.jpg"/>
-    <h1 class="title">Margin Notes</h1>
+    <br /><br /><br /><br /><br />
+    <h1 class="title">📝 Margin Notes</h1>
     <h2 class="subtitle">Automatic code documentation with recorded examples from runtime</h2>
 
     <div class="prose">
@@ -39,7 +39,7 @@ Margin Notes automatically creates documentation for functions in a codebase, by
 
 Here's a snippet of Ruby code* from a tic-tac-toe program. It's a `to_s` method on the `Game` class, which returns a string representation of the board state that can be printed out and shown to the user.
 
-    </vue-markdown><p class="sidenote" style="margin-top:-80px;">
+    </vue-markdown><p class="sidenote">
       *The prototype example recorder is implemented in Ruby and can only record Ruby programs, but examples could theoretically be recorded in any language.
     </p><vue-markdown v-bind:anchor-attributes="{'target': '_blank'}">
 
@@ -206,7 +206,7 @@ This is just an early prototype, and there are some future directions that might
 - **More context for examples:** Margin Notes presents each example in isolation, without temporal context about previous or subsequent calls, or environmental context about the stack trace at the time and how the function was called. It might be helpful to "zoom out" on an example in Margin Notes and see more of these types of context, perhaps with a tool similar to the "macro visualization" from Seymour.
 - **More granular examples:** Margin Notes currently shows information at the granularity of a function call. Projects like Light Table and In Situ Visualizations for Vega have explored ways to include information about individual variables inline with the code; these techniques might be useful for showing recorded example values for individual variables.
 - **Data visualization:** Data visualization techniques could be applied to help readers see patterns across large numbers of examples (e.g. answering "how often does this function receive `true` vs `false` for this argument?").
-- **Interactivity:** After viewing recorded examples, a natural next step towards deeper understanding is to try modifying those examples and re-running them to see the new result. In many programs today, getting to a point where you can probe the behavior of a method like requires a lot of setup work. What if it were as easy as clicking "edit" on an example in Margin Notes? Glen Chiacchieri's [Human-Readable Interactive Representation of a Code Library](http://glench.github.io/fuzzyset.js/ui/) and the [documentation for the Paper.js library](http://paperjs.org/reference/path/#path-line-from-to) offer two examples of how an interactive environment can help people understand programs better.
+- **Interactivity:** After viewing recorded examples, a natural next step towards deeper understanding is to try modifying those examples and re-running them to see the new result. In many programs today, getting to a point where you can probe the behavior of a method like requires a lot of setup work. What if it were as easy as clicking "edit" on an example in Margin Notes?
 
 # Conclusion
 
@@ -319,6 +319,7 @@ video {
     }
 
     .sidenote {
+      display: block;
       position: absolute;
       margin-left: $prose-width + 50px;
       margin-top: -40px;
