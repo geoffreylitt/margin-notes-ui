@@ -8,15 +8,15 @@
       <vue-markdown v-bind:anchor-attributes="{'target': '_blank'}">
 # Abstract
 
-Programmers working on production codebases need to understand how existing code works in order to modify code and use library functions. Manual documentation can help build this understanding, but takes time to maintain and sometimes doesn't exist at all.
+Programmers working on production codebases frequently need to understand how existing code works. Manual documentation can help build this understanding, but takes time to maintain and sometimes doesn't exist at all.
 
-Margin Notes provides automatic code documentation, by recording example data from function calls as a program executes, and then displaying those examples in an interactive UI next to the code. This allows people to quickly access examples from different past executions as they read the code, hopefully leading to improved understanding.
+Margin Notes provides automatic code documentation by recording example data from function calls as a program executes, and then displaying those examples in an interactive UI next to the code. This allows programmers to quickly view examples from different past executions as they read the code, which can make it easier to understand the runtime behavior of the program.
 
 # Introduction
 
-Modern programmers spend a lot of time understanding existing code. Whether it's learning to use a library or preparing to modify part of a large codebase, understanding what code does is just as important as writing new code.
+Modern programmers spend a lot of time understanding existing code. A programmer using a library needs to understand the external interface provided by that library. In other cases, a programmer preparing to modify some unfamiliar code in a large codebase needs to develop an understanding of how that code works.
 
-Despite the importance of this activity, it's challenging to understand what code does, because **we don't have powerful tools to help us understand what our programs are doing when they run**. We have all sorts of tools for manipulating and viewing the static structure of our source code, but once the program is actually running, we're left in the dark.
+Despite the importance of programmers understanding code, it's highly challenging for us to do, because **we don't have powerful tools to help us understand what our programs are doing when they run**. We have all sorts of tools for manipulating and viewing the static structure of our source code, but once the program is actually running, we're left in the dark.
 
 Programming tools for beginners tend to focus more on representing runtime behavior, to help beginners understanding the basic connections between their code and the behavior it creates. For example, the [Scratch](https://scratch.mit.edu/) programming environment makes it easy to see the numerical direction of a character, live-updated as it moves:
 
@@ -27,17 +27,19 @@ Programming tools for beginners tend to focus more on representing runtime behav
     </figure>
     <vue-markdown v-bind:anchor-attributes="{'target': '_blank'}">
 
-Advanced programmers working on large codebases have very different needs than beginners working on tiny programs, but we still need to understand what our programs are doing. Unfortunately, there aren't many tools to help us. Print statements and interactive debuggers are the most common tools for peeking inside the code as it runs; these techniques can help with fixing bugs, but they're too cumbersome to use all the time as we program. In order to understand our programs better, we need a broader set of tools that incorporate data from runtime to help programmers in a variety of contexts, beyond just fixing bugs.
+Advanced programmers also need to understand what our programs are doing, but we have different needs than beginners. As one example, as a software engineer collaborating on a large codebase, I frequently depend on code written by others, which requires learning how to use a function from an open-source library or an unfamiliar corner of our system. What arguments does it expect? What does it return? How does it handle a particular edge case?
 
-## The need for API documentation
+Existing solutions to this problem all have limitations:
 
-One use case where programmers could benefit from better tools is quickly understanding the behavior of a function. As a software engineer collaborating on a large codebase, I frequently find myself needing to figure out how to use a function from an open-source library or an unfamiliar corner of our codebase. What arguments does it expect? What does it return? How does it handle a particular case? Documentation can help answer these questions, but manual documentation is difficult to maintain, and docs are often incomplete, or even worse, incorrect.
+* **Documentation** (in code comments or otherwise) can answer these questions efficiently and completely, especially if it includes examples. But manual docs are time-intensive to maintain, and can become incomplete or incorrect as the code changes.
+* **Reading the code** can provide a detailed and accurate understanding of a system, but is often a tedious way to develop a general understanding, since it requires delving into too much detail. Also, code can be difficult to read because it describes such abstract behavior, and we can't see concrete examples of actual data values.
+* **Running the code** can help develop understanding beyond reading the code, but this approach is limited in value without powerful tools for seeing what code is doing when it runs. Print statements and interactive debuggers—the most commonly used tools for peeking inside the code as it runs—can be useful for targeted debugging, but are cumbersome to use for quickly developing a broad understanding of some code.
 
-It's difficult to automatically generate code documentation based on the source code alone, but if our tools have access to the runtime behavior of the code, there are more possibilities. In particular, we can observe examples of how the code is actually used when the program executes. This is convenient, because examples of code usage also happen to be a common and highly useful way to document code for humans.
+This essay describes **Margin Notes**, a tool that combines some of the strengths of all of these approaches, with the goal of helping a programmer learn how to use or modify an existing function. Margin Notes automatically creates documentation for functions in a codebase, by saving example data from function calls when the program runs, and then displaying those saved examples next to the code in a rich interactive viewer.
+
+When examples are easily accessible, the act of reading the code can fluidly incorporate information gathered from running the code. This can help programmers get a sense of the types and values of data commonly passed into or out of a function. The interactive UI allows for flexibility in displaying data that isn't available when writing text documentation in code comments. The ability to record in different execution contexts allows for collecting diverse example data with different benefits for each context. The rest of the essay explores these benefits in more depth with examples.
 
 # Reading code with Margin Notes
-
-Margin Notes automatically creates documentation for functions in a codebase, by **saving example calls when the program runs**, and then **displaying those saved examples next to the code** in a rich interactive viewer. It's best demonstrated with a quick example.
 
 Here's a snippet of Ruby code* from a tic-tac-toe program. It's a `to_s` method on the `Game` class, which returns a string representation of the board state that can be printed out and shown to the user.
 
@@ -56,9 +58,7 @@ class Game
 end
 ```
 
-This method isn't particularly complicated, but even simple code can take a while to puzzle through since it describes abstract behavior without providing any concrete examples. This method would be easier to understand if we could just see some examples of what the board looks like when it's printed.
-
-To collect some examples, I played a tic-tac-toe game and recorded it with Margin Notes. The system saved information about every method call, including the state of the object receiving the call ( `self` in Ruby), the arguments passed into the method, and the return value. Margin Notes then shows these examples alongside the code when we click on the `to_s` method, so we can instantly see some examples of how the board looks when it's printed out:
+To generate documentation for this method, I played a tic-tac-toe game and instrumented it with Margin Notes example recorder. The system saves information about every method call, including the state of the method receiver ( `self` in Ruby), the arguments, and the return value. Margin Notes then shows this data alongside the code when we click on the `to_s` method, so we can instantly see some examples of how the board looks when it's printed out:
 
       </vue-markdown>
     </div>
@@ -73,7 +73,9 @@ To collect some examples, I played a tic-tac-toe game and recorded it with Margi
     <div class="prose">
       <vue-markdown v-bind:anchor-attributes="{'target': '_blank'}">
 
-The programmer can also optionally assign names to examples, to make them easier to find later:
+If our goal is just to understand what the output of this method looks like so we can use it in our own code, seeing specific examples in this way is helpful. Beyond that, if our goal is to also edit the internals of this method, seeing examples can still be useful for helping us read the code and understand its behavior. For example, in this method, it becomes clear why 12 dashes are inserted between each row of squares to make the output look like a board; this isn't obvious just from reading the code.
+
+The programmer can also optionally assign names to examples, to make them easier to find later. (The rest of the demos in this essay use named examples.)
 
       </vue-markdown>
         </div>
@@ -102,7 +104,7 @@ def won?(player)
 end
 ```
 
-This is very simple code, but it's missing a crucial piece of information: what is the `player` argument? Perhaps it's some `Player` object, or maybe a player ID or something? We can answer this using Margin Notes, again using examples recorded from a real game:
+If we want to call this method, we need to know something which isn't evident from the code: what type is expected for the value of the `player` argument? Perhaps it's some `Player` object, or maybe a player ID number? We can answer this using Margin Notes, again using examples recorded from a real game:
 
       </vue-markdown>
     </div>
