@@ -104,7 +104,7 @@ def won?(player)
 end
 ```
 
-If we want to call this method, we need to know something which isn't evident from the code: what type is expected for the value of the `player` argument? Perhaps it's some `Player` object, or maybe a player ID number? We can answer this using Margin Notes, again using examples recorded from a real game:
+If we want to call this method, we need to know what type of objects we can pass into the `player` argument. Perhaps it's some `Player` object, or maybe a player ID number? In a dynamically typed language like Ruby, we can't answer this question by just reading the code. Margin Notes can help, again using examples recorded from a real game. (There are only three examples shown for the entire game because example calls with identical data are deduplicated and only shown once.)
 
       </vue-markdown>
     </div>
@@ -119,21 +119,15 @@ If we want to call this method, we need to know something which isn't evident fr
 
     <div class="prose">
       <vue-markdown v-bind:anchor-attributes="{'target': '_blank'}">
-This gives us some valuable information! First, we learn that `player` is an integer. Ruby is a dynamically typed language so we can't get this type information from the code, but Margin Notes gives us a way to find the types of arguments.*
-    </vue-markdown>
-    <p class="sidenote">
-      *Margin Notes was inspired by systems that create automatic type annotations by observing code at runtime, including <a href="https://instagram-engineering.com/let-your-code-type-hint-itself-introducing-open-source-monkeytype-a855c7284881">MonkeyType</a>, a Python project by Instagram, and <a href="https://medium.com/@arpith/type-checking-ruby-with-minimal-effort-ed1859e552c0">a similar tool</a> for Ruby by Arpith Siromoney.
-    </p>
-    <vue-markdown v-bind:anchor-attributes="{'target': '_blank'}">
-Beyond the type of `player`, we also learn that it takes on the values 0 and 1, which helps us understand what we can do with the object. There are many cases like this where specific properties of an object aren't captured by its type alone; for example, knowing that an object has the type `Hash` doesn't tell you what its keys are.
+Within these examples, we observe that `player` is always an `Integer`; beyond the type, we can also see that it takes on the values 0 and 1. This gives us valuable information for using or modifying this function.
 
-It's worth noting that, based on these examples, we can't conclude `player` is always an integer with values 0 or 1. These examples are from a single game, and they don't represent a guarantee about all the values that could ever appear in the program. But that's okay, because Margin Notes is about conveying a starting point for understanding, not providing safety guarantees or an exhaustive understanding of all possible states.
+Static type systems are an alternative for helping readers understand the types of arguments and return values while reading code, and it's interesting to discuss how Margin Notes differs from type systems. Seeing specific values reveals specific properties that couldn't be described by in most static type systems; in this case, that we use 0 and 1 to represent the two players. As another example, in Ruby it's fairly common to return a hash, but knowing the keys that are expected to be present on the hash is much more useful than just knowing the type of the object.
+
+Of course, Margin Notes is also very limited in power compared to static type systems. Based on these examples, we can't conclude `player` is always an integer with values 0 or 1—these are just examples from a single game, and they don't represent a general guarantee about all the values that could ever appear in the program. This points at a fundamental difference in motivation: Margin Notes aims to make examples readily available while reading code to convey a starting point for understanding, not to provide an exhaustive understanding of all possible states or guarantees of safety.
 
 ## Understanding a library using a test suite
 
-In the tic-tac-toe examples, I just recorded examples while playing a game, but in other cases, it's not as obvious how to run all the parts of a program to gather examples. In these situations, **test suites** can be a useful context for recording, because they generally aim to exercise a lot of the code and contain small, easily understandable bits of example data.
-
-I tried using Margin Notes to record examples while running the test suite for `ruby-money`, a popular Ruby library for dealing with currencies. Here's one method from the `Currency` class which handles comparing two currencies for equality.
+One use case for Margin Notes is understanding how to use a library. Here's a code snippet from [ruby-money](https://github.com/RubyMoney/money), a popular Ruby library for dealing with currencies. It's a method from the `Currency` class which handles comparing a currency to anther currency for equality. It includes a manual documentation comment that provides helpful information, including expected types of arguments and the return value, and a single example.
 
 ```ruby
 # Compares +self+ with +other_currency+ and returns +true+ if the are the
@@ -153,7 +147,7 @@ def ==(other_currency)
 end
 ```
 
-The documentation comment is helpful, but it's also limited by being expressed as text. Margin Notes lets us explore many examples and interactively explore the contents of rich objects:
+In the tic-tac-toe examples, playing a single game was a simple way to record examples, but in this case, it's not as obvious how to manually run code that uses all the parts of the library. In these situations, **test suites** can be a useful context for recording, because they generally aim to exercise most of the code, and they often contain small, easily understandable example data. I used Margin Notes to record examples while running the test suite for ruby-money, and then viewed examples for this method.
       </vue-markdown>
     </div>
 
@@ -167,56 +161,62 @@ The documentation comment is helpful, but it's also limited by being expressed a
 
     <div class="prose">
       <vue-markdown v-bind:anchor-attributes="{'target': '_blank'}">
-Interestingly, this particular example happened to demonstrate the pitfalls of manual documentation. The comment above the method says that the `other_currency` param has the class `Money::Currency`, but the examples from the test suite show that it can actually be a symbol or a string as well.
 
-Breaking out of the constraints of text provides more space for information, and allows for freedom in how to display it, including interactivity. This prototype shows one suggestion for how to visualize this data, but in theory there could be different viewers built into all the different places where read code, ranging from text editors to code repositories like Github, with the design adapted for those different contexts.
+Margin Notes provides some advantages over the documentation comment. The interactive viewer provides more space than a text comment, allowing for a greater number of examples to be shown. Rich objects can be easily included in examples and interactively inspected.
+
+Interestingly, this example also happened to demonstrate how manual documentation can struggle to stay up to date with the code. The documentation comment says that the `other_currency` param is of the type `Money::Currency`, but the examples from the test suite show that it can also be a symbol or a string. Because Margin Notes uses real examples of usage to document the code, it's more likely to reflect the code's actual behavior compared to manually written documentation.
+
+Using an interactive viewer instead of text comments also provides many more possibilities for other ways to display this information. This essay shows one suggestion for a design, but in theory, viewers could be built into all the different places we read code, ranging from text editors to code repositories like Github, with the design adapted for those different contexts.
 
 ## Execution contexts
 
-Margin Notes can record examples in any context where the program is actually run. Different contexts each have tradeoffs:
+Margin Notes can record examples in any context where the program can be run. Different contexts each have tradeoffs:
 
-- **Manual executions by the programmer** (e.g. playing a tic-tac-toe game) allow the programmer to control the inputs to create a specific situation, and then view the resulting example data throughout all the functions in the program. For example, this could be used to reproduce a bug and quickly inspect data at various points in the program. However, it would be time-consuming to run enough manual executions to record diverse examples that cover a whole codebase; with unfamiliar code it might not even be obvious how to go about doing so.
-- **Test suites** are a convenient source of examples because they aim for broad coverage of all the functionality in a program. Tests also often contain minimal example data designed to be easily understandable, making them perfect for demonstrating the behavior of a function. On the other hand, the test context can differ from a real execution context in ways that might make demos misleading, like replacing certain objects with mock versions, or calling functions from a test harness rather than a real call site.
-- **Real executions** (e.g. on a production server) can provide examples that broadly cover commonly used functionality, and demonstrate actual properties of real data used in the program. For example, a list of users in a developer or test environment might have 10 dummy users, but a production list might have thousands, helping the programmer understand scaling concerns. However, real data could be too complex in some cases, and also raises privacy concerns.
+- **Manual executions by the programmer** (e.g. playing a tic-tac-toe game) allow the programmer to control the inputs to create a specific situation, and then view the resulting example data throughout all the functions in the program. For example, this could be used to reproduce a bug and inspect data at various points in the program. However, it's time-consuming to run enough manual executions to record diverse examples that cover a whole codebase, and with unfamiliar code it might not even be obvious how to go about doing so.
+- **Test suites** are a convenient source of examples because they aim for broad coverage of all the functionality in a program. Tests also often contain minimal example data designed to be easily understandable, making them useful for demonstrating the behavior of a function. On the other hand, the test context can differ from a real execution context in ways that might make examples misleading, like replacing certain objects with mocked versions, or calling functions from a test harness rather than a real call site.
+- **Real executions** (e.g. on a production server) can provide examples that broadly cover all of the commonly used functionality of a program. Examples from real executions can also demonstrate properties of real data used in the program that are not present in development contexts—for example, a list of users in a test suite might contain a few dummy users while a production list contains thousands, and seeing the longer list could help a programmer understand performance concerns. However, real data could be too complex in some cases, and also raises privacy concerns.
 
 # Related work
 
-Margin Notes builds on prior work in runtime visualization, API documentation, and example-centric programming.
+Margin Notes builds on prior work in runtime visualization, example-centric programming, and API documentation.
 
 ## Runtime visualization
 
-Many projects have explored ways to record and visualize information from runtime to help programmers understand their code. Some, like [Learnable Programming](http://worrydream.com/LearnableProgramming/), [Seymour](https://harc.github.io/seymour-live2017/), and [Online Python Tutor](http://www.pythontutor.com/), have aimed at displaying basic information for beginners. Others, like [Light Table](http://lighttable.com/), [Theseus](https://dl.acm.org/citation.cfm?id=2611205.2557409), [In Situ Visualizations for Vega](http://idl.cs.washington.edu/files/2018-InSituCodeVis-CHI.pdf), and [record-and-replay debuggers](https://rr-project.org/), have aimed to also cover the needs of more advanced programmers.
+Many projects have explored ways to visualize information from the runtime of a program to help programmers understand their code.
 
-These tools generally focus on visualizing a single execution initiated by the programmer—either a live view of an in-progress execution, or a recording of a completed execution. In contrast, Margin Notes shows snippets of data from many past executions across different contexts, which could provide several benefits:
+Some have aimed at helping beginners understand their programs as each line executes. [Learnable Programming](http://worrydream.com/LearnableProgramming/) and [Seymour](https://harc.github.io/seymour-live2017/) visualize state across time, allowing the programmer to scrub back and forth in time. [Online Python Tutor](http://www.pythontutor.com/) focuses on illustrating the contents of a program's memory as it executes.
 
-- Since examples are indexed by function, it's easy to find many different examples for a particular function across multiple executions, without needing to first pick a specific execution to search within.
-- Margin Notes can show a variety of examples covering cases that might be difficult or impossible for a programmer to run themselves, like error cases or real examples from a production server.
-- When programmers are reading code outside of an executable environment (e.g. when reading the code for a Ruby library on Github), Margin Notes can display examples without the reader needing to run the code.
+Other projects have aimed to help programmers at a broader range of experience levels understand the runtime behavior of their programs. [Example-Centric Programming](https://dl.acm.org/citation.cfm?id=1052894) introduces a system that uses concrete examples to help people write code, and mentions unit tests as a useful source of examples. [Light Table](http://lighttable.com/) is an IDE that allows programmers to watch the values of variables change in realtime as a program executes. [Theseus](https://dl.acm.org/citation.cfm?id=2611205.2557409) augments a Javascript IDE with runtime information from code that just ran. [In Situ Visualizations for Vega](http://idl.cs.washington.edu/files/2018-InSituCodeVis-CHI.pdf) introduces visual techniques for including runtime state inline with the source code itself.
+
+Margin Notes builds on ideas from all of these projects, but takes a slightly different approach. These tools generally focus on visualizing a single execution initiated by the programmer—either a live view of an in-progress execution, or a recording of a completed execution. In contrast, Margin Notes shows snippets of data from many past recorded executions across different contexts. I think this could provide several benefits:
+
+- Since examples are indexed by function, it's easy to find many different examples for a particular function across multiple executions.
+- Margin Notes can show a variety of examples covering cases that would be difficult for a programmer to run themselves, like rare edge cases and real examples from a production server.
+- Programmers can collaborate to annotate a shared library of recorded examples, e.g. naming examples or marking certain examples as important.
+- When programmers are reading code outside of an executable environment (e.g. when reading the code for a Ruby library on Github), Margin Notes can display examples without the reader needing to run any code.
+
+Margin Notes could also be improved by incorporating more of the ideas from these other projects. In particular, these improvements could be useful:
+
+- **More context for examples**: Margin Notes presents each example in isolation, without temporal context about previous or subsequent calls, or environmental context about the stack trace at the time and how the function was called. It might be helpful to “zoom out” on an example in Margin Notes and see more of these types of context, perhaps with a tool similar to the “macro visualization” from Seymour.
+- **More granular examples**: Margin Notes currently shows information at the granularity of a function call. Projects like Light Table and In Situ Visualizations for Vega have explored ways to include information about individual variables inline with the code; these techniques might be useful for showing recorded example values for individual variables.
 
 ## API Documentation
 
 [Examplore](http://web.cs.ucla.edu/~tianyi.zhang/examplore.pdf) aims to help programmers use APIs correctly by synthesizing many code examples mined from open-source codebases. Margin Notes has a similar goal of providing examples, but it collects data at runtime rather than collecting examples from static source code. This allows Margin Notes to show more information, like the detailed state of an object returned by a particular example.
 
-Unlike Examplore, Margin Notes doesn't synthesize large numbers of examples, and incorporating some of those techniques could make it more manageable to browse examples. As a simple example, Margin Notes could categorize examples by the types of the inputs and outputs, to make it easier to find a particular example.
+Unlike Examplore, Margin Notes doesn't synthesize large numbers of examples, and incorporating some of those techniques could make it more manageable to browse examples and find patterns. For example, Margin Notes could categorize examples by the types of the inputs and outputs to make it easier to find a particular example, or visualize how often a given argument takes on different values in production.
 
-## Example-centric programming
+## Runtime type annotation
 
-In [Example-Centric Programming](https://dl.acm.org/citation.cfm?id=1052894), Edwards introduces a system that uses concrete examples to help people understand and write code, and mentions unit tests as one useful source of examples. Margin Notes builds on this work and similarly focuses on examples as a means for understanding code, but it gathers examples from real executions of the code rather than requiring them to be manually specified, making it easier to generate a wide variety of examples.
+Margin Notes was inspired by systems that create automatic type annotations by observing code at runtime, including [MonkeyType](https://instagram-engineering.com/let-your-code-type-hint-itself-introducing-open-source-monkeytype-a855c7284881), a Python project by Instagram, and [a similar tool](https://medium.com/@arpith/type-checking-ruby-with-minimal-effort-ed1859e552c0) for Ruby. These projects record types at runtime and add type annotations as code comments. Margin Notes extends this functionality by recording more specific examples, and showing examples interactively outside of the code.
 
-# Future work
-
-This is just an early prototype, and there are some future directions that might make the tool more useful:
-
-- **More context for examples:** Margin Notes presents each example in isolation, without temporal context about previous or subsequent calls, or environmental context about the stack trace at the time and how the function was called. It might be helpful to "zoom out" on an example in Margin Notes and see more of these types of context, perhaps with a tool similar to the "macro visualization" from Seymour.
-- **More granular examples:** Margin Notes currently shows information at the granularity of a function call. Projects like Light Table and In Situ Visualizations for Vega have explored ways to include information about individual variables inline with the code; these techniques might be useful for showing recorded example values for individual variables.
-- **Data visualization:** Data visualization techniques could be applied to help readers see patterns across large numbers of examples (e.g. answering "how often does this function receive `true` vs `false` for this argument?").
-- **Interactivity:** After viewing recorded examples, a natural next step towards deeper understanding is to try modifying those examples and re-running them to see the new result. In many programs today, getting to a point where you can probe the behavior of a method like requires a lot of setup work. What if it were as easy as clicking "edit" on an example in Margin Notes?
-
-# Conclusion
+# Conclusion and Future Work
 
 This essay has presented Margin Notes, a system that provides automatic code documentation, by recording example data from function calls as a program executes, and then displaying those examples in an interactive UI next to the code.
 
-Margin Notes is just one example of how runtime instrumentation can solve a real need for advanced programmers. I believe we still need better tools for many other use cases, particularly tools to help us develop an intuitive grasp of what our large systems are doing when they run. In the future, I look forward to exploring how data from runtime can play a part in other tools to meet these broader needs.
+One direction I'd like to explore further is adding interactivity to these examples. If programmers could tweak the examples as they read, that could help them more deeply understand the code. Incorporating this functionality into Margin Notes would require rethinking the current approach it takes to recording and viewing examples.
+
+More broadly, Margin Notes is just one example of how visualization of runtime information can solve a real need for advanced programmers. We still need better tools for many other use cases, particularly tools for understanding behavior at a higher level of abstraction, e.g. how modules collaborate in a large system. I look forward to exploring how data from runtime can play a part in meeting these broader needs.
       </vue-markdown>
     </div>
     <footer />
