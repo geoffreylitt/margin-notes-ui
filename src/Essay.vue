@@ -8,7 +8,7 @@
       <vue-markdown v-bind:anchor-attributes="{'target': '_blank'}">
 # Abstract
 
-Programmers working on large codebases often need to understand how existing code works, but they don't have powerful tools to help them understand the runtime behavior of code. Margin Notes generates code documentation by recording example data from function calls as a program executes, and then displaying those examples in an interactive UI next to the code. This allows programmers to quickly view examples from different past executions as they read the code, helping them understand the runtime behavior of the program.
+Programmers working on large codebases often need to understand how existing code works, but they don't have powerful tools to help them understand the runtime behavior of code. Margin Notes generates code documentation by recording example data from function calls as a program executes, and then displaying those examples in an interactive UI next to the code. This allows programmers to quickly view examples from multiple past executions as they read the code, helping them understand the runtime behavior of the program.
 
 # Introduction
 
