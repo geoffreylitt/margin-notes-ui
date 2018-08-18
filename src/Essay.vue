@@ -58,7 +58,7 @@ To generate documentation for this method, I played a tic-tac-toe game and instr
     <div class="prose">
       <vue-markdown v-bind:anchor-attributes="{'target': '_blank'}">
 
-If our goal is just to understand the output of this method so we can use the result, seeing specific examples is immediately informative. Beyond that, if our goal is to edit the internals of this method, seeing example output can also be useful for helping us understand the method implementation. For example, in this method, it becomes more clear why 12 dashes are inserted between each row of squares to make the output look like a board.
+If our goal is just to understand the output of this method so we can use the result, seeing specific examples is immediately informative. Beyond that, if our goal is to edit the internals of this method, seeing example output can also clarify the method implementation. For example, in this method, it becomes more evident why 12 dashes are inserted between each row of squares to make the output look like a board.
 
 Another feature of Margin Notes is that the programmer can optionally assign names to examples, to make them easier to find later. (The rest of the demos in this essay use named examples.)
 
@@ -77,7 +77,7 @@ Another feature of Margin Notes is that the programmer can optionally assign nam
 
 ## Seeing arguments
 
-In the previous example we focused on the output of a method, but Margin Notes can also help programmers understand the arguments that get passed in to a method. Here's another method from the tic-tac-toe program that determines whether a player has won the game.
+In the previous example we focused on the output of a method, but Margin Notes can also help programmers understand the arguments that get passed in to a method. Here's another method from the tic-tac-toe program that determines whether a player has won the game:
 
 ```ruby
 # returns true if the given player has won the game
@@ -106,7 +106,7 @@ If we want to call this method, we need to know what type of object we can pass 
       <vue-markdown v-bind:anchor-attributes="{'target': '_blank'}">
 Within these examples, we observe that `player` is always an `Integer`; beyond the type, we can also see that it takes on the values 0 and 1. This gives us valuable information for using this function, or for modifying it.
 
-These benefits overlap with some of the value provided by static type systems, but Margin Notes differs from type systems in important ways. Seeing specific values reveals detailed properties that can't be described by most static type systems—in this case, that we use 0 and 1 to represent the two players. (As another example of a detailed property, when a method returns a hash, it's helpful to know the keys typically defined on the hash instead of just knowing that the object is a hash.) These detailed properties can help a reader develop a concrete understanding of what code does.
+These benefits overlap with some of the value provided by static type systems, but Margin Notes differs from type systems in important ways. Seeing specific values reveals detailed properties that can't be described by most static type systems—in this case, that we use 0 and 1 to represent the two players. (As another example of a detailed property, when a method returns a hash, it's helpful to know the keys typically defined on the hash in addition to the type.) These detailed properties can help a reader develop a concrete understanding of the data typically present in a program.
 
 Of course, based on these examples, we can't conclude `player` is always an integer with values 0 or 1—these are just examples from a single game, and they don't represent a guarantee about all the values that could ever appear in the program. This points at a fundamental difference in goals: Margin Notes aims to build a foundation for informed programming, not to provide safety guarantees. This essay shows Margin Notes in the context of a dynamically typed language, but Margin Notes could also be used in a statically typed context and complement the type system by providing concrete examples.
 
@@ -149,9 +149,9 @@ In the tic-tac-toe examples, playing a single game was a simple way to record ex
 
 Margin Notes provides some advantages over the documentation comment. The interactive viewer provides more space than a text comment, so it can show many examples instead of just one. Rich objects can be easily included in examples and interactively inspected.
 
-Interestingly, this example also demonstrates how manual documentation can fail to fully describe the code. The documentation comment says that the `other_currency` param is of the type `Money::Currency`, but the examples from the test suite show that it can also be a symbol or a string. Because Margin Notes uses real examples of usage to document the code, it's more likely to reflect the code's actual behavior.
+Interestingly, this example also demonstrates how manual documentation can fail to fully describe the code. The documentation comment says that the `other_currency` param has the type `Money::Currency`, but the examples from the test suite show that it can also be a symbol or a string. Because Margin Notes uses real examples of usage to document the code, it's more likely to reflect the code's actual behavior.
 
-Using an interactive viewer instead of text comments also opens up many more possibilities for other ways to display this information. This essay suggests one design, but in the future viewers could be built into all the different places we read code, ranging from text editors to code repositories like Github, with the design adapted for those different contexts.
+Beyond visualizing rich objects, using an interactive viewer instead of text comments opens up many more possibilities for other ways to display this information. This essay suggests one design, but viewers could be built into all the different places we read code, ranging from text editors to code repositories like Github, with the design adapted for those different contexts.
 
 # Related work
 
