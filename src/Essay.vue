@@ -188,7 +188,7 @@ This essay has presented Margin Notes, a system that provides automatic code doc
 
 One direction I'd like to explore further is adding interactivity to these examples. If programmers could tweak the examples as they read, that could help them more deeply understand the code. Incorporating this functionality into Margin Notes would require redesigning the current approach to recording and viewing examples.
 
-More broadly, Margin Notes is just one example of how incorporating information from runtime into our tools can solve a real need for software engineers. We still need better tools for many other use cases, like understanding program behavior at a higher level of abstraction than individual functions. I look forward to exploring how data from runtime can play a part in meeting these needs, and I look forward to a future where software engineers use more powerful tools to do their work.
+More broadly, Margin Notes is just one example of how incorporating information from runtime into our tools can solve a real need for software engineers. We still need better tools for many other use cases, like understanding program behavior at a higher level of abstraction than individual functions. I look forward to exploring how data from runtime can play a part in meeting these needs, and to a future where software engineers use more powerful tools to do their work.
 
       </vue-markdown>
     </div>
