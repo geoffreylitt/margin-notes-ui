@@ -8,7 +8,7 @@
       <vue-markdown v-bind:anchor-attributes="{'target': '_blank'}">
 # Abstract
 
-Programmers working on large codebases frequently need to understand APIs to existing code. Manual documentation is helpful, but takes time to maintain and often doesn't include enough examples.
+Programmers working on large codebases frequently need to understand APIs for existing code. Manual documentation is helpful, but takes time to maintain and often doesn't include enough examples.
 
 Margin Notes automatically generates code documentation by recording example data from function calls as a program executes and displaying those examples in an interactive UI next to the code. This allows programmers to quickly view many examples from past executions as they read the code, helping them efficiently gain insight into the behavior of the program.
 
@@ -106,9 +106,9 @@ If we want to call this method, we need to know what type of object we can pass 
       <vue-markdown v-bind:anchor-attributes="{'target': '_blank'}">
 Within these examples, we observe that `player` is always an `Integer`; beyond the type, we can also see that it takes on the values 0 and 1. This gives us valuable information for using this function, or for modifying it.
 
-These benefits overlap with some of the value provided by static type systems, but Margin Notes also differs from type systems in important ways. Seeing specific values reveals detailed properties that can't be described by most static type systems—in this case, that we use 0 and 1 to represent the two players. (As another example of a detailed property, when a method returns a hash, it's helpful to know the keys typically defined on the hash instead of just knowing that the object is a hash.) These detailed properties can help a reader develop a concrete understanding of what code does.
+These benefits overlap with some of the value provided by static type systems, but Margin Notes differs from type systems in important ways. Seeing specific values reveals detailed properties that can't be described by most static type systems—in this case, that we use 0 and 1 to represent the two players. (As another example of a detailed property, when a method returns a hash, it's helpful to know the keys typically defined on the hash instead of just knowing that the object is a hash.) These detailed properties can help a reader develop a concrete understanding of what code does.
 
-Of course, based on these examples, we can't conclude `player` is always an integer with values 0 or 1—these are just examples from a single game, and they don't represent a general guarantee about all the values that could ever appear in the program. This points at a fundamental difference in goals: Margin Notes aims to build a foundation for informed programming, not to provide an exhaustive understanding of all possible states. This essay shows Margin Notes in the context of a dynamically typed language, but Margin Notes could also be used in a statically typed context and complement the type system by providing concrete examples.
+Of course, based on these examples, we can't conclude `player` is always an integer with values 0 or 1—these are just examples from a single game, and they don't represent a guarantee about all the values that could ever appear in the program. This points at a fundamental difference in goals: Margin Notes aims to build a foundation for informed programming, not to provide safety guarantees. This essay shows Margin Notes in the context of a dynamically typed language, but Margin Notes could also be used in a statically typed context and complement the type system by providing concrete examples.
 
 ## Understanding a library using a test suite
 
@@ -173,7 +173,7 @@ Other projects have aimed to help programmers at a broader range of experience l
 
 Margin Notes draws on the key insight that showing runtime information can aid understanding, but aims to solve a different problem: helping programmers understand existing APIs, rather than helping them understand new code that they are writing. As a result, instead of visualizing a single execution by the programmer as these other projects do, Margin Notes shows snippets of data from many past recorded executions.
 
-There are many ideas from these projects that could be incorporated into Margin Notes. Here are two particular examples:
+There are many ideas from these projects that could be incorporated into Margin Notes. Here are two examples:
 
 - **More context for examples**: Margin Notes presents each example in isolation, without temporal context about previous or subsequent calls, or context about the stack trace and how the function was called. It might be helpful to “zoom out” on an example in Margin Notes and see more of these types of context, perhaps with a tool similar to the “macro visualization” from Seymour.
 - **More granular examples**: Margin Notes currently shows information at the granularity of a function call. Projects like Light Table and In Situ Visualizations for Vega have explored ways to include information about individual variables inline with the code; these techniques might be useful for showing recorded example values for individual variables.
@@ -188,7 +188,7 @@ This essay has presented Margin Notes, a system that provides automatic code doc
 
 One direction I'd like to explore further is adding interactivity to these examples. If programmers could tweak the examples as they read, that could help them more deeply understand the code. Incorporating this functionality into Margin Notes would require redesigning the current approach to recording and viewing examples.
 
-More broadly, Margin Notes is just one example of how incorporating information from runtime into our tools can solve a real need for software engineers, and we still need better tools for many other use cases. For example, we need better tools for understanding behavior at a higher level of abstraction, like how modules collaborate in a large system. I look forward to exploring how data from runtime can play a part in meeting these other needs, and I look forward to a future where software engineers use more powerful tools throughout their work.
+More broadly, Margin Notes is just one example of how incorporating information from runtime into our tools can solve a real need for software engineers, and we still need better tools for many other use cases. For example, we need better tools for understanding program behavior at a higher level of abstraction than individual functions. I look forward to exploring how data from runtime can play a part in meeting these other needs, and I look forward to a future where software engineers commonly use more powerful tools to do their work.
 
       </vue-markdown>
     </div>
