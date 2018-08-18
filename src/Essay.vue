@@ -159,9 +159,9 @@ Margin Notes builds on prior work in API documentation, runtime visualization, a
 
 ## API Documentation
 
-[Examplore](http://web.cs.ucla.edu/~tianyi.zhang/examplore.pdf) aims to help programmers use APIs correctly by synthesizing many code examples mined from open-source codebases. Both Margin Notes and Examplore has a aim to leverage existing code to provide API usage examples, but Margin Notes collects examples of runtime data rather than collecting examples of static source code. These two approaches could be complementary techniques for learning an API.
+[Examplore](http://web.cs.ucla.edu/~tianyi.zhang/examplore.pdf) helps programmers use APIs correctly by synthesizing many code examples mined from open-source codebases. Both Margin Notes and Examplore aim to leverage existing code to provide API usage examples, but Margin Notes collects examples of runtime data rather than collecting examples of static source code. These two approaches could be complementary techniques for learning an API.
 
-Examplore aims to synthesize very large numbers of examples, and Margin Notes could be improved by doing more synthesis. For example, Margin Notes could categorize examples by the types of the inputs and outputs, or visualize how often a given argument takes on different values in production.
+Margin Notes currently displays individual examples in isolation, but could be improved by synthesizing across multiple examples like Examplore does. For example, Margin Notes could categorize examples by the types of the inputs and outputs, or visualize how often a given argument takes on different values in production.
 
 ## Runtime visualization
 
@@ -171,9 +171,9 @@ Some have aimed at helping beginners understand their programs as each line exec
 
 Other projects have aimed to help programmers at a broader range of experience levels understand the runtime behavior of their programs. [Example-Centric Programming](https://dl.acm.org/citation.cfm?id=1052894) introduces a system that uses concrete examples to help people write code, and the author mentions unit tests as a useful source of examples. [Light Table](http://lighttable.com/) allows programmers to watch the values of variables change in realtime as a program executes. [Theseus](https://dl.acm.org/citation.cfm?id=2611205.2557409) augments a Javascript IDE with runtime information from code that just ran. [In Situ Visualizations for Vega](http://idl.cs.washington.edu/files/2018-InSituCodeVis-CHI.pdf) introduces visual techniques for including runtime state inline with the source code itself.
 
-Margin Notes draws on the key insight that showing runtime information can aid understanding, but aims to solve a different problem: helping programmers understand existing APIs, rather than helping them understand new code that they are writing. As a result, instead of visualizing a single execution by the programmer as these other projects do, Margin Notes shows snippets of data from many past recorded executions.
+Margin Notes draws on the key insight that showing runtime information can aid understanding, but aims to solve a different problem: helping programmers understand existing APIs, rather than helping them understand new code that they are writing. These other projects generally visualize a single execution by the programmer, but Margin Notes shows snippets of data across multiple recorded executions, so that the programmer can quickly view many examples relevant to a particular function.
 
-There are many ideas from these projects that could be incorporated into Margin Notes. Here are two examples:
+There are many ideas from these projects that could be incorporated into Margin Notes to make it more powerful. Here are two examples:
 
 - **More context for examples**: Margin Notes presents each example in isolation, without temporal context about previous or subsequent calls, or context about the stack trace and how the function was called. It might be helpful to “zoom out” on an example in Margin Notes and see more of these types of context, perhaps with a tool similar to the “macro visualization” from Seymour.
 - **More granular examples**: Margin Notes currently shows information at the granularity of a function call. Projects like Light Table and In Situ Visualizations for Vega have explored ways to include information about individual variables inline with the code; these techniques might be useful for showing recorded example values for individual variables.
