@@ -8,34 +8,19 @@
       <vue-markdown v-bind:anchor-attributes="{'target': '_blank'}">
 # Abstract
 
-Programmers working on large codebases often need to understand how existing code works. Manual documentation can help, but takes time to maintain. Margin Notes automatically generates code documentation by recording example data from function calls as a program executes, then displaying those examples in an interactive UI next to the code. This allows programmers to quickly view examples from multiple past executions as they read the code, helping them gain insight into the behavior of the program.
+Programmers working on large codebases often need to understand APIs to existing code. Manual documentation is helpful, but takes time to maintain and sometimes lacks enough examples. Margin Notes automatically generates code documentation by recording example data from function calls as a program executes, then displaying those examples in an interactive UI next to the code. This allows programmers to quickly view many examples from past executions as they read the code, helping them gain insight into the behavior of the program.
 
 # Introduction
 
-Modern programmers spend a lot of time understanding existing code. A programmer using a library needs to understand the external interface provided by that library. In other cases, someone preparing to modify some unfamiliar code in a large codebase needs to develop an understanding of how that code works.
+Today, most software engineers don't use powerful tools to observe the behavior of their programs. Despite the publication of promising research ideas like [Learnable Programming](http://worrydream.com/LearnableProgramming/) and the release of commercial products like the Light Table IDE, programmers still primarily use tools that operate on static code and don't provide visibility into runtime behavior. Some prominent programmers have even [publicly stated](https://lemire.me/blog/2016/06/21/i-do-not-use-a-debugger/) that they avoid using interactive debuggers, which are the most commonly available tools for viewing the behavior of code.
 
-Despite the importance of programmers understanding code, it's highly challenging for us to do, because most programmers don't use powerful tools to see what our programs are doing when they run. We have all sorts of tools for manipulating and viewing the static structure of our source code, but once the program is actually running, we're left in the dark.
+As a software engineer, I think that I and others could benefit from using tools that better bridge the gap between static code and runtime. But in order to gain more adoption in industry, I think we need to explore tools that incorporate runtime information into programming in a broader variety of ways. In particular, I'm interested in tools that focus on pain points experienced by software engineers working collaboratively on large codebases, which are very different from the needs of beginners addressed by projects like Learnable Programming.
 
-Programming tools for beginners tend to focus more on representing runtime behavior, to help beginners understanding the basic connections between their code and the behavior it creates. For example, the [Scratch](https://scratch.mit.edu/) programming environment makes it easy to see the numerical direction of a character, live-updated as it moves:
+One common problem software engineers face today is learning to use APIs for existing code. Programming in a large codebase generally requires building on top of other code, ranging from frameworks and libraries developed by third parties to modules developed within a company. Examples of usage are an effective way to learn how to use an API, but examples can be difficult to find. One [survey](https://www.cs.mcgill.ca/~martin/papers/software2009a.pdf) found that programmers at Microsoft cited "insufficient or inadequate examples" as the most frequent barrier to learning an API. In some cases, particularly for private APIs designed for internal use at a company, documentated examples might not even exist at all.
 
-    </vue-markdown>
-    <figure>
-      <video controls src="/margin-notes/static/scratch-runtime-2.mp4#t=0.1" height="300px"/>
-      <figcaption>In Scratch, the numbers update as the character moves</figcaption>
-    </figure>
-    <vue-markdown v-bind:anchor-attributes="{'target': '_blank'}">
+This essay describes **Margin Notes**, a tool that incorporates data from runtime to solve this need for examples. Margin Notes automatically creates documentation for functions in a codebase by saving example data from function calls when the program runs, then displaying those saved examples next to the code in a rich interactive viewer.
 
-Advanced programmers also need to understand what our programs are doing, but we have different needs than beginners. For example, as a software engineer collaborating on a large codebase, I frequently depend on code written by others, which requires learning how to use a function from an open-source library or an unfamiliar corner of our system. What arguments does it expect? What does it return? How does it handle a particular edge case?
-
-Existing solutions to this problem have limitations:
-
-* **Documentation** (in code comments or otherwise) can answer these questions effectively, especially if it includes examples. But manual docs are time-intensive to maintain, and can become incomplete or incorrect as the code changes.
-* **Reading the code** can provide a detailed and accurate understanding of a system, but it requires delving into tedious details. Also, code can be difficult to read because it describes abstract behavior, and we can't see concrete examples of actual data values.
-* **Running the code** can help develop understanding beyond reading the code, but this approach is limited in value without powerful tools for seeing what code is doing when it runs. Print statements and interactive debuggers can provide some visibility into behavior, but they are cumbersome to use for quickly developing a general understanding of some code.
-
-This essay describes **Margin Notes**, a tool that combines strengths from all of these approaches to help a programmer learn how to use or modify an existing function. Margin Notes automatically creates documentation for functions in a codebase, by saving example data from function calls when the program runs, and then displaying those saved examples next to the code in a rich interactive viewer.
-
-When examples are easily accessible, the act of reading the code can fluidly incorporate information gathered from running the code. This can help programmers understand properties of the data commonly passed into or out of a function. The interactive UI allows for more flexibility in displaying data than text documentation does. The ability to record in different execution contexts allows for collecting diverse example data with different benefits for each context. The rest of the essay explores these benefits in more depth with examples.
+When examples are easily accessible, the act of reading the code can fluidly incorporate information gathered from running the code. This can help programmers understand properties of the data commonly passed into or out of a function. The interactive UI allows for more flexibility in displaying data than text documentation, and the ability to record in different execution contexts allows for collecting diverse example data. The rest of the essay explores these benefits in more depth.
 
 # Reading code with Margin Notes
 
