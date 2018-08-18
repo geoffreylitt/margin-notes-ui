@@ -20,7 +20,7 @@ One common problem software engineers face today is learning to use APIs for exi
 
 This essay describes **Margin Notes**, a tool that incorporates data from runtime to solve this need for examples. Margin Notes automatically creates documentation for functions in a codebase by saving example data from function calls when the program runs, then displaying those saved examples next to the code in a rich interactive viewer.
 
-When examples are easily accessible, the act of reading the code can fluidly incorporate information gathered from running the code. This can help programmers understand properties of the data commonly passed into or out of a function. The interactive UI allows for more flexibility in displaying data than text documentation, and the ability to record in different execution contexts allows for collecting diverse example data. The rest of the essay explores these benefits in more depth.
+When examples are easily accessible, the act of reading the code can fluidly incorporate information gathered from running the code. This can help programmers understand the behavior of a function and the properties of data passed in and out of the function. The interactive example viewing UI allows for more flexibility in displaying data than text documentation, and the ability to record in different execution contexts allows for collecting different types of example data. The rest of the essay explores these benefits in more depth.
 
 # Reading code with Margin Notes
 
