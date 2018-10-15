@@ -4,6 +4,10 @@
     <h1 class="title">📝 Margin Notes</h1>
     <h2 class="subtitle">Automatic code documentation with recorded examples from runtime</h2>
 
+    <p>By <a href="https://geoffreylitt.com">Geoffrey Litt</a></p>
+    <p>Accepted to <a target="_blank" href="https://2018.splashcon.org/track/live-2018-papers#event-overview">LIVE 2018</a></p>
+
+
     <div class="prose">
       <vue-markdown v-bind:anchor-attributes="{'target': '_blank'}">
 # Abstract
@@ -189,6 +193,10 @@ This essay has presented Margin Notes, a system that provides automatic code doc
 One direction I'd like to explore further is adding interactivity to these examples. If programmers could tweak the examples as they read, that could help them more deeply understand the code. Incorporating this functionality into Margin Notes would require redesigning the current approach to recording and viewing examples.
 
 More broadly, Margin Notes is just one example of how incorporating information from runtime into our tools can solve a real need for software engineers. We still need better tools for many other use cases, like understanding program behavior at a higher level of abstraction than individual functions. I look forward to exploring how data from runtime can play a part in meeting these needs, and to a future where software engineers use more powerful tools to do their work.
+
+## Acknowledgements
+
+Thanks to Glen Chiacchieri, Soya Park, Seth Thompson, Eli Rose, and Maggie Yellen for providing valuable feedback on this essay.
 
       </vue-markdown>
     </div>
