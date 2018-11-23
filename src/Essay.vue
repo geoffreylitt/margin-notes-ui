@@ -17,10 +17,10 @@ Margin Notes automatically generates code documentation by recording example dat
 
       </vue-markdown>
 
-      <h1>Talk video</h1>
+      <h1>Video demo</h1>
       <p>Here's a recorded version of the talk I gave at LIVE 2018 about this project. If you prefer reading, keeping scrolling down to the essay version below.</p>
 
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/nABwZ1199eE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <iframe width="500" height="315" src="https://www.youtube.com/embed/nABwZ1199eE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
       <vue-markdown v-bind:anchor-attributes="{'target': '_blank'}">
 # Introduction
@@ -172,7 +172,10 @@ Margin Notes builds on prior work in API documentation, runtime visualization, a
 
 [Examplore](http://web.cs.ucla.edu/~tianyi.zhang/examplore.pdf) helps programmers use APIs correctly by synthesizing many code examples mined from open-source codebases. Both Margin Notes and Examplore aim to leverage existing code to provide API usage examples, but Margin Notes collects examples of runtime data rather than collecting examples of static source code. These two approaches could be complementary techniques for learning an API.
 
-Margin Notes currently displays individual examples in isolation, but could be improved by synthesizing across multiple examples like Examplore does. For example, Margin Notes could categorize examples by the types of the inputs and outputs, or visualize how often a given argument takes on different values in production.
+Margin Notes currently displays individual examples in isolation, but could be improved by synthesizing across multiple examples like Examplore does. As a simple example, Margin Notes could visualize how often a given argument takes on different values across many runs:
+    </vue-markdown>
+    <img v-bind:src="require('./assets/graphs.png')"></img>
+    <vue-markdown v-bind:anchor-attributes="{'target': '_blank'}">
 
 ## Runtime visualization
 
@@ -184,10 +187,11 @@ Other projects have aimed to help programmers at a broader range of experience l
 
 Margin Notes draws on the key insight that showing runtime information can aid understanding, but aims to solve a different problem: helping programmers understand existing APIs, rather than helping them understand new code that they are writing. These other projects generally visualize a single execution by the programmer, but Margin Notes shows snippets of data across multiple recorded executions, so that the programmer can quickly view many examples relevant to a particular function.
 
-There are many ideas from these projects that could be incorporated into Margin Notes to make it more powerful. Here are two examples:
+There are many ideas from these projects that could be incorporated into Margin Notes to make it more powerful. A few examples:
 
 - **More context for examples**: Margin Notes presents each example in isolation, without temporal context about previous or subsequent calls, or context about the stack trace and how the function was called. It might be helpful to “zoom out” on an example in Margin Notes and see more of these types of context, perhaps with a tool similar to the “macro visualization” from Seymour.
 - **More granular examples**: Margin Notes currently shows information at the granularity of a function call. Projects like Light Table and In Situ Visualizations for Vega have explored ways to include information about individual variables inline with the code; these techniques might be useful for showing recorded example values for individual variables.
+- **Visualizing side effects**: Margin Notes currently doesn't display any information about side effects. Seymour explores how side effects might be visualized for a single execution trace, and incorporating side effects into Margin Notes would provide a fuller view of the program's behavior across multiple traces.
 
 ## Runtime type annotation
 
@@ -195,15 +199,21 @@ Margin Notes was inspired by systems that automatically add type annotations to 
 
 # Conclusion and future work
 
-This essay has presented Margin Notes, a system that provides automatic code documentation by recording example data from function calls as a program executes and displaying those examples in an interactive UI next to the code.
+Margin Notes is just one example of how incorporating information from runtime into our tools can solve a real need for software engineers, and we still need better tools for many other aspects of understanding our programs.
 
-One direction I'd like to explore further is adding interactivity to these examples. If programmers could tweak the examples as they read, that could help them more deeply understand the code. Incorporating this functionality into Margin Notes would require redesigning the current approach to recording and viewing examples.
+This project was inspired by noticing how helpful API usage examples are to programmers in their jobs, and used that as a starting point for developing a new tool. I'm interested in exploring other tools that programmers already find useful, and finding ways to reimagine them. For example, print debugging is a pervasive technique that many people find useful. Rather than denigrating it, can we understand why it's so useful and then create new tools based on that utility? My hypothesis is that designing in this way will result not only in tools that are easier to explain to programmers, but tools that are more likely to provide solutions to the problems that programmers actually face.
 
-More broadly, Margin Notes is just one example of how incorporating information from runtime into our tools can solve a real need for software engineers. We still need better tools for many other use cases, like understanding program behavior at a higher level of abstraction than individual functions. I look forward to exploring how data from runtime can play a part in meeting these needs, and to a future where software engineers use more powerful tools to do their work.
+I hope this inspires you to reflect on the tools you already use to understand your programs, understand why they're helpful, and then use that knowledge to build even more powerful ones.
+
+---
 
 ## Acknowledgements
 
-Thanks to Glen Chiacchieri, Jonathan Edwards, Steve Krouse, Soya Park, Ivan Reese, Eli Rose, Seth Thompson, and Maggie Yellen for providing valuable feedback and encouragement on this work.
+Thanks to Glen Chiacchieri, Jonathan Edwards, Steve Krouse, Soya Park, Ivan Reese, Eli Rose, Seth Thompson, and Maggie Yellen for providing invaluable feedback and encouragement on this work.
+
+## Code
+
+I doubt you'll find the code for this system particularly interesting or useful, but if you're curious, you can see the code for the [example recorder](https://github.com/geoffreylitt/margin-notes-recorder) and for the [example viewer](https://github.com/geoffreylitt/margin-notes-ui) (which is combined with the code for this essay itself) on Github.
 
       </vue-markdown>
     </div>
@@ -252,6 +262,11 @@ code { font-size: 16px; } // for inline code, not listings
 video {
   width: 100% !important;
   max-height: 400px;
+}
+
+hr {
+  margin: 50px 0;
+  border: solid thin #eee;
 }
 
 #essay {
