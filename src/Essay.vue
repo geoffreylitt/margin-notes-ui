@@ -5,8 +5,7 @@
     <h2 class="subtitle">Automatic code documentation with recorded examples from runtime</h2>
 
     <p>By <a href="https://geoffreylitt.com">Geoffrey Litt</a></p>
-    <p>Accepted to <a target="_blank" href="https://2018.splashcon.org/track/live-2018-papers#event-overview">LIVE 2018</a></p>
-
+    <p>Presented at <a target="_blank" href="https://2018.splashcon.org/track/live-2018-papers#event-overview">LIVE 2018</a></p>
 
     <div class="prose">
       <vue-markdown v-bind:anchor-attributes="{'target': '_blank'}">
@@ -16,6 +15,14 @@ Programmers working on large codebases frequently need to understand APIs for ex
 
 Margin Notes automatically generates code documentation by recording example data from function calls as a program executes and displaying those examples in an interactive UI next to the code. This allows programmers to quickly view many examples from past executions as they read the code, helping them efficiently gain insight into the behavior of the program.
 
+      </vue-markdown>
+
+      <h1>Talk video</h1>
+      <p>Here's a recorded version of the talk I gave at LIVE 2018 about this project. If you prefer reading, keeping scrolling down to the essay version below.</p>
+
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/nABwZ1199eE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+      <vue-markdown v-bind:anchor-attributes="{'target': '_blank'}">
 # Introduction
 
 Today, most software engineers don't use powerful tools to observe the behavior of their programs. Despite the publication of promising research ideas like [Learnable Programming](http://worrydream.com/LearnableProgramming/) and the release of commercial products like the [Light Table IDE](http://lighttable.com/), programmers still primarily use tools that operate on static code and don't provide visibility into runtime behavior. Some prominent programmers have even [publicly stated](https://lemire.me/blog/2016/06/21/i-do-not-use-a-debugger/) that they avoid using interactive debuggers, which are the most commonly available tools for seeing what code is doing when it runs.
@@ -196,7 +203,7 @@ More broadly, Margin Notes is just one example of how incorporating information 
 
 ## Acknowledgements
 
-Thanks to Glen Chiacchieri, Soya Park, Seth Thompson, Eli Rose, and Maggie Yellen for providing valuable feedback on this essay.
+Thanks to Glen Chiacchieri, Jonathan Edwards, Steve Krouse, Soya Park, Ivan Reese, Eli Rose, Seth Thompson, and Maggie Yellen for providing valuable feedback and encouragement on this work.
 
       </vue-markdown>
     </div>
