@@ -31,7 +31,7 @@ As a software engineer, I think that I and others could benefit from using tools
 
 One common problem software engineers face today is learning to use APIs for existing code. Programming in a large codebase generally requires building on top of other code, ranging from frameworks and libraries developed by third parties to modules developed within a company. Examples of usage are an effective way to learn how to use an API, but examples can be difficult to find. One [survey](https://www.cs.mcgill.ca/~martin/papers/software2009a.pdf) found that programmers at Microsoft cited "insufficient or inadequate examples" as the most frequent barrier to learning an API. In some cases, particularly for private APIs designed for internal use at a company, documentated examples might not even exist at all.
 
-This essay describes **Margin Notes**, a tool that incorporates data from runtime to solve this need for examples. Margin Notes automatically creates documentation for functions in a codebase by saving example data from function calls when the program runs, then displaying those saved examples next to the code in a rich interactive viewer. Examples can be recorded in any context where the program is run, ranging from test suites to live on a production server.
+This essay describes **Margin Notes**, a prototype of a tool that incorporates data from runtime to solve this need for examples. Margin Notes automatically creates documentation for functions in a codebase by saving example data from function calls when the program runs, then displaying those saved examples next to the code in a rich interactive viewer. Examples can be recorded in any context where the program is run, ranging from test suites to live on a production server.
 
 When examples are easily accessible, the act of reading the code can fluidly incorporate information gathered from running the code. This can help programmers understand the behavior of a function and the properties of data passed in and out of the function. The interactive example viewing UI allows for more flexibility in displaying data than text documentation, and the ability to record in different execution contexts allows for collecting diverse example data. The rest of the essay explores these benefits in more depth.
 
@@ -207,13 +207,17 @@ I hope this inspires you to reflect on the tools you already use to understand y
 
 ---
 
+## When can I use this?
+
+Currently this is just a prototype system expressing an idea, and it's not ready yet for production use. I may continue to work towards making it usable; you can [follow me on Twitter](https://twitter.com/geoffreylitt) for further updates.
+
+I doubt you'll find the current code particularly useful, but if you're curious, you can see the code for the [example recorder](https://github.com/geoffreylitt/margin-notes-recorder) and for the [example viewer](https://github.com/geoffreylitt/margin-notes-ui) (which is combined with the code for this essay itself) on Github.
+
 ## Acknowledgements
 
 Thanks to Glen Chiacchieri, Jonathan Edwards, Steve Krouse, Soya Park, Ivan Reese, Eli Rose, Seth Thompson, and Maggie Yellen for providing invaluable feedback and encouragement on this work.
 
-## Code
 
-I doubt you'll find the code for this system particularly interesting or useful, but if you're curious, you can see the code for the [example recorder](https://github.com/geoffreylitt/margin-notes-recorder) and for the [example viewer](https://github.com/geoffreylitt/margin-notes-ui) (which is combined with the code for this essay itself) on Github.
 
       </vue-markdown>
     </div>
